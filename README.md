@@ -1,1 +1,1 @@
-Gui 2 project.
+GUI 2 project.
