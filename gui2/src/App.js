@@ -1,7 +1,10 @@
+import React from 'react';
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { getAuth, signInWithRedirect, GoogleAuthProvider } from 'firebase/auth'
+import { getAuth } from 'firebase/auth'
+import SignIn from './SignIn';
+import MainPage from './MainPage';
 
 const firebaseConfig = {
   apiKey: "AIzaSyAS_G34ZxHEzTjqStDpl7-_GsqvfQFtKL8",
@@ -24,27 +27,9 @@ function App() {
 
   return (
     <div className="App">
-      {user ? <SignOut /> : <SignIn />}
+      {user ? <MainPage auth={auth}/> : <SignIn auth={auth}/>}
     </div>
   );
-}
-
-function SignIn() {
-
-  const signInWithGoogle = () => {
-    signInWithRedirect(auth, new GoogleAuthProvider());
-  }
-
-  return (
-    <button className="sign-in" onClick={signInWithGoogle}>Sign in with Google</button>
-  )
-
-}
-
-function SignOut() {
-  return auth.currentUser && (
-    <button className="sign-out" onClick={() => auth.signOut()}>Sign Out</button>
-  )
 }
 
 export default App;
