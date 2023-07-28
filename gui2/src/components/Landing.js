@@ -6,9 +6,9 @@ const Landing = () => {
   const greeting = "Welcome To \n CommunityAlert!";
   return (
     <div className="title row">
-      <img className="col-lg-3 col-3" src={leftImage} />
+      <img className="col-lg-3 col-3 leftImg" src={leftImage} />
       <h1 className="col-lg-6 col-6">{greeting}</h1>
-      <img className="col-lg-3 col-3" src={leftImage} />
+      <img className="col-lg-3 col-3 rightImg" src={leftImage} />
     </div>
   );
 };

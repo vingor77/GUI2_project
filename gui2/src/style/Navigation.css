@@ -1,0 +1,9 @@
+.navigationMenu{
+    position:absolute;
+    bottom:0;
+    /* left:25%; */
+    /* border-radius: 30px; */
+    border-style: solid;
+    /* min-width:600px */
+}
+
