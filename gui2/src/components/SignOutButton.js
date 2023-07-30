@@ -7,13 +7,17 @@ export const SignOutButton = ({ user }) => {
     top: "0",
     zIndex: "1",
   };
+
   return (
-    <button
-      style={SignOutButtonStyle}
-      className="sign-out"
-      onClick={() => user.auth.signOut()}
-    >
-      Sign Out
-    </button>
+    <div style={SignOutButtonStyle}>
+      <button
+        // style={SignOutButtonStyle}
+        className="sign-out"
+        onClick={() => user.auth.signOut()}
+      >
+        Sign Out
+      </button>
+      <img src={user.photoURL} />
+    </div>
   );
 };

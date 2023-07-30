@@ -8,8 +8,8 @@ const HomePage = ({ user }) => {
   return (
     <>
       <SignOutButton user={user} />
-      <Navigation />
       <TopMenu />
+      <Navigation />
       <Map />
     </>
   );

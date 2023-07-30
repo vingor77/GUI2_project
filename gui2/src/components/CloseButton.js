@@ -8,7 +8,12 @@ const CloseButton = ({ setTab }) => {
   };
 
   return (
-    <img onClick={() => setTab(false)} src={closeButton} style={buttonStyle} />
+    <img
+      onClick={() => setTab(false)}
+      src={closeButton}
+      style={buttonStyle}
+      alt="close button"
+    />
   );
 };
 

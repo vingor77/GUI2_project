@@ -2,6 +2,7 @@ import React from "react";
 import searchIcon from "../images/Search icon.svg";
 import sliderMenu from "../images/SliderMenu.svg";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 const TopMenu = () => {
   const topMenuStyle = {
     borderStyle: "solid",
@@ -36,29 +37,34 @@ const TopMenu = () => {
   const onClick = () => setShowOptions(!showOptions);
   const Option = () => (
     <div className="row col-lg-3 col-5" style={topMenuStyle}>
-      <h5 style={optionStyle} className="offset-lg-1 col-lg-5 col-6">
-        About Us
-      </h5>
-      <h5 style={optionStyle} className="col-lg-5 col-6">
-        Help
-      </h5>
+      <Link to="about">
+        <h5 style={optionStyle} className="offset-lg-1 col-lg-5 col-6">
+          About Us
+        </h5>
+      </Link>
+      <Link to="help">
+        <h5 style={optionStyle} className="col-lg-5 col-6">
+          Help
+        </h5>
+      </Link>
     </div>
   );
 
   return (
     <div className="row" style={{ marginLeft: "5px" }}>
-      <div style={topMenuStyle} className="row col-lg-3 col-6">
+      <div style={topMenuStyle} className="row col-lg-3 col-md-3 col-6">
         {/* Search icon */}
         <img
           style={searchIconStyle}
-          className=" col-3 col-lg-2"
+          className=" col-3 col-md-3 col-lg-2"
           src={searchIcon}
+          alt="search icon"
         />
 
         {/* Temp searchbox, might be using javascript api */}
         <input
           style={searchBoxStyle}
-          className="col-6 col-lg-7"
+          className="col-5 col-md-5 col-lg-7"
           type="text"
           placeholder="Search"
         />
@@ -66,9 +72,10 @@ const TopMenu = () => {
         {/* Slider menu */}
         <img
           onClick={onClick}
-          className="col-3 col-lg-2"
+          className="col-3 col-md-3 col-lg-2"
           style={sliderMenuStyle}
           src={sliderMenu}
+          alt="drop down menu"
         />
       </div>
       {showOptions ? <Option /> : null}

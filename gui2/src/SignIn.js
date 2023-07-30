@@ -45,7 +45,7 @@ export default function SignIn(props) {
         Sign in with Google
       </button>
       {/* Background Image */}
-      <img style={imgStyle} src={background} />
+      <img style={imgStyle} src={background} alt="background community" />
     </div>
   );
 }
