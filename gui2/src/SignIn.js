@@ -11,7 +11,7 @@ export default function SignIn(props) {
   };
 
   const imgStyle = {
-    background: "none",
+    background: "#CAFFB9",
     position: "absolute",
     bottom: "0",
     left: "0",
@@ -24,8 +24,16 @@ export default function SignIn(props) {
     position: "absolute",
     top: "50%",
   };
+
+  const divStyle = {
+    backgroundColor: "#CAFFB9",
+    width: "100%",
+    height: "100%",
+    position: "absolute",
+  };
+
   return (
-    <div>
+    <div style={divStyle}>
       {/* Greeting Message */}
       <Landing />
       {/* Sign-In Button */}

@@ -5,6 +5,7 @@ export const SignOutButton = ({ user }) => {
     position: "absolute",
     right: "0",
     top: "0",
+    zIndex: "1",
   };
   return (
     <button

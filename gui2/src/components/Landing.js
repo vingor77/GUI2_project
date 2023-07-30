@@ -7,7 +7,7 @@ const Landing = () => {
   return (
     <div className="title row">
       <img className="col-lg-3 col-3 leftImg" src={leftImage} />
-      <h1 className="col-lg-6 col-6">{greeting}</h1>
+      <h1 className="col-lg-6 col-6 greeting ">{greeting}</h1>
       <img className="col-lg-3 col-3 rightImg" src={leftImage} />
     </div>
   );

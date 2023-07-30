@@ -1,11 +1,11 @@
- .title, h1{
+ .title, .greeting{
     text-align: center;
     background-color:black;
     color:white;
     white-space: pre-wrap;
 }
 
-h1{
+.greeting{
     padding:40px;
 }
 
