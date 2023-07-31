@@ -35,7 +35,6 @@ const Navigation = () => {
           className="filterImg col-2 col-lg-2"
           alt="Filter Button"
         />
-
         <img
           onClick={() => onClick("View Events")}
           src={viewEvents}

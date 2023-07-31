@@ -20,6 +20,10 @@ const Map = () => {
         mapContainerStyle={MapStyle}
         options={{
           mapTypeControl: false,
+          fullscreenControlOption: true,
+          fullscreenControlOptions: {
+            position: window.google.maps.ControlPosition.RIGHT_BOTTOM,
+          },
         }}
       ></GoogleMap>
     );

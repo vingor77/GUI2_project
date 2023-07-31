@@ -1,23 +1,56 @@
 import React from "react";
-
+import { getAuth } from "firebase/auth";
+import { useState } from "react";
 export const SignOutButton = ({ user }) => {
   const SignOutButtonStyle = {
     position: "absolute",
     right: "0",
-    top: "0",
+    top: "60px",
     zIndex: "1",
   };
 
+  const avatarStyle = {
+    width: "50px",
+    position: "absolute",
+    zIndex: "1",
+    right: "10px",
+    top: "10px",
+  };
+
+  // Get user's avatar URL
+  const auth = getAuth();
+  const userInfo = auth.currentUser;
+
+  const [signOut, setSignOut] = useState(false);
+  const onClick = () => setSignOut(!signOut);
+  const SignOutButton = () => (
+    <button
+      style={SignOutButtonStyle}
+      className="sign-out"
+      onClick={() => user.auth.signOut()}
+    >
+      Sign Out
+    </button>
+  );
   return (
-    <div style={SignOutButtonStyle}>
-      <button
-        // style={SignOutButtonStyle}
+    <div>
+      {/* Avatar */}
+      <img
+        onClick={onClick}
+        className="rounded-circle"
+        src={userInfo.photoURL}
+        style={avatarStyle}
+      />
+
+      {/* Sign out */}
+      {/* <button
+        style={SignOutButtonStyle}
         className="sign-out"
         onClick={() => user.auth.signOut()}
       >
         Sign Out
-      </button>
-      <img src={user.photoURL} />
+      </button> */}
+      {signOut ? <SignOutButton /> : null}
     </div>
   );
 };

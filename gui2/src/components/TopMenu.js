@@ -3,7 +3,8 @@ import searchIcon from "../images/Search icon.svg";
 import sliderMenu from "../images/SliderMenu.svg";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-const TopMenu = () => {
+import { SignOutButton } from "./SignOutButton";
+const TopMenu = ({ user }) => {
   const topMenuStyle = {
     borderStyle: "solid",
     marginLeft: "0px",
@@ -36,16 +37,16 @@ const TopMenu = () => {
   const [showOptions, setShowOptions] = useState(false);
   const onClick = () => setShowOptions(!showOptions);
   const Option = () => (
-    <div className="row col-lg-3 col-5" style={topMenuStyle}>
-      <Link to="about">
-        <h5 style={optionStyle} className="offset-lg-1 col-lg-5 col-6">
-          About Us
-        </h5>
+    <div className="row col-lg-3 col-7" style={topMenuStyle}>
+      <Link
+        style={optionStyle}
+        to="about"
+        className="offset-lg-1 col-lg-5 col-6"
+      >
+        <h5>About Us</h5>
       </Link>
-      <Link to="help">
-        <h5 style={optionStyle} className="col-lg-5 col-6">
-          Help
-        </h5>
+      <Link style={optionStyle} to="help" className="col-lg-5 col-6">
+        <h5>Help</h5>
       </Link>
     </div>
   );
@@ -79,6 +80,9 @@ const TopMenu = () => {
         />
       </div>
       {showOptions ? <Option /> : null}
+      {/* <div className="offset-lg-5 col-lg-1"> */}
+      <SignOutButton user={user} />
+      {/* </div> */}
     </div>
   );
 };

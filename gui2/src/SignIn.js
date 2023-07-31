@@ -39,7 +39,7 @@ export default function SignIn(props) {
       {/* Sign-In Button */}
       <button
         style={signInButton}
-        className=" offset-lg-5 col-lg-2 offset-5 col-2 sign-in"
+        className=" offset-lg-5 col-lg-2 offset-3 col-6 sign-in"
         onClick={signInWithGoogle}
       >
         Sign in with Google

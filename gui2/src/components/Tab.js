@@ -6,7 +6,7 @@ const Tab = ({ tabTitle, set }) => {
     borderStyle: "solid",
     position: "relative",
     background: "white",
-    marginTop: "5%",
+    marginTop: "7%",
     marginLeft: "5px",
     zIndex: "2",
   };
@@ -15,7 +15,7 @@ const Tab = ({ tabTitle, set }) => {
       <div className="row col-lg-3 col-12" style={tabStyle}>
         <CloseButton setTab={set} />
         <h3 className="col-lg-7 col-9">{tabTitle}</h3>
-        <TabBody />
+        <TabBody tabTitle={tabTitle}/>
       </div>
     </div>
   );
