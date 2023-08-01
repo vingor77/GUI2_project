@@ -24,8 +24,8 @@ const TabBody = ({ tabTitle }) => {
   }
   return (
     <div style={{ borderTop: "solid" }}>
-      {/* <Display tabTitle={tabTitle} /> */}
-      <CreateAlertsTab />
+      <Display tabTitle={tabTitle} />
+      {/* <CreateAlertsTab /> */}
     </div>
   );
 };

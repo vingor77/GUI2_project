@@ -119,7 +119,7 @@ const CreateAlertsTab = () => {
         >
           <Form.Control
             as="textarea"
-            style={{ maxHeight: "300px" }}
+            style={{ maxHeight: "100px" }}
             rows={3}
             placeholder="Enter Description"
           />
