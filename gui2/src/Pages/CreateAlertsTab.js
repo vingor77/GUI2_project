@@ -1,6 +1,18 @@
 import React from 'react'
-
+import {addDoc, collection, doc } from 'firebase/firestore'
+import { db } from "../index"
 const CreateAlertsTab = () => {
+  // const alertCol = collection(db, `Alerts`);
+  // const alertDoc = doc(db, `Alerts/ok`);
+  // const handleCreateAlert = async () => {
+  //   try {
+  //     await addDoc(alertCol, { Type: 'Test' });
+  //     console.log('Document added successfully');
+  //   } catch (error) {
+  //     console.error('Error adding document: ', error);
+  //   }
+  // };
+
   return (
     <div>
         <h6> Select Alert Type</h6>
