@@ -16,7 +16,7 @@ const Navigation = () => {
     background: "#CAFFB9",
   };
 
-  const [showTab, setShowTab] = useState(false);
+  const [showTab, setShowTab] = useState(true);
   const [name, setName] = useState("");
   function onClick(title) {
     setShowTab(true);
