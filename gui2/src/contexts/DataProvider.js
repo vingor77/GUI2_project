@@ -11,7 +11,7 @@ export default function DataProvider({ children, db }) {
     const unsubscribe = onSnapshot(collection(db, "Alerts"), snapshot => {
       const fetchedData = snapshot.docs.map(doc => doc.data());
       setData(fetchedData);
-      console.log(fetchedData);
+      console.log("CALLING DATABASE" + fetchedData);
     });
 
     return () => unsubscribe();

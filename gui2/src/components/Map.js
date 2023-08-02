@@ -1,3 +1,5 @@
+// Map.js
+
 import React, { useEffect, useState, useContext, useRef } from "react";
 import { GoogleMap, useJsApiLoader, Marker, InfoWindow } from "@react-google-maps/api";
 import MapContext from '../contexts/MapContext';
@@ -50,7 +52,7 @@ console.log(Array.isArray(mapData));
           }} }>
         {Array.isArray(mapData) && mapData.map((marker) => {
           console.log("Marker ID: ", marker.id); // This is the console log for marker id
-
+          console.log("Marker lat: ", marker.lat);
           return (
           <Marker
            key={marker.id}
