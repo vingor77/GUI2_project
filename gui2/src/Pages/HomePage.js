@@ -19,6 +19,7 @@ const HomePage = ({ user }) => {
   id: `marker${index}`
   //type: item.Type
 }));
+console.log("user: " +JSON.stringify(user));
 if (JSON.stringify(mapData) !== JSON.stringify(newMarkers)) {
   setMapData(newMarkers);
 }  }, [data, setMapData]); //TODO: make this ID dependent
@@ -26,7 +27,7 @@ if (JSON.stringify(mapData) !== JSON.stringify(newMarkers)) {
     <>
       {/* <SignOutButton user={user} /> */}
       <TopMenu user={user} />
-      <Navigation />
+      <Navigation user={user}/>
       <Map mapData={mapData} setMapData={setMapData}/>
     </>
   );

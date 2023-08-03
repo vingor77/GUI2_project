@@ -10,7 +10,7 @@ import { GeoPoint } from "firebase/firestore";
 import PlaceMap from "../components/PlaceMap"
 import Modal from 'react-modal';
 Modal.setAppElement('#root');
-const CreateAlertsTab = () => {
+const CreateAlertsTab = ({user}) => {
   const [dropDownAlert, setDropDownAlert] = useState("Select Alert");
   const [dropDownReport, setDropDownReport] = useState("Select Report");
   const [title, setTitle] = useState("");

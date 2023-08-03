@@ -7,6 +7,7 @@ import { getFirestore } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 import {firebaseConfig} from "./firebaseConfig";
 import DataProvider from './contexts/DataProvider';
+import BookmarkProvider from './contexts/BookmarkProvider';
 import { MapProvider } from './contexts/MapContext';
 import { getStorage } from "firebase/storage"
 // Initialize Firebase
@@ -21,7 +22,9 @@ root.render(
   <React.StrictMode>
     <DataProvider db={db}>
       <MapProvider>
-        <App auth={auth}/>
+        <BookmarkProvider db={db} auth={auth}>
+          <App auth={auth}/>
+        </BookmarkProvider>
       </MapProvider>
     </DataProvider>
   </React.StrictMode>

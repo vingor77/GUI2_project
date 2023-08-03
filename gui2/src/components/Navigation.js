@@ -7,7 +7,7 @@ import bookmarks from "../images/BookMarks Tab.svg";
 import profile from "../images/Profile Tab.svg";
 import Tab from "./Tab";
 import { useState } from "react";
-const Navigation = () => {
+const Navigation = ({ user }) => {
   const navigationMenuStyle = {
     position: "absolute",
     bottom: "0",
@@ -23,7 +23,7 @@ const Navigation = () => {
     setName(title);
   }
   const Display = ({ displayName, setShowTab }) => (
-    <Tab tabTitle={displayName} set={setShowTab} />
+    <Tab tabTitle={displayName} set={setShowTab} user={user} />
   );
 
   return (

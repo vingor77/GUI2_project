@@ -9,7 +9,10 @@ export default function DataProvider({ children, db }) {
 
   useEffect(() => {
     const unsubscribe = onSnapshot(collection(db, "Alerts"), snapshot => {
-      const fetchedData = snapshot.docs.map(doc => doc.data());
+      const fetchedData = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
       setData(fetchedData);
       console.log("CALLING DATABASE" + fetchedData);
     });

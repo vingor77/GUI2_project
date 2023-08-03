@@ -6,20 +6,20 @@ import ReportsTab from "../Pages/ReportsTab";
 import ProfileTab from "../Pages/ProfileTab";
 import BookmarksTab from "../Pages/BookmarksTab";
 
-const TabBody = ({ tabTitle }) => {
+const TabBody = ({ tabTitle, user }) => {
   // Displays different contents based on the tab
   function Display({ tabTitle }) {
     switch (tabTitle) {
       case "View Events":
-        return <EventsTab />;
+        return <EventsTab user={user}/>;
       case "View Reports":
-        return <ReportsTab />;
+        return <ReportsTab user={user}/>;
       case "Create Alert":
-        return <CreateAlertsTab />;
+        return <CreateAlertsTab user={user}/>;
       case "Bookmarks":
-        return <BookmarksTab />;
+        return <BookmarksTab user={user}/>;
       case "Profile":
-        return <ProfileTab />;
+        return <ProfileTab user={user}/>;
     }
   }
   return (

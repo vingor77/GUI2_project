@@ -1,14 +1,21 @@
 import React, { useEffect, useState, useContext } from "react";
 import DataContext from "../contexts/DataContext";
+import BookmarkContext from "../contexts/BookmarkContext";
 import MapContext from "../contexts/MapContext";
 import { getDownloadURL, ref } from 'firebase/storage';
 import { storage } from '../index'; 
+import { updateDoc, setDoc, doc, arrayUnion, arrayRemove } from "firebase/firestore";
+import { db } from "../index";
+import OuterTab from "../components/OuterTab";
+import ReactDOM from 'react-dom';
 
 const EventsPage = ({ user }) => {
   const data = useContext(DataContext);
+  const bookdata = useContext(BookmarkContext);
   const [filteredData, setFilteredData] = useState([]);
   const [imageURLs, setImageURLs] = useState({});
-
+ // const [divClicked, setDivClicked] = useState(false);
+ const [activeItem, setActiveItem] = useState(null);
   const { mapData, setMapData } = useContext(MapContext);
   useEffect(() => {
     const type = data.filter((alert) => alert.AlertType === "Event");
@@ -52,8 +59,24 @@ const EventsPage = ({ user }) => {
 
     getImageURLs();
 }, [data]); 
-
-
+const handleDivClick = (item) => {
+  console.log("clicked");
+ // setDivClicked(true);
+ setActiveItem(item);
+}
+const handleBookmark = async (event, item) => {
+  event.stopPropagation();
+  let userId = "ERROR";
+    if (user && user.auth && user.auth.currentUser) {
+      userId = user.auth.currentUser.uid;
+  } else {
+    console.log(JSON.stringify(user));
+  }
+  const docRef = doc(db, "Bookmarks", `${userId}`);
+    await setDoc(docRef, {
+      Bookmarks: arrayUnion({ id: item.id, Title: item.Title }),
+    }, { merge: true });
+  }
   return (
     <div style={{ maxHeight: "400px", overflow: "scroll" }}>
       {filteredData.map((
@@ -68,7 +91,8 @@ const EventsPage = ({ user }) => {
             padding: "10px",
             borderRadius: "5px",
           }}
-        >
+          onClick={() => handleDivClick(item)}
+          >
           <h2>{item.Title}</h2>
           {item.Image && (<img
             src={imageURLs[item.Image]}
@@ -98,12 +122,20 @@ const EventsPage = ({ user }) => {
           <p>
             <strong>Author ID:</strong> {item.AuthorID}
           </p>
+          <button onClick={(event) => handleBookmark(event, item)}>Bookmark</button>
         </div>
-      ))}
-      {/* <MapDataContext.Provider value={[
-        { lat: 48.8584, lng: 2.2945, id: 'marker1', type: "1Pothole" },
-        { lat: 48.8500, lng: 2.3000, id: 'marker2', type: "2Pothole" }
-      ]} /> */}
+      )
+    )
+  }
+  {activeItem && ReactDOM.createPortal(
+   <OuterTab 
+    tabTitle="Details" 
+    set={setActiveItem} 
+    user={user} 
+    item={activeItem}
+    />,
+   document.body
+   )}
     </div>
   );
 };
