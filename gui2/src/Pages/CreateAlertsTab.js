@@ -50,14 +50,20 @@ const CreateAlertsTab = () => {
   }
 
   const handleMapData = (data) => {
-    // Handle placer data here
-    //console.log(data);
-   // let firstLocation = data.results[0].geometry.location;
-   setLatitude(data.lat);
-   setLongitude(data.lng)
-   console.log(data);
+    if (!data || !data.lat || !data.lng) {
+      // if this code executes from lack of point selection, it will default to 1, 1
+      data = {
+        lat: 1,
+        lng: 1
+    };
+    }
+    setLatitude(data.lat);
+    setLongitude(data.lng)
+    console.log(data);
     closeModal();
   }
+
+  
   //let loc;
   //useEffect(() => {
     //console.log(data);
