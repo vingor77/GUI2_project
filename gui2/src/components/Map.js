@@ -1,22 +1,27 @@
 // Map.js
 
 import React, { useEffect, useState, useContext, useRef } from "react";
-import { GoogleMap, useJsApiLoader, Marker, InfoWindow } from "@react-google-maps/api";
-import MapContext from '../contexts/MapContext';
+import {
+  GoogleMap,
+  useJsApiLoader,
+  Marker,
+  InfoWindow,
+} from "@react-google-maps/api";
+import MapContext from "../contexts/MapContext";
 
 const Map = () => {
-  const { mapData, setMapData }= useContext(MapContext);
+  const { mapData, setMapData } = useContext(MapContext);
   // let markers = props.markers;
   // if (!markers) {
   //   markers = [
   //     { lat: 48.8584, lng: 2.2945, id: 'marker1', type: "Pothole" },
   //     { lat: 48.8500, lng: 2.3000, id: 'marker2' },
-       
+
   //   ];
   // }
   //const { mapData } = getContext(MapDataContext);
   console.log("MARKERS GOTTEN: ", mapData);
-console.log(Array.isArray(mapData));
+  console.log(Array.isArray(mapData));
   const [selectedLocation, setSelectedLocation] = useState(null);
 
   const { isLoaded } = useJsApiLoader({
@@ -35,7 +40,7 @@ console.log(Array.isArray(mapData));
     position: "absolute",
     top: "0px",
     left: "0px",
-    zIndex: "0",
+    zIndex: "-1",
   };
 
   return (
@@ -49,31 +54,38 @@ console.log(Array.isArray(mapData));
           fullscreenControlOption: true,
           fullscreenControlOptions: {
             position: window.google.maps.ControlPosition.RIGHT_BOTTOM,
-          }} }>
-        {Array.isArray(mapData) && mapData.map((marker) => {
-          console.log("Marker ID: ", marker.id); // This is the console log for marker id
-          console.log("Marker lat: ", marker.lat);
-          return (
-          <Marker
-           key={marker.id}
-            position={{ lat: marker.lat, lng: marker.lng }}
-            onClick={() => {
-              setSelectedLocation(marker);
-            }}
-          />);
+          },
+        }}
+      >
+        {Array.isArray(mapData) &&
+          mapData.map((marker) => {
+            console.log("Marker ID: ", marker.id); // This is the console log for marker id
+            console.log("Marker lat: ", marker.lat);
+            return (
+              <Marker
+                key={marker.id}
+                position={{ lat: marker.lat, lng: marker.lng }}
+                onClick={() => {
+                  setSelectedLocation(marker);
+                }}
+              />
+            );
           })}
         {selectedLocation && (
-        <InfoWindow
-          position={{ lat: selectedLocation.lat, lng: selectedLocation.lng }}
-          onCloseClick={() => {
-            setSelectedLocation(null);
-          }}
-        >
-          <div>
-            <p>Marker Location: {selectedLocation.lat}, {selectedLocation.lng}, <br></br>Type: {selectedLocation.type}</p>
-          </div>
-        </InfoWindow>
-      )}
+          <InfoWindow
+            position={{ lat: selectedLocation.lat, lng: selectedLocation.lng }}
+            onCloseClick={() => {
+              setSelectedLocation(null);
+            }}
+          >
+            <div>
+              <p>
+                Marker Location: {selectedLocation.lat}, {selectedLocation.lng},{" "}
+                <br></br>Type: {selectedLocation.type}
+              </p>
+            </div>
+          </InfoWindow>
+        )}
       </GoogleMap>
     </div>
   );

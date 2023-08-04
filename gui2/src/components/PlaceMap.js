@@ -49,14 +49,14 @@ const PlaceMap = ({ onClose }) => {
     });
     let firstLocation = results[0].geometry.location;
 
-console.log(firstLocation);
+    console.log(firstLocation);
 
-let lat = firstLocation.lat();
-let lng = firstLocation.lng();
+    let lat = firstLocation.lat();
+    let lng = firstLocation.lng();
 
-console.log(lat);  // prints the latitude
-console.log(lng);  // prints the longitude
-setData({lat, lng});
+    console.log(lat); // prints the latitude
+    console.log(lng); // prints the longitude
+    setData({ lat, lng });
   };
 
   const handleClose = () => {
@@ -101,4 +101,3 @@ setData({lat, lng});
 };
 
 export default PlaceMap;
-

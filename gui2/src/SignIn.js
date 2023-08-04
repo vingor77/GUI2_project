@@ -1,5 +1,10 @@
 import React from "react";
-import { signInWithRedirect, GoogleAuthProvider, getAuth, signInAnonymously  } from "firebase/auth";
+import {
+  signInWithRedirect,
+  GoogleAuthProvider,
+  getAuth,
+  signInAnonymously,
+} from "firebase/auth";
 
 import Landing from "./components/Landing";
 import "./style/App.css";
@@ -20,7 +25,7 @@ export default function SignIn(props) {
         const errorMessage = error.message;
         // ...
       });
-    };
+  };
   const imgStyle = {
     background: "#CAFFB9",
     position: "absolute",
@@ -28,6 +33,8 @@ export default function SignIn(props) {
     left: "0",
     maxWidth: "100%",
     height: "auto",
+    objectFit: "contain",
+    width: "100%",
   };
 
   const signInButtonGoogle = {
@@ -35,7 +42,7 @@ export default function SignIn(props) {
     position: "absolute",
     top: "45%", // adjusted from 50%
   };
-  
+
   const signInButtonAnon = {
     textAlign: "center",
     position: "absolute",
@@ -46,7 +53,7 @@ export default function SignIn(props) {
     backgroundColor: "#CAFFB9",
     width: "100%",
     height: "100%",
-    position: "absolute",
+    position: "fixed",
   };
 
   return (

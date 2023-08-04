@@ -10,26 +10,26 @@ const TopMenu = ({ user }) => {
     marginLeft: "0px",
     marginTop: "10px",
     paddingBottom: "10px",
-    background: "#D9D9D9",
+    background: "#D0F5FF",
     zIndex: "1",
   };
   const searchIconStyle = {
     paddingTop: "10px",
-    background: "#D9D9D9",
+    background: "#D0F5FF",
   };
   const searchBoxStyle = {
     borderStyle: "none",
-    background: "#D9D9D9",
+    background: "#D0F5FF",
     paddingTop: "10px",
     outline: "none",
   };
   const sliderMenuStyle = {
-    background: "#D9D9D9",
+    background: "#D0F5FF",
     paddingTop: "10px",
   };
   const optionStyle = {
     paddingTop: "10px",
-    background: "#D9D9D9",
+    background: "#D0F5FF",
     textAlign: "center",
   };
 

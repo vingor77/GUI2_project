@@ -20,17 +20,19 @@ export const SignOutButton = ({ user }) => {
   // Get user's avatar URL
   const auth = getAuth();
   const userInfo = auth.currentUser;
-  
+
   if (userInfo && userInfo.isAnonymous) {
     updateProfile(userInfo, {
-      photoURL: "/anony.jpg"
-    }).then(() => {
-      // Profile updated!
-      // ...
-    }).catch((error) => {
-      // An error occurred
-      // ...
-    });
+      photoURL: "/anony.jpg",
+    })
+      .then(() => {
+        // Profile updated!
+        // ...
+      })
+      .catch((error) => {
+        // An error occurred
+        // ...
+      });
   }
   const [signOut, setSignOut] = useState(false);
   const onClick = () => setSignOut(!signOut);
