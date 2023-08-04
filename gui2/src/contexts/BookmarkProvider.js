@@ -18,7 +18,7 @@ export default function BookmarkProvider({ children, db, auth }) {
 
   useEffect(() => {
     const unsubscribe = onSnapshot(doc(db, 'Bookmarks', `${userId}`), snapshot => {
-        console.log("UID: " + userId);
+      console.log("UID: " + userId);
       const fetchedData = snapshot.data();
       setData(fetchedData);
       console.log("CALLING BOOKMARK DATABASE" + fetchedData);
