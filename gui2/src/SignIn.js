@@ -26,7 +26,7 @@ export default function SignIn(props) {
     position: "absolute",
     bottom: "0",
     left: "0",
-    maxWidth: "100%",
+    width: "100%",
     height: "auto",
     objectFit: "contain",
     width: "100%",

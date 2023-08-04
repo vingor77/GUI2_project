@@ -1,11 +1,12 @@
 // Map.js
 
-import React, { useEffect, useState, useContext, useRef } from "react";
+import React, { useEffect, useState, useContext, useRef, useMemo } from "react";
 import { GoogleMap, useJsApiLoader, Marker, InfoWindow } from "@react-google-maps/api";
 import MapContext from '../contexts/MapContext';
 
 const Map = () => {
   const { mapData, setMapData }= useContext(MapContext);
+  const center = useMemo(() => ({ lat: 42.6334, lng: -71.3162 }), [])
   // let markers = props.markers;
   // if (!markers) {
   //   markers = [
@@ -16,7 +17,7 @@ const Map = () => {
   // }
   //const { mapData } = getContext(MapDataContext);
   console.log("MARKERS GOTTEN: ", mapData);
-console.log(Array.isArray(mapData));
+  console.log(Array.isArray(mapData));
   const [selectedLocation, setSelectedLocation] = useState(null);
 
   const { isLoaded } = useJsApiLoader({
@@ -42,7 +43,7 @@ console.log(Array.isArray(mapData));
     <div style={backgroundMap}>
       <GoogleMap
         zoom={15}
-        center={{ lat: 48.8584, lng: 2.2945 }}
+        center={center}
         mapContainerStyle={MapStyle}
         options={{
           mapTypeControl: false,

@@ -6,7 +6,7 @@ import { storage } from '../index';
 const BookmarksPage = ({ user }) => {
   const bookdata = useContext(BookmarkContext);
   if (!bookdata) {
-    return <div>Loading...</div>
+    return <div>No bookmarks</div>
   }
   const viewBookmark = (id) => {
     console.log(id);

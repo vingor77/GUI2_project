@@ -4,6 +4,7 @@ import leftImage from "../images/leftImage.svg";
 
 const Landing = () => {
   const greeting = "Welcome To \n CommunityAlert!";
+  const terms = "CommunityAlert is a platform that was designed with the intention to promote safety and unity within local communities.\n";
 
   return (
     <div className="title row">
@@ -12,7 +13,10 @@ const Landing = () => {
         src={leftImage}
         alt="greeting background"
       />
-       <h1 className="col-lg-6 col-12 greeting">{greeting}</h1>
+      <div className="col-lg-6 col-12 greeting">
+        <h1>{greeting}</h1>
+        <p>{terms}</p>
+      </div>
       <img
         className="col-lg-3  d-none d-lg-block d-xl-block"
         src={leftImage}
