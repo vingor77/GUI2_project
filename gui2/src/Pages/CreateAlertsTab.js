@@ -60,7 +60,6 @@ const CreateAlertsTab = () => {
     console.log(data);
     closeModal();
   };
-
   //let loc;
   //useEffect(() => {
   //console.log(data);
