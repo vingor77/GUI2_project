@@ -1,16 +1,22 @@
 import React, { useEffect, useState, useContext } from "react";
 import DataContext from "../contexts/DataContext";
+import BookmarkContext from "../contexts/BookmarkContext";
 import MapContext from "../contexts/MapContext";
 import { getDownloadURL, ref } from 'firebase/storage';
 import { storage } from '../index'; 
+import { updateDoc, setDoc, doc, arrayUnion, arrayRemove } from "firebase/firestore";
+import { db } from "../index";
+import OuterTab from "../components/OuterTab";
+import ReactDOM from 'react-dom';
 
 const ReportsPage = ({ user }) => {
   const data = useContext(DataContext);
+  const bookdata = useContext(BookmarkContext);
   const [filteredData, setFilteredData] = useState([]);
   const [imageURLs, setImageURLs] = useState({});
   const [showDetails, setShowDetails] = useState(false);
   const [details, setDetails] = useState(0);
-
+ // const [divClicked, setDivClicked] = useState(false);
   const { mapData, setMapData } = useContext(MapContext);
   useEffect(() => {
     const type = data.filter((alert) => alert.AlertType === "Report");
@@ -53,7 +59,21 @@ const ReportsPage = ({ user }) => {
     };
 
     getImageURLs();
-  }, [data]); 
+}, [data]); 
+
+const handleBookmark = async (event, item) => {
+  event.stopPropagation();
+  let userId = "ERROR";
+    if (user && user.auth && user.auth.currentUser) {
+      userId = user.auth.currentUser.uid;
+  } else {
+    console.log(JSON.stringify(user));
+  }
+  const docRef = doc(db, "Bookmarks", `${userId}`);
+    await setDoc(docRef, {
+      Bookmarks: arrayUnion({ id: item.id, Title: item.Title }),
+    }, { merge: true });
+  }
 
   const showReportDetails = (index) => {
     if(index === details) {
@@ -125,6 +145,7 @@ const ReportsPage = ({ user }) => {
             }
           }
         />)}
+        <button onClick={(event) => handleBookmark(event, filteredData[details])}>Bookmark</button>
       </div>
       </>
     );
