@@ -24,9 +24,9 @@ export default function MainPage(props) {
 
   return (
     props.auth.currentUser && (
-      <>
+      <div>
         <RouterProvider router={router} />
-      </>
+      </div>
     )
   );
 }

@@ -2,14 +2,14 @@
 import React, { useState, useEffect } from "react";
 import { collection, setDoc, doc } from "firebase/firestore";
 import { db, storage } from "../index";
-import { ref, uploadBytes } from 'firebase/storage';
+import { ref, uploadBytes } from "firebase/storage";
 import Dropdown from "react-bootstrap/Dropdown";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import { GeoPoint } from "firebase/firestore"; 
 import PlaceMap from "../components/PlaceMap"
-import Modal from 'react-modal';
-Modal.setAppElement('#root');
+import Modal from "react-modal";
+Modal.setAppElement("#root");
 const CreateAlertsTab = ({user}) => {
   const [dropDownAlert, setDropDownAlert] = useState("Select Alert");
   const [dropDownReport, setDropDownReport] = useState("Select Report");
@@ -31,7 +31,7 @@ const CreateAlertsTab = ({user}) => {
   function onClickReport(name) {
     setDropDownReport(name);
   }
-  const handleFileChange = e => {
+  const handleFileChange = (e) => {
     if (e.target.files[0]) {
       setFile(e.target.files[0]);
     }
@@ -43,25 +43,25 @@ const CreateAlertsTab = ({user}) => {
   
   const openModal = () => {
     setModalIsOpen(true);
-  }
+  };
 
   const closeModal = () => {
     setModalIsOpen(false);
-  }
+  };
 
   const handleMapData = (data) => {
     if (!data || !data.lat || !data.lng) {
       // if this code executes from lack of point selection, it will default to 1, 1
       data = {
         lat: 1,
-        lng: 1
-    };
+        lng: 1,
+      };
     }
     setLatitude(data.lat);
-    setLongitude(data.lng)
+    setLongitude(data.lng);
     console.log(data);
     closeModal();
-  }
+  };
 
   
   //let loc;
@@ -73,34 +73,32 @@ const CreateAlertsTab = ({user}) => {
   //}, [latitude, longitude]);
   const customStyles = {
     content: {
-      top: '50%',
-      left: '60%',
-      right: 'auto',
-      bottom: 'auto',
-      marginRight: '-50%',
-      transform: 'translate(-50%, -50%)',
-      width: '60%',  // Set here the width you want
-      height: '80%'  // And here the height
-    
-  },    closeButton: {
-    position: 'absolute',
-    top: '10px',
-    right: '10px',
-    background: '#ff0000',
-    color: 'white',
-    fontSize: '1.2em',
-    border: 'none'
-  }};
-
-
-
+      top: "50%",
+      left: "60%",
+      right: "auto",
+      bottom: "auto",
+      marginRight: "-50%",
+      transform: "translate(-50%, -50%)",
+      width: "60%", // Set here the width you want
+      height: "80%", // And here the height
+    },
+    closeButton: {
+      position: "absolute",
+      top: "10px",
+      right: "10px",
+      background: "#ff0000",
+      color: "white",
+      fontSize: "1.2em",
+      border: "none",
+    },
+  };
 
   const inputStyle = {
     marginTop: "10px",
   };
   const handleCreateAlert = async (e) => {
     //e.preventDefault(); // Prevent the form from reloading the page
-    if (!title || !location || !description || dropDownAlert === "Select Alert" || (dropDownAlert === "Report" && dropDownReport === "Select Report")) {
+    if (!title || !description || dropDownAlert === "Select Alert" || (dropDownAlert === "Report" && dropDownReport === "Select Report")) {
       alert("Please fill out all required fields before submitting.");
       return;
     }
@@ -110,9 +108,9 @@ const CreateAlertsTab = ({user}) => {
     try {
       const storageRef = ref(storage, `images/${file.name}_${timestamp}`);
       await uploadBytes(storageRef, file);
-      console.log('Uploaded a blob or file!');
+      console.log("Uploaded a blob or file!");
     } catch (error) {
-      console.error('Error uploading file: ', error);
+      console.error("Error uploading file: ", error);
       // Handle any additional error response here, if needed
     }
     const docRef = doc(collection(db, "Alerts"));
@@ -126,12 +124,14 @@ const CreateAlertsTab = ({user}) => {
     
     // Call the function and store the result
     //const processedLocation = processLocation(location);
+    let tOrF = false;
     await setDoc(docRef, {
       Title: title,
       Location: loc,
       Description: description,
       ReportType: dropDownReport,
       AlertType: dropDownAlert,
+      Archived: `${tOrF}`,
       Image: file ? `images/${file.name}_${timestamp}` : 'No image',
       //AuthorID: user.uid, // Assuming `user` contains the current user's data
       Time: new Date() // Current time

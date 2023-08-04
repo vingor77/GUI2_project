@@ -2,7 +2,16 @@ import React from 'react';
 
 const HelpPage = () => {
   return (
-    <div className="help-page">
+    <div
+      style={{
+        background: "#DFF8D5",
+        width: "100%",
+        height: "100vh",
+        overflow: "scroll",
+        position: "relative",
+      }}
+      className="help-page"
+    >
       <h1>Help & FAQ</h1>
 
       <h2>How to Use CommunityAlert</h2>

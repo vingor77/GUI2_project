@@ -28,6 +28,8 @@ export default function SignIn(props) {
     left: "0",
     maxWidth: "100%",
     height: "auto",
+    objectFit: "contain",
+    width: "100%",
   };
 
   const signInButtonGoogle = {
@@ -46,7 +48,7 @@ export default function SignIn(props) {
     backgroundColor: "#CAFFB9",
     width: "100%",
     height: "100%",
-    position: "absolute",
+    position: "fixed",
   };
 
   return (

@@ -35,7 +35,7 @@ console.log(Array.isArray(mapData));
     position: "absolute",
     top: "0px",
     left: "0px",
-    zIndex: "0",
+    zIndex: "-1",
   };
 
   return (
@@ -63,14 +63,17 @@ console.log(Array.isArray(mapData));
           />);
           })}
         {selectedLocation && (
-        <InfoWindow
+          <InfoWindow
           position={{ lat: selectedLocation.lat, lng: selectedLocation.lng }}
           onCloseClick={() => {
             setSelectedLocation(null);
           }}
         >
           <div>
-            <p>Marker Location: {selectedLocation.lat}, {selectedLocation.lng}, <br></br>Type: {selectedLocation.type}</p>
+            <p>
+              Marker Location: {selectedLocation.lat}, {selectedLocation.lng},{" "}
+              <br></br>Type: {selectedLocation.type}
+            </p>
           </div>
         </InfoWindow>
       )}
