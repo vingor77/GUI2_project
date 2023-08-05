@@ -35,6 +35,12 @@ const TopMenu = ({ user }) => {
 
   // Display about us and help option
   const [showOptions, setShowOptions] = useState(false);
+  const [locationInput, setLocationInput] = useState("");
+
+  const moveMap = () => {
+    alert(locationInput);
+  }
+
   const onClick = () => setShowOptions(!showOptions);
   const Option = () => (
     <div className="row col-lg-3 col-7" style={topMenuStyle}>
@@ -60,6 +66,7 @@ const TopMenu = ({ user }) => {
           className=" col-3 col-md-3 col-lg-2"
           src={searchIcon}
           alt="search icon"
+          onClick={moveMap}
         />
 
         {/* Temp searchbox, might be using javascript api */}
@@ -68,6 +75,8 @@ const TopMenu = ({ user }) => {
           className="col-5 col-md-5 col-lg-7"
           type="text"
           placeholder="Search"
+          value={locationInput}
+          onChange={e => setLocationInput(e.target.value)}
         />
 
         {/* Slider menu */}
