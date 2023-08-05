@@ -9,7 +9,7 @@ const Tab = ({ tabTitle, set, user }) => {
     marginTop: "7%",
     marginLeft: "5px",
     // width: "100%",
-    //zIndex: "1",
+    zIndex: "2",
   };
   return (
     <div style={{ position: "relative" }}>

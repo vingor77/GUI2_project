@@ -36,7 +36,7 @@ const Map = () => {
     position: "absolute",
     top: "0px",
     left: "0px",
-    zIndex: "-1",
+    zIndex: "0",
   };
 
   return (
