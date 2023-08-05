@@ -11,21 +11,29 @@ const TabBody = ({ tabTitle, user }) => {
   function Display({ tabTitle }) {
     switch (tabTitle) {
       case "View Events":
-        return <EventsTab user={user}/>;
+        return <EventsTab user={user} />;
       case "View Reports":
-        return <ReportsTab user={user}/>;
+        return <ReportsTab user={user} />;
       case "Create Alert":
-        return <CreateAlertsTab user={user}/>;
+        return <CreateAlertsTab user={user} />;
       case "Bookmarks":
-        return <BookmarksTab user={user}/>;
+        return <BookmarksTab user={user} />;
       case "Profile":
-        return <ProfileTab user={user}/>;
+        return <ProfileTab user={user} />;
       case "Filter":
-        return <FilterTab user={user}/>;
+        return <FilterTab user={user} />;
     }
   }
   return (
-    <div style={{ borderTop: "solid" }}>
+    <div
+      style={{
+        borderTop: "solid",
+        position: "relative",
+        height: "400px",
+        overflow: "scroll",
+        maxHeight: "400px",
+      }}
+    >
       <Display tabTitle={tabTitle} />
       {/* <CreateAlertsTab /> */}
     </div>
