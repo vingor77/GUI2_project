@@ -8,7 +8,7 @@ import { updateDoc, setDoc, doc, arrayUnion, arrayRemove } from "firebase/firest
 import { db } from "../index";
 import OuterTab from "../components/OuterTab";
 import ReactDOM from 'react-dom';
-
+import '../style/Button.css';
 const ReportsPage = ({ user }) => {
   const data = useContext(DataContext);
   const bookdata = useContext(BookmarkContext);
@@ -76,6 +76,31 @@ const handleBookmark = async (event, item) => {
       Bookmarks: arrayUnion({ id: item.id, Title: item.Title }),
     }, { merge: true });
   }
+  const handleUnBookmark = async (event, item) => {
+    event.stopPropagation();
+    let userId = "ERROR";
+      if (user && user.auth && user.auth.currentUser) {
+        userId = user.auth.currentUser.uid;
+    } else {
+      console.log(JSON.stringify(user));
+    }
+    const docRef = doc(db, "Bookmarks", `${userId}`);
+      await updateDoc(docRef, {
+        Bookmarks: arrayRemove({ id: item.id, Title: item.Title }),
+      });
+    }
+  const handleResolve = async (event, item) => {
+    const docRef = doc(db, "Alerts", `${item.id}`);
+      await updateDoc(docRef, {
+        "Archived" : true,
+      })
+    }
+    const handleUnResolve = async (event, item) => {
+      const docRef = doc(db, "Alerts", `${item.id}`);
+        await updateDoc(docRef, {
+          "Archived" : false,
+        })
+      }
 //   const returnAddressOrCoords = async (geo) => {
 //     if(!geo || !geo.latitude || !geo.longitude) {
 //       return "Secret location";
@@ -132,9 +157,11 @@ const handleBookmark = async (event, item) => {
               border: "1px solid #ddd",
               padding: "10px",
               borderRadius: "5px",
+              backgroundColor: item.Archived ? "rgba(255, 0, 0, 0.4)" : "white"
             }}
             onClick={() => showReportDetails(index)}
           >
+            <strong> {item.Archived ? "MARKED FOR DELETION" : ""}</strong>
             <h2>{item.Title}</h2>
             {/* <p>
               <strong>Alert Type:</strong> {item.AlertType}
@@ -158,7 +185,9 @@ const handleBookmark = async (event, item) => {
               border: "1px solid #ddd",
               padding: "10px",
               borderRadius: "5px",
+              backgroundColor: filteredData[details].Archived ? "rgba(255, 0, 0, 0.4)" : "white"
             }}>
+              <strong> {filteredData[details].Archived ? "MARKED FOR DELETION" : ""}</strong>
               <h2>{filteredData[details].Title}</h2>
 
                       {filteredData[details].Image && (<img
@@ -180,8 +209,10 @@ const handleBookmark = async (event, item) => {
         <p>
           <strong>Description:</strong> {filteredData[details].Description}
         </p>
-
-        <button onClick={(event) => handleBookmark(event, filteredData[details])}>Bookmark</button>
+        <button className="button" style={{padding: "5px", margin: "2px"}} onClick={(event) => handleUnBookmark(event, filteredData[details])}>Unbookmark</button>
+        <button className="button" style={{padding: "5px", margin: "2px"}} onClick={(event) => handleBookmark(event, filteredData[details])}>Bookmark</button>
+        <button className="button" style={{padding: "5px", margin: "2px"}} onClick={(event) => handleResolve(event, filteredData[details])}>Mark as Resolved</button>
+        <button className="button" style={{padding: "5px", margin: "2px"}} onClick={(event) => handleUnResolve(event, filteredData[details])}>Mark as Unresolved</button>
       </div>
       </>
     );
@@ -201,9 +232,11 @@ const handleBookmark = async (event, item) => {
               border: "1px solid #ddd",
               padding: "10px",
               borderRadius: "5px",
+              backgroundColor: item.Archived ? "rgba(255, 0, 0, 0.4)" : "white"
             }}
             onClick={() => showReportDetails(index)}
           >
+            <strong> {item.Archived ? "MARKED FOR DELETION" : ""}</strong>
             <h2>{item.Title}</h2>
             <p>
               <strong>Alert Type:</strong> {item.AlertType}
