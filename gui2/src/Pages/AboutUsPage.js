@@ -3,7 +3,15 @@ import UMLImage from "../images/UML.svg";
 import { Link } from "react-router-dom";
 const AboutUs = () => {
   return (
-    <div style={{ background: "#DFF8D5" }} className="container py-5">
+    <div
+      style={{
+        background: "#DFF8D5",
+        width: "100%",
+        height: "100vh",
+        postion: "relative",
+      }}
+      // className="container py-5"
+    >
       {/* Button to go back to the homepage */}
       <Link to="/">
         <button> Go Back</button>

@@ -2,13 +2,19 @@ import React, { useEffect, useState, useContext } from "react";
 import DataContext from "../contexts/DataContext";
 import BookmarkContext from "../contexts/BookmarkContext";
 import MapContext from "../contexts/MapContext";
-import { getDownloadURL, ref } from 'firebase/storage';
-import { storage } from '../index'; 
-import { updateDoc, setDoc, doc, arrayUnion, arrayRemove } from "firebase/firestore";
+import { getDownloadURL, ref } from "firebase/storage";
+import { storage } from "../index";
+import {
+  updateDoc,
+  setDoc,
+  doc,
+  arrayUnion,
+  arrayRemove,
+} from "firebase/firestore";
 import { db } from "../index";
 import OuterTab from "../components/OuterTab";
-import ReactDOM from 'react-dom';
-import '../style/Button.css';
+import ReactDOM from "react-dom";
+import "../style/Button.css";
 
 const EventsPage = ({ user }) => {
   const data = useContext(DataContext);
@@ -17,7 +23,7 @@ const EventsPage = ({ user }) => {
   const [imageURLs, setImageURLs] = useState({});
   const [showDetails, setShowDetails] = useState(false);
   const [details, setDetails] = useState(0);
- // const [divClicked, setDivClicked] = useState(false);
+  // const [divClicked, setDivClicked] = useState(false);
   const { mapData, setMapData } = useContext(MapContext);
   useEffect(() => {
     const type = data.filter((alert) => alert.AlertType === "Event");
@@ -30,7 +36,7 @@ const EventsPage = ({ user }) => {
           item.Location.latitude &&
           item.Location.longitude &&
           item.AlertType &&
-          item.Title,
+          item.Title
       )
       .map((item, index) => ({
         lat: item.Location.latitude,
@@ -44,212 +50,257 @@ const EventsPage = ({ user }) => {
     console.log("NM: " + JSON.stringify(newMarkers));
 
     if (JSON.stringify(mapData) !== JSON.stringify(newMarkers)) {
-        console.log("CC");
-        setMapData(newMarkers);
+      console.log("CC");
+      setMapData(newMarkers);
     }
 
     const getImageURLs = async () => {
-        const urls = {};
+      const urls = {};
 
-        for (let item of type) {
-          if (item.Image && item.Image !== "No image") {
-            const url = await getDownloadURL(ref(storage, item.Image));
-            urls[item.Image] = url;
-          }
+      for (let item of type) {
+        if (item.Image && item.Image !== "No image") {
+          const url = await getDownloadURL(ref(storage, item.Image));
+          urls[item.Image] = url;
         }
+      }
 
-        setImageURLs(urls);
+      setImageURLs(urls);
     };
 
     getImageURLs();
-}, [data]); 
+  }, [data]);
 
-const handleBookmark = async (event, item) => {
-  event.stopPropagation();
-  let userId = "ERROR";
+  const handleBookmark = async (event, item) => {
+    event.stopPropagation();
+    let userId = "ERROR";
     if (user && user.auth && user.auth.currentUser) {
       userId = user.auth.currentUser.uid;
-  } else {
-    console.log(JSON.stringify(user));
-  }
-  
-  const docRef = doc(db, "Bookmarks", `${userId}`);
-    await setDoc(docRef, {
-      Bookmarks: arrayUnion({ id: item.id, Title: item.Title }),
-    }, { merge: true });
-  }
+    } else {
+      console.log(JSON.stringify(user));
+    }
 
+    const docRef = doc(db, "Bookmarks", `${userId}`);
+    await setDoc(
+      docRef,
+      {
+        Bookmarks: arrayUnion({ id: item.id, Title: item.Title }),
+      },
+      { merge: true }
+    );
+  };
 
   const handleUnBookmark = async (event, item) => {
     event.stopPropagation();
     let userId = "ERROR";
-      if (user && user.auth && user.auth.currentUser) {
-        userId = user.auth.currentUser.uid;
+    if (user && user.auth && user.auth.currentUser) {
+      userId = user.auth.currentUser.uid;
     } else {
       console.log(JSON.stringify(user));
     }
     const docRef = doc(db, "Bookmarks", `${userId}`);
-      await updateDoc(docRef, {
-        Bookmarks: arrayRemove({ id: item.id, Title: item.Title }),
-      });
-    }
+    await updateDoc(docRef, {
+      Bookmarks: arrayRemove({ id: item.id, Title: item.Title }),
+    });
+  };
 
   const handleResolve = async (event, item) => {
     const docRef = doc(db, "Alerts", `${item.id}`);
-      await updateDoc(docRef, {
-        "Archived" : true,
-      })
-    }
-    const handleUnResolve = async (event, item) => {
-      const docRef = doc(db, "Alerts", `${item.id}`);
-        await updateDoc(docRef, {
-          "Archived" : false,
-        })
-      }
-//   const returnAddressOrCoords = async (geo) => {
-//     if(!geo || !geo.latitude || !geo.longitude) {
-//       return "Secret location";
-//     }
-//     try {
-//       const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${geo.latitude},${geo.longitude}&key=AIzaSyDE0Qmrx_Qn5Nx04wvENvJ_riRGll6-tx0`);
-//       const data = await response.json();
-  
-//       // check if full address is available
-//       let fullAddress = null;
-//       if (data.results && data.results[0] && data.results[0].formatted_address) {
-//         fullAddress = data.results[0].formatted_address;
-//       }
-//       if (fullAddress) {
-//         return fullAddress;
-//       } else {
-//           // if no locality, default to coordinates
-//           return `Lat: ${geo.latitude}, Lng: ${geo.longitude}`;
-//       }
-//     } catch (error) {
-//       return "Secret location";
-//     }
+    await updateDoc(docRef, {
+      Archived: true,
+    });
+  };
+  const handleUnResolve = async (event, item) => {
+    const docRef = doc(db, "Alerts", `${item.id}`);
+    await updateDoc(docRef, {
+      Archived: false,
+    });
+  };
+  //   const returnAddressOrCoords = async (geo) => {
+  //     if(!geo || !geo.latitude || !geo.longitude) {
+  //       return "Secret location";
+  //     }
+  //     try {
+  //       const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${geo.latitude},${geo.longitude}&key=AIzaSyDE0Qmrx_Qn5Nx04wvENvJ_riRGll6-tx0`);
+  //       const data = await response.json();
+
+  //       // check if full address is available
+  //       let fullAddress = null;
+  //       if (data.results && data.results[0] && data.results[0].formatted_address) {
+  //         fullAddress = data.results[0].formatted_address;
+  //       }
+  //       if (fullAddress) {
+  //         return fullAddress;
+  //       } else {
+  //           // if no locality, default to coordinates
+  //           return `Lat: ${geo.latitude}, Lng: ${geo.longitude}`;
+  //       }
+  //     } catch (error) {
+  //       return "Secret location";
+  //     }
 
   const showReportDetails = (index) => {
-    if(index === details) {
-      if(showDetails) {
+    if (index === details) {
+      if (showDetails) {
         setShowDetails(false);
-      }
-      else {
+      } else {
         setShowDetails(true);
       }
-    }
-    else if(!showDetails && index !== details) {
+    } else if (!showDetails && index !== details) {
       setShowDetails(true);
     }
     setDetails(index);
-  }
+  };
 
-  if(showDetails) {
+  if (showDetails) {
     return (
       <>
-      <div style={{ maxHeight: "400px", overflow: "scroll" }}>
-        {filteredData.map((
-          item,
-          index /* something to note: when the width is about 420-999px, the tabs are wider than page*/
-        ) => (
-          <div
-            key={index}
-            style={{
-              margin: "20px",
-              border: "1px solid #ddd",
-              padding: "10px",
-              borderRadius: "5px",
-              backgroundColor: item.Archived ? "rgba(255, 0, 0, 0.4)" : "white"
-            }}
-            onClick={() => showReportDetails(index)}
-          >
-            <strong> {item.Archived ? "MARKED FOR DELETION" : ""}</strong>
-            <h2>{item.Title}</h2>
-            {/* <p>
+        <div>
+          {filteredData.map((
+            item,
+            index /* something to note: when the width is about 420-999px, the tabs are wider than page*/
+          ) => (
+            <div
+              key={index}
+              style={{
+                margin: "20px",
+                border: "1px solid #ddd",
+                padding: "10px",
+                borderRadius: "5px",
+                backgroundColor: item.Archived
+                  ? "rgba(255, 0, 0, 0.4)"
+                  : "white",
+              }}
+              onClick={() => showReportDetails(index)}
+            >
+              <strong> {item.Archived ? "MARKED FOR DELETION" : ""}</strong>
+              <h2>{item.Title}</h2>
+              {/* <p>
               <strong>Alert Type:</strong> {item.AlertType}
             </p> */}
-            {/* <p>
+              {/* <p>
               <strong>Report Type:</strong> {item.ReportType}
             </p> */}
-            <p>
-             <strong>City/Town:</strong> {item.Locality ? item.Locality : "None"}
-            </p>
-          </div>
-        ))}
-        {/* <MapDataContext.Provider value={[
+              <p>
+                <strong>City/Town:</strong>{" "}
+                {item.Locality ? item.Locality : "None"}
+              </p>
+            </div>
+          ))}
+          {/* <MapDataContext.Provider value={[
           { lat: 48.8584, lng: 2.2945, id: 'marker1', type: "1Pothole" },
           { lat: 48.8500, lng: 2.3000, id: 'marker2', type: "2Pothole" }
         ]} /> */}
-      </div>
-      <div style={{
-              margin: "20px",
-              border: "1px solid #ddd",
-              padding: "10px",
-              borderRadius: "5px",
-              backgroundColor: filteredData[details].Archived ? "rgba(255, 0, 0, 0.4)" : "white"
-            }}>
-              <strong> {filteredData[details].Archived ? "MARKED FOR DELETION" : ""}</strong>
-              <h2>{filteredData[details].Title}</h2>
-                      {filteredData[details].Image && (<img
-          src={imageURLs[filteredData[details].Image]}
-          alt={filteredData[details].Image === "No image" ? filteredData[details].Image : filteredData[details].Title}
-          style={
-            {
-              width: '100%', height: '200px', objectFit: 'cover'
-            }
-          }
-        />)}
-        
-        {/* <p>
+        </div>
+        <div
+          style={{
+            margin: "20px",
+            border: "1px solid #ddd",
+            padding: "10px",
+            borderRadius: "5px",
+            backgroundColor: filteredData[details].Archived
+              ? "rgba(255, 0, 0, 0.4)"
+              : "white",
+          }}
+        >
+          <strong>
+            {" "}
+            {filteredData[details].Archived ? "MARKED FOR DELETION" : ""}
+          </strong>
+          <h2>{filteredData[details].Title}</h2>
+          {filteredData[details].Image && (
+            <img
+              src={imageURLs[filteredData[details].Image]}
+              alt={
+                filteredData[details].Image === "No image"
+                  ? filteredData[details].Image
+                  : filteredData[details].Title
+              }
+              style={{
+                width: "100%",
+                height: "200px",
+                objectFit: "cover",
+              }}
+            />
+          )}
+
+          {/* <p>
           <strong>Report Type:</strong> {filteredData[details].ReportType}
         </p> */}
-        <p>
-          <strong>Location:</strong> {filteredData[details].Location.latitude.toFixed(3)} {filteredData[details].Location.longitude.toFixed(3)}
-        </p>
-        <p>
-          <strong>Description:</strong> {filteredData[details].Description}
-        </p>
-        <button className="button" style={{padding: "5px", margin: "2px"}} onClick={(event) => handleUnBookmark(event, filteredData[details])}>Unbookmark</button>
-        <button className="button" style={{padding: "5px", margin: "2px"}} onClick={(event) => handleBookmark(event, filteredData[details])}>Bookmark</button>
-        <button className="button" style={{padding: "5px", margin: "2px"}} onClick={(event) => handleResolve(event, filteredData[details])}>Mark as Resolved</button>
-        <button className="button" style={{padding: "5px", margin: "2px"}} onClick={(event) => handleUnResolve(event, filteredData[details])}>Mark as Unresolved</button>
-      </div>
+          <p>
+            <strong>Location:</strong>{" "}
+            {filteredData[details].Location.latitude.toFixed(3)}{" "}
+            {filteredData[details].Location.longitude.toFixed(3)}
+          </p>
+          <p>
+            <strong>Description:</strong> {filteredData[details].Description}
+          </p>
+          <button
+            className="button"
+            style={{ padding: "5px", margin: "2px" }}
+            onClick={(event) => handleUnBookmark(event, filteredData[details])}
+          >
+            Unbookmark
+          </button>
+          <button
+            className="button"
+            style={{ padding: "5px", margin: "2px" }}
+            onClick={(event) => handleBookmark(event, filteredData[details])}
+          >
+            Bookmark
+          </button>
+          <button
+            className="button"
+            style={{ padding: "5px", margin: "2px" }}
+            onClick={(event) => handleResolve(event, filteredData[details])}
+          >
+            Mark as Resolved
+          </button>
+          <button
+            className="button"
+            style={{ padding: "5px", margin: "2px" }}
+            onClick={(event) => handleUnResolve(event, filteredData[details])}
+          >
+            Mark as Unresolved
+          </button>
+        </div>
       </>
     );
-  }
-  else {
+  } else {
     return (
       <>
-      <div style={{ maxHeight: "400px", overflow: "scroll" }}>
-        {filteredData.map((
-          item,
-          index /* something to note: when the width is about 420-999px, the tabs are wider than page*/
-        ) => (
-          <div
-            key={index}
-            style={{
-              margin: "20px",
-              border: "1px solid #ddd",
-              padding: "10px",
-              borderRadius: "5px",
-              backgroundColor: item.Archived ? "rgba(255, 0, 0, 0.4)" : "white"
-            }}
-            onClick={() => showReportDetails(index)}
-          >
-            <strong> {item.Archived ? "MARKED FOR DELETION" : ""}</strong>
-            <h2>{item.Title}</h2>
-            <p>
-              <strong>Alert Type:</strong> {item.AlertType}
-            </p>
-            {/* <p>
+        <div style={{ maxHeight: "400px", overflow: "scroll" }}>
+          {filteredData.map((
+            item,
+            index /* something to note: when the width is about 420-999px, the tabs are wider than page*/
+          ) => (
+            <div
+              key={index}
+              style={{
+                margin: "20px",
+                border: "1px solid #ddd",
+                padding: "10px",
+                borderRadius: "5px",
+                backgroundColor: item.Archived
+                  ? "rgba(255, 0, 0, 0.4)"
+                  : "white",
+              }}
+              onClick={() => showReportDetails(index)}
+            >
+              <strong> {item.Archived ? "MARKED FOR DELETION" : ""}</strong>
+              <h2>{item.Title}</h2>
+              <p>
+                <strong>Alert Type:</strong> {item.AlertType}
+              </p>
+              {/* <p>
               <strong>Report Type:</strong> {item.ReportType}
             </p> */}
-            <p>
-            <strong>City/Town:</strong> {item.Locality ? item.Locality : "None"}
-            </p>
-          </div>
-        ))}
-      </div>
+              <p>
+                <strong>City/Town:</strong>{" "}
+                {item.Locality ? item.Locality : "None"}
+              </p>
+            </div>
+          ))}
+        </div>
       </>
     );
   }

@@ -6,7 +6,7 @@ const Tab = ({ tabTitle, set, user }) => {
     borderStyle: "solid",
     position: "relative",
     background: "white",
-    marginTop: "5%",
+    marginTop: "3%",
     marginLeft: "5px",
     // width: "100%",
     zIndex: "2",

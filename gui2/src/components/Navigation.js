@@ -34,12 +34,14 @@ const Navigation = ({ user }) => {
           src={filterImg}
           className="filterImg col-2 col-lg-2"
           alt="Filter Button"
+          style={{ cursor: "pointer" }}
         />
         <img
           onClick={() => onClick("View Events")}
           src={viewEvents}
           className="viewEvents col-2 col-lg-2"
           alt="View Events Button"
+          style={{ cursor: "pointer" }}
         />
 
         <img
@@ -47,6 +49,7 @@ const Navigation = ({ user }) => {
           src={viewReports}
           className=" col-2 col-lg-2"
           alt="View Reports Button"
+          style={{ cursor: "pointer" }}
         />
 
         <img
@@ -54,6 +57,7 @@ const Navigation = ({ user }) => {
           src={createAlerts}
           className="col-2 col-lg-2"
           alt="CreateAlerts Button"
+          style={{ cursor: "pointer" }}
         />
 
         <img
@@ -61,6 +65,7 @@ const Navigation = ({ user }) => {
           src={bookmarks}
           className="bookmarks col-2 col-lg-2"
           alt="Bookmarks Button"
+          style={{ cursor: "pointer" }}
         />
 
         <img
@@ -68,6 +73,7 @@ const Navigation = ({ user }) => {
           src={profile}
           className="profile col-2 col-lg-2"
           alt="Profile Button"
+          style={{ cursor: "pointer" }}
         />
       </div>
 

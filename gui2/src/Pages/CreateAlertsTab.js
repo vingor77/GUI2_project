@@ -227,9 +227,9 @@ const CreateAlertsTab = ({ user }) => {
 
   const bodyStyle = {
     position: "relative",
-    height: "400px",
-    maxHeight: "400px",
-    overflow: "scroll",
+    // height: "400px",
+    // maxHeight: "400px",
+    // overflow: "scroll",
   };
   return (
     <div className="row" style={bodyStyle}>
