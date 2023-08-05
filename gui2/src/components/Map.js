@@ -42,7 +42,7 @@ const Map = () => {
   return (
     <div style={backgroundMap}>
       <GoogleMap
-        zoom={15}
+        zoom={13}
         center={center}
         mapContainerStyle={MapStyle}
         options={{
@@ -52,8 +52,9 @@ const Map = () => {
             position: window.google.maps.ControlPosition.RIGHT_BOTTOM,
           }} }>
         {Array.isArray(mapData) && mapData.map((marker) => {
-          console.log("Marker ID: ", marker.id); // This is the console log for marker id
-          console.log("Marker lat: ", marker.lat);
+         // console.log("Marker ID: ", marker.id); // This is the console log for marker id
+          //console.log("Marker lat: ", marker.lat);
+          //console.log(marker.title);
           return (
           <Marker
            key={marker.id}
@@ -61,6 +62,7 @@ const Map = () => {
             onClick={() => {
               setSelectedLocation(marker);
             }}
+            
           />);
           })}
         {selectedLocation && (
@@ -72,8 +74,13 @@ const Map = () => {
         >
           <div>
             <p>
-              Marker Location: {selectedLocation.lat}, {selectedLocation.lng},{" "}
-              <br></br>Type: {selectedLocation.type}
+              {selectedLocation.title}
+              <br/>
+              Type: {selectedLocation.type}
+               <br/>
+              Location: {selectedLocation.lat.toFixed(3)}, {selectedLocation.lng.toFixed(3)},{" "}
+              
+             
             </p>
           </div>
         </InfoWindow>

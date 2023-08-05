@@ -12,13 +12,15 @@ import Modal from "react-modal";
 Modal.setAppElement("#root");
 const CreateAlertsTab = ({user}) => {
   const [dropDownAlert, setDropDownAlert] = useState("Select Alert");
-  const [dropDownReport, setDropDownReport] = useState("Select Report");
+  const [dropDownReport, setDropDownReport] = useState("Not specified");
   const [title, setTitle] = useState("");
-  const [location, setLocation] = useState("");
+  //const [loc, setLoc] = useState("");
   const [latitude, setLatitude] = useState("");
-  const [longitude, setLongitude] = useState("");  
-  const [description, setDescription] = useState("");
+  const [longitude, setLongitude] = useState(""); 
+  const [description, setDescription] = useState("");  
+  const [locality, setLocality] = useState(null);
   const [showMap, setShowMap] = useState(false);
+  let loc = null;
   //const [loc, setLoc] = useState(null);
   // const [reportType, setReportType] = useState("");
   // const [alertType, setAlertType] = useState("");
@@ -53,23 +55,35 @@ const CreateAlertsTab = ({user}) => {
     if (!data || !data.lat || !data.lng) {
       // if this code executes from lack of point selection, it will default to 1, 1
       data = {
-        lat: 1,
-        lng: 1,
+        lat: 1.1,
+        lng: 1.1,
       };
     }
     setLatitude(data.lat);
     setLongitude(data.lng);
     console.log(data);
     closeModal();
+    if (data.lat && data.lng) {
+      fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${data.lat},${data.lng}&key=AIzaSyDE0Qmrx_Qn5Nx04wvENvJ_riRGll6-tx0`)
+        .then(response => response.json())
+        .then(data => {
+          const localityObj = data.results[0].address_components.find(item => item.types.includes('locality'));
+          if (localityObj) {
+            setLocality(localityObj.long_name);
+          } else {setLocality(null)}
+        })
+        .catch(error => setLocality(null));
+      }
   };
-
   
   //let loc;
   //useEffect(() => {
     //console.log(data);
     //console.log(latitude);
-    let loc = new GeoPoint(latitude, longitude);
-    console.log("loc: " + loc);
+
+    loc = new GeoPoint(latitude, longitude);
+    console.log("loc: " + loc.latitude);
+
   //}, [latitude, longitude]);
   const customStyles = {
     content: {
@@ -92,16 +106,38 @@ const CreateAlertsTab = ({user}) => {
       border: "none",
     },
   };
-
+  const stylesModal = {
+    overlay: {
+      // height: "90%",
+      zIndex: 5, 
+    },};
   const inputStyle = {
     marginTop: "10px",
   };
   const handleCreateAlert = async (e) => {
     //e.preventDefault(); // Prevent the form from reloading the page
-    if (!title || !description || dropDownAlert === "Select Alert" || (dropDownAlert === "Report" && dropDownReport === "Select Report")) {
-      alert("Please fill out all required fields before submitting.");
-      return;
-    }
+
+        if (dropDownAlert === "Select Alert") {
+          alert("Please select an Alert type.");
+          return;
+        }
+        if (dropDownAlert === "Report" && dropDownReport === "Not specified" ) {
+          alert("Please specify a report type.");
+          return;
+        }
+        if (!title) {
+          alert("Please fill out title.");
+          return;
+        }
+        if (!loc) {
+          alert("Please select and save a location.");
+          return;
+        }
+        if (!description) {
+          alert("Please fill out description.");
+          return;
+        }
+
     // Then, add the report data to Firestore
     const timestamp = Date.now();
 
@@ -119,6 +155,7 @@ const CreateAlertsTab = ({user}) => {
 
 
       
+      
     //return loc;
     //};
     
@@ -128,6 +165,7 @@ const CreateAlertsTab = ({user}) => {
     await setDoc(docRef, {
       Title: title,
       Location: loc,
+      Locality: locality,
       Description: description,
       ReportType: dropDownReport,
       AlertType: dropDownAlert,
@@ -139,7 +177,24 @@ const CreateAlertsTab = ({user}) => {
   
     console.log('Document added successfully');
   };
+  // const formatCoordinates = (lat, long) => {
+  //   let latitude = lat;
+  //   let longitude = long;
+  //   let latSuffix = 'N';
+  //   let longSuffix = 'E';
   
+  //   if (lat < 0) {
+  //     latitude = -lat;
+  //     latSuffix = 'S';
+  //   }
+    
+  //   if (long < 0) {
+  //     longitude = -long;
+  //     longSuffix = 'W';
+  //   }
+    
+  //   return `${latitude}${latSuffix} ${longitude}${longSuffix}`;
+  //};
   const ReportOption = () => (
     <>
       <h6>Select Report Type</h6>
@@ -189,7 +244,7 @@ const CreateAlertsTab = ({user}) => {
       {/* Alert title */}
       <Form.Control
         style={inputStyle}
-        size="lg"
+        size="lg" //I think this may be making it too big
         type="text"
         placeholder="Enter Title"
         value={title}
@@ -197,25 +252,28 @@ const CreateAlertsTab = ({user}) => {
       />
       {/* Alert location */}
      <div>
-      <button onClick={openModal}>Show Map</button>
+      <button style={{marginTop: "5px", marginLeft: "5px", marginTop: "5px", padding: "5px"}} onClick={openModal}>Select Location</button>
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
         contentLabel="Example Modal"
-        style={customStyles}
+        style={{...customStyles, ...stylesModal}}
       >
         <PlaceMap onClose={handleMapData} />
         {/* <button style={customStyles.closeButton} onClick={closeModal}>Close</button> */}
       </Modal>
     </div>
+    {/* { loc && loc.latitude && loc.longitude && loc.latitude > 0 && loc.longitude > 0 ? <div>Location: {formatCoordinates(loc.latitude, loc.longitude)}</div> : null } */}
+{ locality ? <div>City/Town: {locality}</div> : null }
+
       
-      <Form.Control
+      {/* <Form.Control   //TODO: Make this a non-input that shows location
         style={inputStyle}
         type="text"
         placeholder="Enter Location"
         value={location}
         onChange={e => setLocation(e.target.value)}
-      />
+      /> */}
 
       {/* Description */}
       <Form>
@@ -238,7 +296,8 @@ const CreateAlertsTab = ({user}) => {
       {/* Image upload */}
       <Form.Group controlId="formFile" className="mb-3">
         <Form.Label>Upload Image</Form.Label>
-        <Form.Control type="file"  onChange={handleFileChange}/>
+        <Form.Control type="file"  onChange={handleFileChange} />
+        
       </Form.Group>
 
       {/* Submit button */}

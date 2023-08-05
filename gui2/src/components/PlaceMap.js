@@ -7,7 +7,7 @@ const PlaceMap = ({ onClose }) => {
   const [marker, setMarker] = useState(null);
   const [locationInput, setLocationInput] = useState("");
   const [geocoder, setGeocoder] = useState(null);
-  const [mapCenter, setMapCenter] = useState({ lat: 48, lng: 2 });
+  const [mapCenter, setMapCenter] = useState({ lat: 42.63, lng: -71.31 });
 
   useEffect(() => {
     if (window.google) {
@@ -22,7 +22,9 @@ const PlaceMap = ({ onClose }) => {
 
   const MapStyle = {
     width: "100%",
-    height: "100vh",
+    height: "100%",
+    zIndex: 40,
+    marginTop: "5px",
   };
 
   const onMapClick = async (e) => {
@@ -64,30 +66,33 @@ setData({lat, lng});
   };
 
   return (
-    <div>
+    <div><div >
       <div>
-        This is a placemap.
-        <button onClick={handleClose}>Close</button>
-        <input
+        Click a location on the map OR enter an address and click FIND ON MAP, then click SAVE!<br />
+        
+        <input style={{marginLeft: "7px", marginRight: "5px"}}
           type="text"
           placeholder="Enter a location"
           value={locationInput}
           onChange={(e) => setLocationInput(e.target.value)}
         />
-        <button
+        <button style={{paddingLeft: "5px", paddingRight: "5px"}}
           onClick={async () => {
             const result = await geocode({ address: locationInput });
             handleResult(result);
           }}
         >
-          Geocode
+          FIND ON MAP
         </button>
+        <button style={{marginLeft: "5px", marginRight: "5px", color: "green", weight: "bold", paddingLeft: "5px", paddingRight: "5px"}}
+         onClick={handleClose}>SAVE</button>
       </div>
-      <div style={{ width: "100%", height: "100vh" }}>
+      
+      <div style={{ width: "100%", height: "58vh"}}>
         <GoogleMap
           mapContainerStyle={MapStyle}
           center={mapCenter}
-          zoom={8}
+          zoom={11}
           onLoad={(map) => {
             mapRef.current = map;
           }}
@@ -95,6 +100,7 @@ setData({lat, lng});
         >
           {marker && <Marker position={marker.position} />}
         </GoogleMap>
+      </div>
       </div>
     </div>
   );

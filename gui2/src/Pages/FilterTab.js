@@ -5,7 +5,7 @@ const FilterPage = ({ user }) => {
   const data = useContext(DataContext);
   return (
     <div>
-    hi
+    Filtering is available to <em>premium</em> members only.
     </div>
   );
 };

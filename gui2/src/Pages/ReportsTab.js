@@ -28,19 +28,21 @@ const ReportsPage = ({ user }) => {
           item.Location &&
           item.Location.latitude &&
           item.Location.longitude &&
-          item.ReportType
+          item.ReportType &&
+          item.Title,
       )
       .map((item, index) => ({
         lat: item.Location.latitude,
         lng: item.Location.longitude,
         id: `marker${index}`,
         type: item.ReportType,
+        title: item.Title,
       }));
 
     console.log("MD: " + JSON.stringify(mapData));
     console.log("NM: " + JSON.stringify(newMarkers));
 
-    if (JSON.stringify(mapData) != JSON.stringify(newMarkers)) {
+    if (JSON.stringify(mapData) !== JSON.stringify(newMarkers)) {
         console.log("CC");
         setMapData(newMarkers);
     }
@@ -74,7 +76,32 @@ const handleBookmark = async (event, item) => {
       Bookmarks: arrayUnion({ id: item.id, Title: item.Title }),
     }, { merge: true });
   }
+//   const returnAddressOrCoords = async (geo) => {
+//     if(!geo || !geo.latitude || !geo.longitude) {
+//       return "Secret location";
+//     }
+//     try {
+//       const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${geo.latitude},${geo.longitude}&key=AIzaSyDE0Qmrx_Qn5Nx04wvENvJ_riRGll6-tx0`);
+//       const data = await response.json();
+  
+//       // check if full address is available
+//       let fullAddress = null;
+//       if (data.results && data.results[0] && data.results[0].formatted_address) {
+//         fullAddress = data.results[0].formatted_address;
+//       }
+//       if (fullAddress) {
+//         return fullAddress;
+//       } else {
+//           // if no locality, default to coordinates
+//           return `Lat: ${geo.latitude}, Lng: ${geo.longitude}`;
+//       }
+//     } catch (error) {
+//       return "Secret location";
+//     }
+// };
 
+
+ // };
   const showReportDetails = (index) => {
     if(index === details) {
       if(showDetails) {
@@ -109,14 +136,14 @@ const handleBookmark = async (event, item) => {
             onClick={() => showReportDetails(index)}
           >
             <h2>{item.Title}</h2>
-            <p>
+            {/* <p>
               <strong>Alert Type:</strong> {item.AlertType}
-            </p>
+            </p> */}
             <p>
               <strong>Report Type:</strong> {item.ReportType}
             </p>
             <p>
-              <strong>Address:</strong> {item.Address}
+              <strong>City/Town:</strong> {item.Locality ? item.Locality : "None"}
             </p>
           </div>
         ))}
@@ -125,18 +152,16 @@ const handleBookmark = async (event, item) => {
           { lat: 48.8500, lng: 2.3000, id: 'marker2', type: "2Pothole" }
         ]} /> */}
       </div>
-      <div>
-        <h2>{filteredData[details].Title}</h2>
-        <p>
-          <strong>Report Type:</strong> {filteredData[details].ReportType}
-        </p>
-        <p>
-          <strong>Address:</strong> {filteredData[details].Address}
-        </p>
-        <p>
-          <strong>Description:</strong> {filteredData[details].Description}
-        </p>
-        {filteredData[details].Image && (<img
+      
+      <div style={{
+              margin: "20px",
+              border: "1px solid #ddd",
+              padding: "10px",
+              borderRadius: "5px",
+            }}>
+              <h2>{filteredData[details].Title}</h2>
+
+                      {filteredData[details].Image && (<img
           src={imageURLs[filteredData[details].Image]}
           alt={filteredData[details].Image === "No image" ? filteredData[details].Image : filteredData[details].Title}
           style={
@@ -145,6 +170,17 @@ const handleBookmark = async (event, item) => {
             }
           }
         />)}
+        
+        <p>
+          <strong>Report Type:</strong> {filteredData[details].ReportType}
+        </p>
+        <p>
+          <strong>Location:</strong>  {filteredData[details].Location.latitude.toFixed(3)} {filteredData[details].Location.longitude.toFixed(3)}
+        </p>
+        <p>
+          <strong>Description:</strong> {filteredData[details].Description}
+        </p>
+
         <button onClick={(event) => handleBookmark(event, filteredData[details])}>Bookmark</button>
       </div>
       </>
@@ -176,14 +212,10 @@ const handleBookmark = async (event, item) => {
               <strong>Report Type:</strong> {item.ReportType}
             </p>
             <p>
-              <strong>Address:</strong> {item.Address}
+            <strong>City/Town:</strong> {item.Locality ? item.Locality : "None"}
             </p>
           </div>
         ))}
-        {/* <MapDataContext.Provider value={[
-          { lat: 48.8584, lng: 2.2945, id: 'marker1', type: "1Pothole" },
-          { lat: 48.8500, lng: 2.3000, id: 'marker2', type: "2Pothole" }
-        ]} /> */}
       </div>
       </>
     );

@@ -53,7 +53,7 @@ const Navigation = ({ user }) => {
           onClick={() => onClick("Create Alert")}
           src={createAlerts}
           className="col-2 col-lg-2"
-          alt="CreateA lerts Button"
+          alt="CreateAlerts Button"
         />
 
         <img

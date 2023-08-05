@@ -20,6 +20,8 @@ const TabBody = ({ tabTitle, user }) => {
         return <BookmarksTab user={user}/>;
       case "Profile":
         return <ProfileTab user={user}/>;
+      case "Filter":
+        return <FilterTab user={user}/>;
     }
   }
   return (
