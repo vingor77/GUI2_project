@@ -51,14 +51,14 @@ const PlaceMap = ({ onClose }) => {
     });
     let firstLocation = results[0].geometry.location;
 
-console.log(firstLocation);
+    console.log(firstLocation);
 
-let lat = firstLocation.lat();
-let lng = firstLocation.lng();
+    let lat = firstLocation.lat();
+    let lng = firstLocation.lng();
 
-console.log(lat);  // prints the latitude
-console.log(lng);  // prints the longitude
-setData({lat, lng});
+    console.log(lat); // prints the latitude
+    console.log(lng); // prints the longitude
+    setData({ lat, lng });
   };
 
   const handleClose = () => {
@@ -66,45 +66,59 @@ setData({lat, lng});
   };
 
   return (
-    <div><div >
+    <div>
       <div>
-        Click a location on the map OR enter an address and click FIND ON MAP, then click SAVE!<br />
-        
-        <input style={{marginLeft: "7px", marginRight: "5px"}}
-          type="text"
-          placeholder="Enter a location"
-          value={locationInput}
-          onChange={(e) => setLocationInput(e.target.value)}
-        />
-        <button style={{paddingLeft: "5px", paddingRight: "5px"}}
-          onClick={async () => {
-            const result = await geocode({ address: locationInput });
-            handleResult(result);
-          }}
-        >
-          FIND ON MAP
-        </button>
-        <button style={{marginLeft: "5px", marginRight: "5px", color: "green", weight: "bold", paddingLeft: "5px", paddingRight: "5px"}}
-         onClick={handleClose}>SAVE</button>
-      </div>
-      
-      <div style={{ width: "100%", height: "58vh"}}>
-        <GoogleMap
-          mapContainerStyle={MapStyle}
-          center={mapCenter}
-          zoom={11}
-          onLoad={(map) => {
-            mapRef.current = map;
-          }}
-          onClick={onMapClick}
-        >
-          {marker && <Marker position={marker.position} />}
-        </GoogleMap>
-      </div>
+        <div>
+          Click a location on the map OR enter an address and click FIND ON MAP,
+          then click SAVE!
+          <br />
+          <input
+            style={{ marginLeft: "7px", marginRight: "5px" }}
+            type="text"
+            placeholder="Enter a location"
+            value={locationInput}
+            onChange={(e) => setLocationInput(e.target.value)}
+          />
+          <button
+            style={{ paddingLeft: "5px", paddingRight: "5px" }}
+            onClick={async () => {
+              const result = await geocode({ address: locationInput });
+              handleResult(result);
+            }}
+          >
+            FIND ON MAP
+          </button>
+          <button
+            style={{
+              marginLeft: "5px",
+              marginRight: "5px",
+              color: "green",
+              weight: "bold",
+              paddingLeft: "5px",
+              paddingRight: "5px",
+            }}
+            onClick={handleClose}
+          >
+            SAVE
+          </button>
+        </div>
+
+        <div style={{ width: "100%", height: "58vh" }}>
+          <GoogleMap
+            mapContainerStyle={MapStyle}
+            center={mapCenter}
+            zoom={11}
+            onLoad={(map) => {
+              mapRef.current = map;
+            }}
+            onClick={onMapClick}
+          >
+            {marker && <Marker position={marker.position} />}
+          </GoogleMap>
+        </div>
       </div>
     </div>
   );
 };
 
 export default PlaceMap;
-

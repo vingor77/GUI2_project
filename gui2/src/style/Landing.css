@@ -1,25 +1,25 @@
- .title, .greeting{
-    text-align: center;
-    background-color:black;
-    color:white;
-    white-space: pre-wrap;
+.title,
+.greeting {
+  text-align: center;
+  background-color: black;
+  color: white;
+  white-space: pre-wrap;
 }
 
-.greeting{
-    padding:40px;
+.greeting {
+  padding: 40px;
 }
 
-
-.rightImg{
-    padding-top:20px;
-    padding-bottom: 20px;
-    height:auto;
-    background:black;
+.rightImg {
+  padding-top: 20px;
+  padding-bottom: 20px;
+  height: auto;
+  background: black;
 }
 
-.leftImg{
-    padding-top:20px;
-    padding-bottom: 20px;
-    height:auto;
-    background:black;
+.leftImg {
+  padding-top: 20px;
+  padding-bottom: 20px;
+  height: auto;
+  background: black;
 }

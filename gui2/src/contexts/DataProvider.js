@@ -1,17 +1,17 @@
 // contexts/DataProvider.js
-import React from 'react';
-import { useEffect, useState } from 'react';
-import { collection, onSnapshot } from 'firebase/firestore';
-import DataContext from './DataContext';
+import React from "react";
+import { useEffect, useState } from "react";
+import { collection, onSnapshot } from "firebase/firestore";
+import DataContext from "./DataContext";
 
 export default function DataProvider({ children, db }) {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    const unsubscribe = onSnapshot(collection(db, "Alerts"), snapshot => {
-      const fetchedData = snapshot.docs.map(doc => ({
+    const unsubscribe = onSnapshot(collection(db, "Alerts"), (snapshot) => {
+      const fetchedData = snapshot.docs.map((doc) => ({
         id: doc.id,
-        ...doc.data()
+        ...doc.data(),
       }));
       setData(fetchedData);
       console.log("CALLING DATABASE" + fetchedData);
@@ -20,9 +20,5 @@ export default function DataProvider({ children, db }) {
     return () => unsubscribe();
   }, [db]);
 
-  return (
-    <DataContext.Provider value={data}>
-      {children}
-    </DataContext.Provider>
-  );
+  return <DataContext.Provider value={data}>{children}</DataContext.Provider>;
 }

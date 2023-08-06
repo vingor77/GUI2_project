@@ -4,7 +4,8 @@ import leftImage from "../images/leftImage.svg";
 
 const Landing = () => {
   const greeting = "Welcome To \n CommunityAlert!";
-  const terms = "CommunityAlert is a platform that was designed with the intention to promote safety and unity within local communities.\n";
+  const terms =
+    "CommunityAlert is a platform that was designed with the intention to promote safety and unity within local communities.\n";
 
   return (
     <div className="title row">

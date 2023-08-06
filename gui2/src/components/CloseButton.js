@@ -1,8 +1,8 @@
 // CloseButton.js
 import closeButton from "../images/closeButton.svg";
 import React, { useContext, useEffect } from "react";
-import DataContext from '../contexts/DataContext';
-import MapContext from '../contexts/MapContext';
+import DataContext from "../contexts/DataContext";
+import MapContext from "../contexts/MapContext";
 const CloseButton = ({ setTab }) => {
   const buttonStyle = {
     paddingTop: "5px",
@@ -13,10 +13,10 @@ const CloseButton = ({ setTab }) => {
 
   return (
     <img
-    onClick={() => {
-      setTab(false);
-      setIsCloseClicked(true);
-    }}
+      onClick={() => {
+        setTab(false);
+        setIsCloseClicked(true);
+      }}
       src={closeButton}
       style={buttonStyle}
       alt="close button"

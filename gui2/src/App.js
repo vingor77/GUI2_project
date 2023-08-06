@@ -1,5 +1,5 @@
 //App.js
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import SignIn from "./SignIn";
 import MainPage from "./MainPage";
