@@ -1,86 +1,89 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from 'react';
+import { Container, Card } from 'react-bootstrap';
+
 const HelpPage = () => {
+  const [openedSection, setOpenedSection] = useState('');
+
+  const toggleSection = (section) => {
+    setOpenedSection(openedSection === section ? '' : section);
+  };
+
   return (
-    <div
+    <Container fluid
       style={{
         background: "#DFF8D5",
-        width: "100%",
         height: "100vh",
         overflow: "scroll",
         position: "relative",
+        display: "flex",
+        justifyContent: "center",
+        padding: "0"
       }}
       className="help-page"
     >
-      {/* Button to back to the homepage */}
-      <Link to="/">
-        <button> Go Back</button>
-      </Link>
+      <div style={{ maxWidth: "800px", width: "100%" }}>  
+        <div className="text-center mt-5">
+          <h1>Help & FAQ</h1>
+        </div>
 
-      <h1>Help & FAQ</h1>
+        <Card className="my-4 p-4">
+          <div className="accordion-section" onClick={() => toggleSection('howToUse')}>
+            <h2>How to Use CommunityAlert</h2>
+            {openedSection === 'howToUse' && (
+              <p>CommunityAlert is an application designed to allow users to report issues, view local events and visualize environmental issues in their local community with the help of dynamic maps and community input.</p>
+            )}
+          </div>
 
-      <h2>How to Use CommunityAlert</h2>
-      <p>
-        CommunityAlert is an application designed to allow users to report and
-        visualize environmental issues in their local community.
-      </p>
+          <div className="accordion-section" onClick={() => toggleSection('reportIssue')}>
+            <h2>How do I report an issue?</h2>
+            {openedSection === 'reportIssue' && (
+              <p>To report an issue, go to create an alert button, select the type of issue you are reporting, and provide a brief description and location. You can also add a photo of the issue if you wish.</p>
+            )}
+          </div>
 
-      <h2>How do I report an issue?</h2>
-      <p>
-        To report an issue, go to the "Create Alert" button in the Nav bar,
-        select the type of issue you are reporting, and provide a brief
-        description and location. You can also add a photo of the issue if you
-        wish.
-      </p>
+          <div className="accordion-section" onClick={() => toggleSection('viewReports')}>
+            <h2>How do I view issues on the map?</h2>
+            {openedSection === 'viewReports' && (
+              <p>To view issues, you can either navigate the map to find all kinds of alerts or click the issues tab. There, you can see all the issues that have been made. You can even filter these issues by issue type.</p>
+            )}
+          </div>
 
-      <h2>How do I add the locations of the Alerts or events?</h2>
-      <p>
-        To add a location to the report, you currently need to click on show map{" "}
-        {"->"} navigate the map {"->"} click on anywhere in the map to drop your
-        pin OR enter a location at the top(make sure to hit Geocode). Select
-        Close to submit location!
-      </p>
+          <div className="accordion-section" onClick={() => toggleSection('resolveIssue')}>
+            <h2>Can I resolve an issue?</h2>
+            {openedSection === 'resolveIssue' && (
+              <p>Yes, if an issue has been fixed, it can be marked for deletion.</p>
+            )}
+          </div>
 
-      <h2>How do I view reports on the map?</h2>
-      <p>
-        To view reports, navigate to the 'Map' page. There, you can see all the
-        reports that have been made. You can filter these reports by issue type
-        or status.
-      </p>
+          <div className="accordion-section" onClick={() => toggleSection('bookmark')}>
+            <h2>What does the bookmark feature do?</h2>
+            {openedSection === 'bookmark' && (
+              <p>The bookmark feature allows you to easily keep track of issues that you're interested in. You can bookmark a report by clicking the 'Bookmark' button on the issues page. Then if you would like to unbookmark, simply go to the bookmarks tab to do so.</p>
+            )}
+          </div>
 
-      <h2>Can I resolve an issue?</h2>
-      <p>Yes, if an issue has been fixed, it can be marked as resolved.</p>
+          <div className="accordion-section" onClick={() => toggleSection('signIn')}>
+            <h2>Why do I need to sign in to make a report?</h2>
+            {openedSection === 'signIn' && (
+              <p>We require users to sign in to make a report to ensure that issues are valid and to prevent abuse of the platform.</p>
+            )}
+          </div>
 
-      <h2>What does the bookmark feature do?</h2>
-      <p>
-        The bookmark feature allows you to easily keep track of issues that
-        you're interested in. You can bookmark a report by clicking the
-        'Bookmark' button on the report page.
-      </p>
+          <div className="accordion-section" onClick={() => toggleSection('purpose')}>
+            <h2>What is the purpose of CommunityAlert?</h2>
+            {openedSection === 'purpose' && (
+              <p>The goal of CommunityAlert is to address local environmental issues in an organized manner, promoting real-time reporting, enhancing graphical user interface standards, and improving resource allocation and responsiveness of local governing bodies.</p>
+            )}
+          </div>
+        </Card>
 
-      <h2>Why do I need to sign in to make a report?</h2>
-      <p>
-        We require users to sign in to make a report to ensure that reports are
-        valid and to prevent abuse of the platform.
-      </p>
-
-      <h2>What is the purpose of CommunityAlert?</h2>
-      <p>
-        The goal of CommunityAlert is to address local environmental issues in
-        an organized manner, promoting real-time reporting, enhancing graphical
-        user interface standards, and improving resource allocation and
-        responsiveness of local governing bodies.
-      </p>
-      <h2>Need Further Assistance?</h2>
-      <p>
-        If you have any other concerns, questions, or need further assistance,
-        please feel free to reach out to our team at{" "}
-        <a href="mailto:group3communityalert@gmail.com">
-          group3communityalert@gmail.com
-        </a>
-        . We're here to help!
-      </p>
-    </div>
+        <div className="text-center">
+          <h2>Need Further Assistance?</h2>
+          <p>If you have any other concerns, questions, or need further assistance, please feel free to reach out to our team at <a href="mailto:group3communityalert@gmail.com">group3communityalert@gmail.com
+          </a>. We're here to help!</p>
+        </div>
+      </div>
+    </Container>
   );
 };
 
