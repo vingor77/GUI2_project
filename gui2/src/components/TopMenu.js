@@ -74,7 +74,7 @@ const TopMenu = ({ user }) => {
         {/* Search icon */}
         <img
           style={searchIconStyle}
-          className=" col-4 col-md-3 col-lg-2 "
+          className=" col-4 col-md-2 col-lg-2 col-sm-3"
           src={searchIcon}
           alt="search icon"
           onClick={moveMap}
@@ -83,7 +83,7 @@ const TopMenu = ({ user }) => {
         {/* Temp searchbox, might be using javascript api */}
         <input
           style={searchBoxStyle}
-          className="col-4 col-md-5 col-lg-7"
+          className="col-4 col-md-5 col-lg-7 "
           type="text"
           placeholder="Search"
           value={locationInput}
@@ -93,7 +93,7 @@ const TopMenu = ({ user }) => {
         {/* Slider menu */}
         <img
           onClick={onClick}
-          className="col-4 col-md-3 col-lg-2"
+          className="col-4 col-md- col-lg-2 col-sm-3"
           style={sliderMenuStyle}
           src={sliderMenu}
           alt="drop down menu"
