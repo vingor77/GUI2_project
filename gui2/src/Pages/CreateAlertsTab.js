@@ -151,7 +151,7 @@ const CreateAlertsTab = ({ user }) => {
       await uploadBytes(storageRef, file);
       console.log("Uploaded a blob or file!");
     } catch (error) {
-      console.error("Error uploading file: ", error);
+      //console.error("Error uploading file: ", error);
       // Handle any additional error response here, if needed
     }
     const docRef = doc(collection(db, "Alerts"));
@@ -171,7 +171,7 @@ const CreateAlertsTab = ({ user }) => {
       Description: description,
       ReportType: dropDownReport,
       AlertType: dropDownAlert,
-      Archived: `${tOrF}`,
+      Archived: tOrF,
       Image: file ? `images/${file.name}_${timestamp}` : "No image",
       //AuthorID: user.uid, // Assuming `user` contains the current user's data
       Time: new Date(), // Current time

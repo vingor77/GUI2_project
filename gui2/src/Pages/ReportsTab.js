@@ -67,7 +67,7 @@ const ReportsPage = ({ user }) => {
     };
 
     getImageURLs();
-  }, [data]);
+  }, [data, setMapData]);
 
   const handleBookmark = async (event, item) => {
     event.stopPropagation();
@@ -136,60 +136,20 @@ const ReportsPage = ({ user }) => {
   // };
 
   // };
-  const showReportDetails = (index) => {
-    if (index === details) {
-      if (showDetails) {
-        setShowDetails(false);
-      } else {
-        setShowDetails(true);
-      }
-    } else if (!showDetails && index !== details) {
-      setShowDetails(true);
-    }
-    setDetails(index);
-  };
 
   if (showDetails) {
     return (
       <>
-        <div>
-          {filteredData.map((
-            item,
-            index /* something to note: when the width is about 420-999px, the tabs are wider than page*/
-          ) => (
-            <div
-              key={index}
-              style={{
-                margin: "20px",
-                border: "1px solid #ddd",
-                padding: "10px",
-                borderRadius: "5px",
-                backgroundColor: item.Archived
-                  ? "rgba(255, 0, 0, 0.4)"
-                  : "white",
-              }}
-              onClick={() => showReportDetails(index)}
-            >
-              <strong> {item.Archived ? "MARKED FOR DELETION" : ""}</strong>
-              <h2>{item.Title}</h2>
-              {/* <p>
-              <strong>Alert Type:</strong> {item.AlertType}
-            </p> */}
-              <p>
-                <strong>Report Type:</strong> {item.ReportType}
-              </p>
-              <p>
-                <strong>City/Town:</strong>{" "}
-                {item.Locality ? item.Locality : "None"}
-              </p>
-            </div>
-          ))}
-          {/* <MapDataContext.Provider value={[
-          { lat: 48.8584, lng: 2.2945, id: 'marker1', type: "1Pothole" },
-          { lat: 48.8500, lng: 2.3000, id: 'marker2', type: "2Pothole" }
-        ]} /> */}
-        </div>
-
+        <button
+          className="button"
+          style={{ padding: "5px", margin: "2px" }}
+          onClick={(event) => {
+            setShowDetails(false);
+          }}
+        >
+          {" "}
+          &larr; Return to list
+        </button>
         <div
           style={{
             margin: "20px",
@@ -197,14 +157,15 @@ const ReportsPage = ({ user }) => {
             padding: "10px",
             borderRadius: "5px",
             backgroundColor: filteredData[details].Archived
-              ? "rgba(255, 0, 0, 0.4)"
+              ? "rgba(0, 255, 0, 0.4)"
               : "white",
           }}
         >
-          <strong>
-            {" "}
-            {filteredData[details].Archived ? "MARKED FOR DELETION" : ""}
-          </strong>
+          {filteredData[details].Archived && (
+            <p>
+              <strong>MARKED AS RESOLVED</strong>
+            </p>
+          )}
           <h2>{filteredData[details].Title}</h2>
 
           {filteredData[details].Image && (
@@ -268,7 +229,7 @@ const ReportsPage = ({ user }) => {
   } else {
     return (
       <>
-        <div>
+        <div style={{ maxHeight: "400px" }}>
           {filteredData.map((
             item,
             index /* something to note: when the width is about 420-999px, the tabs are wider than page*/
@@ -281,12 +242,27 @@ const ReportsPage = ({ user }) => {
                 padding: "10px",
                 borderRadius: "5px",
                 backgroundColor: item.Archived
-                  ? "rgba(255, 0, 0, 0.4)"
+                  ? "rgba(0, 255, 0, 0.4)"
                   : "white",
               }}
-              onClick={() => showReportDetails(index)}
+              onClick={() => setShowDetails(true)}
             >
-              <strong> {item.Archived ? "MARKED FOR DELETION" : ""}</strong>
+              {item.Archived && (
+                <p>
+                  <strong>MARKED AS RESOLVED</strong>
+                </p>
+              )}
+              {item.Image && item.Image !== "No image" && (
+                <img
+                  src={imageURLs[item.Image]}
+                  alt={item.Image === "No image" ? item.Image : item.Title}
+                  style={{
+                    width: "100%",
+                    height: "200px",
+                    objectFit: "cover",
+                  }}
+                />
+              )}
               <h2>{item.Title}</h2>
               <p>
                 <strong>Alert Type:</strong> {item.AlertType}
