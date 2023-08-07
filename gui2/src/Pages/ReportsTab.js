@@ -23,7 +23,9 @@ const ReportsPage = ({ user }) => {
   const [showDetails, setShowDetails] = useState(false);
   const [details, setDetails] = useState(0);
   // const [divClicked, setDivClicked] = useState(false);
-  const { mapData, setMapData } = useContext(MapContext);
+  const { mapData, setMapData, setCenter, setSelectedLocation } = useContext(
+    MapContext
+  );
   useEffect(() => {
     const type = data.filter((alert) => alert.AlertType === "Report");
     setFilteredData(type);
@@ -44,7 +46,6 @@ const ReportsPage = ({ user }) => {
         type: item.ReportType,
         title: item.Title,
       }));
-
     console.log("MD: " + JSON.stringify(mapData));
     console.log("NM: " + JSON.stringify(newMarkers));
 
@@ -245,7 +246,23 @@ const ReportsPage = ({ user }) => {
                   ? "rgba(0, 255, 0, 0.4)"
                   : "white",
               }}
-              onClick={() => setShowDetails(true)}
+              onClick={() => {
+                setDetails(index);
+                setShowDetails(true);
+                setCenter({
+                  lat: item.Location.latitude,
+                  lng: item.Location.longitude,
+                });
+                const marker = mapData.find(
+                  (m) =>
+                    m.title === item.Title &&
+                    m.lat === item.Location.latitude &&
+                    m.lng === item.Location.longitude
+                );
+                if (marker) {
+                  setSelectedLocation(marker);
+                }
+              }}
             >
               {item.Archived && (
                 <p>

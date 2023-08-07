@@ -5,7 +5,7 @@ import {
   GoogleMap,
   useJsApiLoader,
   Marker,
-  InfoWindow,
+  InfoWindowF,
 } from "@react-google-maps/api";
 import MapContext from "../contexts/MapContext";
 
@@ -26,7 +26,8 @@ const Map = () => {
   //const { mapData } = getContext(MapDataContext);
   console.log("MARKERS GOTTEN: ", mapData);
   console.log(Array.isArray(mapData));
-  const [selectedLocation, setSelectedLocation] = useState(null);
+  //const [selectedLocation, setSelectedLocation] = useState(null);
+  const { selectedLocation, setSelectedLocation } = useContext(MapContext);
 
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: "AIzaSyDE0Qmrx_Qn5Nx04wvENvJ_riRGll6-tx0",
@@ -77,7 +78,7 @@ const Map = () => {
             );
           })}
         {selectedLocation && (
-          <InfoWindow
+          <InfoWindowF
             position={{ lat: selectedLocation.lat, lng: selectedLocation.lng }}
             onCloseClick={() => {
               setSelectedLocation(null);
@@ -93,7 +94,7 @@ const Map = () => {
                 {selectedLocation.lng.toFixed(3)},{" "}
               </p>
             </div>
-          </InfoWindow>
+          </InfoWindowF>
         )}
       </GoogleMap>
     </div>
