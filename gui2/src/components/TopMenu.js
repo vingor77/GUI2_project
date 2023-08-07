@@ -1,10 +1,15 @@
 import React from "react";
 import searchIcon from "../images/Search icon.svg";
 import sliderMenu from "../images/SliderMenu.svg";
-import { useState } from "react";
+import { useState, useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { SignOutButton } from "./SignOutButton";
+import MapContext from "../contexts/MapContext";
+import { GoogleMap, useJsApiLoader, Marker } from "@react-google-maps/api";
+//import Tooltip from "./Tooltip";
 const TopMenu = ({ user }) => {
+  const [geocoder, setGeocoder] = useState(null);
+  const [locationFound, setLocationFound] = useState(true);
   const topMenuStyle = {
     borderStyle: "solid",
     marginLeft: "0px",
@@ -22,6 +27,7 @@ const TopMenu = ({ user }) => {
     background: "#D0F5FF",
     paddingTop: "10px",
     outline: "none",
+    fontSize: "1.2em",
   };
   const sliderMenuStyle = {
     background: "#D0F5FF",
@@ -43,11 +49,31 @@ const TopMenu = ({ user }) => {
   // Display about us and help option
   const [showOptions, setShowOptions] = useState(false);
   const [locationInput, setLocationInput] = useState("");
+  const { mapData, setMapData, center, setCenter } = useContext(MapContext);
 
+  //const [searchType, setSearchType] = useState("Map Area");
   const moveMap = () => {
-    alert(locationInput);
+    //alert(locationInput);
+    if (locationInput) {
+      fetch(
+        `https://maps.googleapis.com/maps/api/geocode/json?address=${locationInput}&key=AIzaSyDE0Qmrx_Qn5Nx04wvENvJ_riRGll6-tx0`
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.results && data.results.length > 0) {
+            setCenter(data.results[0].geometry.location);
+            setLocationFound(true);
+          } else {
+            setLocationFound(false);
+          }
+        })
+        .catch((error) => {
+          setLocationFound(false);
+        });
+    } else {
+      setLocationFound(false);
+    }
   };
-
   const onClick = () => setShowOptions(!showOptions);
   const Option = () => (
     <div className="row col-lg-3 col-7" style={topMenuStyle}>
@@ -71,6 +97,15 @@ const TopMenu = ({ user }) => {
   return (
     <div className="row" style={{ marginLeft: "5px" }}>
       <div style={topMenuStyle} className="row col-lg-3 col-md-3 col-6">
+        {/* <select
+          value={searchType}
+          onChange={(e) => {
+            setSearchType(e.target.value);
+          }}
+        >
+          <option value="Map Area">Search Map Area</option>
+          <option value="List Items">Search List Items</option>
+        </select> */}
         {/* Search icon */}
         <img
           style={searchIconStyle}
@@ -85,9 +120,15 @@ const TopMenu = ({ user }) => {
           style={searchBoxStyle}
           className="col-4 col-md-5 col-lg-7 "
           type="text"
-          placeholder="Search"
+          placeholder="Enter an area to view"
+          title="ex: 'Boston, MA'"
           value={locationInput}
           onChange={(e) => setLocationInput(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              moveMap();
+            }
+          }}
         />
 
         {/* Slider menu */}
@@ -97,8 +138,22 @@ const TopMenu = ({ user }) => {
           style={sliderMenuStyle}
           src={sliderMenu}
           alt="drop down menu"
+          title="Click to see Help and About Us page"
         />
       </div>
+      {!locationFound && (
+        <div
+          style={{
+            zIndex: "9",
+            color: "red",
+            fontWeight: "bolder",
+            marginLeft: "15px",
+            marginTop: "-28px",
+          }}
+        >
+          Not found, usage: "Boston, MA"
+        </div>
+      )}
       {showOptions ? <Option /> : null}
       {/* <div className="offset-lg-5 col-lg-1"> */}
       <SignOutButton user={user} />

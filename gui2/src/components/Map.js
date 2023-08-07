@@ -10,8 +10,11 @@ import {
 import MapContext from "../contexts/MapContext";
 
 const Map = () => {
-  const { mapData, setMapData } = useContext(MapContext);
-  const center = useMemo(() => ({ lat: 42.6334, lng: -71.3162 }), []);
+  const { mapData, setMapData, center, setCenter } = useContext(MapContext);
+
+  //const center = useMemo(() => ({ lat: 42.6334, lng: -71.3162 }), []);
+  //const { mapData, center } = useContext(MapContext);
+
   // let markers = props.markers;
   // if (!markers) {
   //   markers = [

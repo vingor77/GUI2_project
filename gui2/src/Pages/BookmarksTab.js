@@ -3,6 +3,14 @@ import BookmarkContext from "../contexts/BookmarkContext";
 import { storage } from "../index";
 import DataContext from "../contexts/DataContext";
 import { getDownloadURL, ref } from "firebase/storage";
+import {
+  updateDoc,
+  setDoc,
+  doc,
+  arrayUnion,
+  arrayRemove,
+} from "firebase/firestore";
+import { db } from "../index";
 const BookmarksPage = ({ user }) => {
   const bookdata = useContext(BookmarkContext);
   const data = useContext(DataContext);
@@ -12,7 +20,7 @@ const BookmarksPage = ({ user }) => {
   const [showDetails, setShowDetails] = useState(false);
   //const [showDetails, setShowDetails] = useState(false);
   const [details, setDetails] = useState(0);
-  if (!bookdata) {
+  if (!bookdata || !bookdata.Bookmarks | !bookdata.Bookmarks.length) {
     return <div>No bookmarks *yet*</div>;
   }
   const viewBookmark = (id) => {
@@ -38,19 +46,19 @@ const BookmarksPage = ({ user }) => {
     getImageURLs();
   };
 
-  const handleUnBookmark = async (event, item) => {
-    // event.stopPropagation();
-    // let userId = "ERROR";
-    //   if (user && user.auth && user.auth.currentUser) {
-    //     userId = user.auth.currentUser.uid;
-    // } else {
-    //   console.log(JSON.stringify(user));
-    // }
-    // const docRef = doc(db, "Bookmarks", `${userId}`);
-    //   await setDoc(docRef, {
-    //     Bookmarks: arrayUnion({ id: item.id, Title: item.Title }),
-    //   }, { merge: true });
-  };
+  // const handleUnBookmark = async (event, item) => {
+  //   // event.stopPropagation();
+  //   // let userId = "ERROR";
+  //   //   if (user && user.auth && user.auth.currentUser) {
+  //   //     userId = user.auth.currentUser.uid;
+  //   // } else {
+  //   //   console.log(JSON.stringify(user));
+  //   // }
+  //   // const docRef = doc(db, "Bookmarks", `${userId}`);
+  //   //   await setDoc(docRef, {
+  //   //     Bookmarks: arrayUnion({ id: item.id, Title: item.Title }),
+  //   //   }, { merge: true });
+  // };
 
   // const showReportDetails = (index) => {
   //   if(index === details) {
@@ -66,11 +74,54 @@ const BookmarksPage = ({ user }) => {
   //   }
   //   setDetails(index);
   // }
+  const handleBookmark = async (event, item) => {
+    event.stopPropagation();
+    let userId = "ERROR";
+    if (user && user.auth && user.auth.currentUser) {
+      userId = user.auth.currentUser.uid;
+    } else {
+      console.log(JSON.stringify(user));
+    }
 
+    const docRef = doc(db, "Bookmarks", `${userId}`);
+    await setDoc(
+      docRef,
+      {
+        Bookmarks: arrayUnion({ id: item.id, Title: item.Title }),
+      },
+      { merge: true }
+    );
+  };
+  const handleUnBookmark = async (event, item) => {
+    event.stopPropagation();
+    let userId = "ERROR";
+    if (user && user.auth && user.auth.currentUser) {
+      userId = user.auth.currentUser.uid;
+    } else {
+      console.log(JSON.stringify(user));
+    }
+    const docRef = doc(db, "Bookmarks", `${userId}`);
+    await updateDoc(docRef, {
+      Bookmarks: arrayRemove({ id: item.id, Title: item.Title }),
+    });
+  };
+
+  const handleResolve = async (event, item) => {
+    const docRef = doc(db, "Alerts", `${item.id}`);
+    await updateDoc(docRef, {
+      Archived: true,
+    });
+  };
+  const handleUnResolve = async (event, item) => {
+    const docRef = doc(db, "Alerts", `${item.id}`);
+    await updateDoc(docRef, {
+      Archived: false,
+    });
+  };
   if (showDetails) {
     return (
       <>
-        <div style={{ maxHeight: "400px", overflow: "scroll" }}>
+        {/* <div style={{ maxHeight: "400px" }}>
           {bookdata &&
             bookdata.Bookmarks &&
             bookdata.Bookmarks.map((item, index) => (
@@ -89,15 +140,34 @@ const BookmarksPage = ({ user }) => {
                 {item.Title}
               </p>
             ))}
-        </div>
+        </div> */}
+        <button
+          className="button"
+          style={{ padding: "5px", margin: "2px" }}
+          onClick={(event) => {
+            setShowDetails(false);
+          }}
+        >
+          {" "}
+          &larr; Return to list
+        </button>
         <div
           style={{
             margin: "20px",
             border: "1px solid #ddd",
             padding: "10px",
             borderRadius: "5px",
+            backgroundColor: booked[details].Archived
+              ? "rgba(0, 255, 0, 0.4)"
+              : "white",
           }}
         >
+          {" "}
+          {booked[details].Archived && (
+            <p>
+              <strong>MARKED AS RESOLVED</strong>
+            </p>
+          )}
           {booked[details].Image && (
             <img
               src={imageURLs[booked[details].Image]}
@@ -123,14 +193,41 @@ const BookmarksPage = ({ user }) => {
           <p>
             <strong>Description:</strong> {booked[details].Description}
           </p>
-
           {/* TODO: <button onClick={(event) => handleUnBookmark(event, booked[details])}>Delete Bookmark</button> */}
         </div>
+        <button
+          className="button"
+          style={{ padding: "5px", margin: "2px" }}
+          onClick={(event) => handleUnBookmark(event, booked[details])}
+        >
+          Unbookmark
+        </button>
+        <button
+          className="button"
+          style={{ padding: "5px", margin: "2px" }}
+          onClick={(event) => handleBookmark(event, booked[details])}
+        >
+          Bookmark
+        </button>
+        <button
+          className="button"
+          style={{ padding: "5px", margin: "2px" }}
+          onClick={(event) => handleResolve(event, booked[details])}
+        >
+          Mark as Resolved
+        </button>
+        <button
+          className="button"
+          style={{ padding: "5px", margin: "2px" }}
+          onClick={(event) => handleUnResolve(event, booked[details])}
+        >
+          Mark as Unresolved
+        </button>
       </>
     );
   } else {
     return (
-      <div style={{ maxHeight: "400px", overflow: "scroll" }}>
+      <div style={{ maxHeight: "400px" }}>
         {bookdata &&
           bookdata.Bookmarks &&
           bookdata.Bookmarks.map((item, index) => (

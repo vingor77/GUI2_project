@@ -173,35 +173,35 @@ const EventsPage = ({ user }) => {
           <p>
             <strong>Description:</strong> {filteredData[details].Description}
           </p>
-          <button
-            className="button"
-            style={{ padding: "5px", margin: "2px" }}
-            onClick={(event) => handleUnBookmark(event, filteredData[details])}
-          >
-            Unbookmark
-          </button>
-          <button
-            className="button"
-            style={{ padding: "5px", margin: "2px" }}
-            onClick={(event) => handleBookmark(event, filteredData[details])}
-          >
-            Bookmark
-          </button>
-          <button
-            className="button"
-            style={{ padding: "5px", margin: "2px" }}
-            onClick={(event) => handleResolve(event, filteredData[details])}
-          >
-            Mark as Resolved
-          </button>
-          <button
-            className="button"
-            style={{ padding: "5px", margin: "2px" }}
-            onClick={(event) => handleUnResolve(event, filteredData[details])}
-          >
-            Mark as Unresolved
-          </button>
         </div>
+        <button
+          className="button"
+          style={{ padding: "5px", margin: "2px" }}
+          onClick={(event) => handleUnBookmark(event, filteredData[details])}
+        >
+          Unbookmark
+        </button>
+        <button
+          className="button"
+          style={{ padding: "5px", margin: "2px" }}
+          onClick={(event) => handleBookmark(event, filteredData[details])}
+        >
+          Bookmark
+        </button>
+        <button
+          className="button"
+          style={{ padding: "5px", margin: "2px" }}
+          onClick={(event) => handleResolve(event, filteredData[details])}
+        >
+          Mark as Resolved
+        </button>
+        <button
+          className="button"
+          style={{ padding: "5px", margin: "2px" }}
+          onClick={(event) => handleUnResolve(event, filteredData[details])}
+        >
+          Mark as Unresolved
+        </button>
       </>
     );
   } else {

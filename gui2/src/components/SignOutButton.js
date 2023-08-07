@@ -83,6 +83,7 @@ export const SignOutButton = ({ user }) => {
         className="rounded-circle"
         src={userInfo.photoURL}
         style={avatarStyle}
+        title="BYE"
       />
 
       {/* Sign out */}
