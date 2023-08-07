@@ -23,10 +23,15 @@ const EventsPage = ({ user }) => {
   const [imageURLs, setImageURLs] = useState({});
   const [showDetails, setShowDetails] = useState(false);
   const [details, setDetails] = useState(0);
+  const [updateTrigger, setUpdateTrigger] = useState(0);
   // const [divClicked, setDivClicked] = useState(false);
-  const { mapData, setMapData, setCenter, setSelectedLocation } = useContext(
-    MapContext
-  );
+  const {
+    mapData,
+    setMapData,
+    setCenter,
+    selectedLocation,
+    setSelectedLocation,
+  } = useContext(MapContext);
   useEffect(() => {
     const type = data.filter((alert) => alert.AlertType === "Event");
     setFilteredData(type);
@@ -89,6 +94,28 @@ const EventsPage = ({ user }) => {
       { merge: true }
     );
   };
+  const handleCrazy = (item, index) => {
+    // setCenter({
+    //   lat: item.Location.latitude,
+    //   lng: item.Location.longitude,
+    // });
+    // const marker = mapData.find(
+    //   (m) =>
+    //     m.title === item.Title &&
+    //     m.lat === item.Location.latitude &&
+    //     m.lng === item.Location.longitude
+    // );
+    // if (marker) {
+    //   setSelectedLocation(marker);
+    // }
+    setUpdateTrigger(updateTrigger + 1);
+    setDetails(index);
+  };
+  useEffect(() => {
+    if (selectedLocation) {
+      setShowDetails(true);
+    }
+  }, [updateTrigger]);
 
   const handleUnBookmark = async (event, item) => {
     event.stopPropagation();
@@ -225,8 +252,6 @@ const EventsPage = ({ user }) => {
                   : "white",
               }}
               onClick={() => {
-                setDetails(index);
-                setShowDetails(true);
                 setCenter({
                   lat: item.Location.latitude,
                   lng: item.Location.longitude,
@@ -240,6 +265,9 @@ const EventsPage = ({ user }) => {
                 if (marker) {
                   setSelectedLocation(marker);
                 }
+                handleCrazy(item, index);
+                // setDetails(index);
+                // setShowDetails(true);
               }}
             >
               {item.Archived && (

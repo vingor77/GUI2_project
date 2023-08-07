@@ -23,9 +23,14 @@ const ReportsPage = ({ user }) => {
   const [showDetails, setShowDetails] = useState(false);
   const [details, setDetails] = useState(0);
   // const [divClicked, setDivClicked] = useState(false);
-  const { mapData, setMapData, setCenter, setSelectedLocation } = useContext(
-    MapContext
-  );
+  const [updateTrigger, setUpdateTrigger] = useState(0);
+  const {
+    mapData,
+    setMapData,
+    setCenter,
+    selectedLocation,
+    setSelectedLocation,
+  } = useContext(MapContext);
   useEffect(() => {
     const type = data.filter((alert) => alert.AlertType === "Report");
     setFilteredData(type);
@@ -69,7 +74,28 @@ const ReportsPage = ({ user }) => {
 
     getImageURLs();
   }, [data, setMapData]);
-
+  const handleCrazy = (item, index) => {
+    // setCenter({
+    //   lat: item.Location.latitude,
+    //   lng: item.Location.longitude,
+    // });
+    // const marker = mapData.find(
+    //   (m) =>
+    //     m.title === item.Title &&
+    //     m.lat === item.Location.latitude &&
+    //     m.lng === item.Location.longitude
+    // );
+    // if (marker) {
+    //   setSelectedLocation(marker);
+    // }
+    setUpdateTrigger(updateTrigger + 1);
+    setDetails(index);
+  };
+  useEffect(() => {
+    if (selectedLocation) {
+      setShowDetails(true);
+    }
+  }, [updateTrigger]);
   const handleBookmark = async (event, item) => {
     event.stopPropagation();
     let userId = "ERROR";
@@ -247,8 +273,6 @@ const ReportsPage = ({ user }) => {
                   : "white",
               }}
               onClick={() => {
-                setDetails(index);
-                setShowDetails(true);
                 setCenter({
                   lat: item.Location.latitude,
                   lng: item.Location.longitude,
@@ -262,6 +286,9 @@ const ReportsPage = ({ user }) => {
                 if (marker) {
                   setSelectedLocation(marker);
                 }
+                handleCrazy(item, index);
+                // setDetails(index);
+                // setShowDetails(true);
               }}
             >
               {item.Archived && (
