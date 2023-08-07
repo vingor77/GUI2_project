@@ -199,7 +199,7 @@ const CreateAlertsTab = ({ user }) => {
   //};
   const ReportOption = () => (
     <>
-      <h6>Select Report Type</h6>
+      <h6>Select Issue Type</h6>
       <Dropdown>
         <Dropdown.Toggle variant="secondary" id="dropdown-basic">
           {dropDownReport}
@@ -241,7 +241,7 @@ const CreateAlertsTab = ({ user }) => {
         </Dropdown.Toggle>
         <Dropdown.Menu>
           <Dropdown.Item onClick={() => handleSelectAlertType("Report")}>
-            Report
+            Issue
           </Dropdown.Item>
           <Dropdown.Item onClick={() => handleSelectAlertType("Event")}>
             Event

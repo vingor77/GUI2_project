@@ -185,7 +185,7 @@ const BookmarksPage = ({ user }) => {
           )}
           <h2>{booked[details].Title}</h2>
           <p>
-            <strong>Report Type:</strong> {booked[details].ReportType}
+            <strong>Issue Type:</strong> {booked[details].ReportType}
           </p>
           <p>
             <strong>City/Town:</strong> {booked[details].Locality}

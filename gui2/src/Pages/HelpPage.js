@@ -99,7 +99,7 @@ const HelpPage = () => {
               {openedSection === "bookmark" && (
                 <p>
                   The bookmark feature allows you to easily keep track of issues
-                  that you're interested in. You can bookmark a report by
+                  that you're interested in. You can bookmark an issue by
                   clicking the 'Bookmark' button on the issues page. Then if you
                   would like to unbookmark, simply go to the bookmarks tab to do
                   so.
@@ -111,11 +111,11 @@ const HelpPage = () => {
               className="accordion-section"
               onClick={() => toggleSection("signIn")}
             >
-              <h2>Why do I need to sign in to make a report?</h2>
+              <h2>What is the difference between Google and anonymous signins?</h2>
               {openedSection === "signIn" && (
                 <p>
-                  We require users to sign in to make a report to ensure that
-                  issues are valid and to prevent abuse of the platform.
+                  The main difference between signing in with Google as opposed to 
+                  anonymous is that the bookmarks are saved across devices.
                 </p>
               )}
             </div>

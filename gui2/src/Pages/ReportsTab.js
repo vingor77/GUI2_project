@@ -212,7 +212,7 @@ const ReportsPage = ({ user }) => {
           )}
 
           <p>
-            <strong>Report Type:</strong> {filteredData[details].ReportType}
+            <strong>Issue Type:</strong> {filteredData[details].ReportType}
           </p>
           <p>
             <strong>Location:</strong>{" "}
@@ -312,7 +312,7 @@ const ReportsPage = ({ user }) => {
                 <strong>Alert Type:</strong> {item.AlertType}
               </p>
               <p>
-                <strong>Report Type:</strong> {item.ReportType}
+                <strong>Issue Type:</strong> {item.ReportType}
               </p>
               <p>
                 <strong>City/Town:</strong>{" "}
