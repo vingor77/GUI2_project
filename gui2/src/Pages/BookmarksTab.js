@@ -75,6 +75,8 @@ const BookmarksPage = ({ user }) => {
   //   }
   //   setDetails(index);
   // }
+
+  /*
   const handleBookmark = async (event, item) => {
     event.stopPropagation();
     let userId = "ERROR";
@@ -93,6 +95,8 @@ const BookmarksPage = ({ user }) => {
       { merge: true }
     );
   };
+  */
+
   const handleUnBookmark = async (event, item) => {
     event.stopPropagation();
     let userId = "ERROR";
@@ -229,6 +233,7 @@ const BookmarksPage = ({ user }) => {
           >
             Unbookmark
           </button>
+          {/*Removed bookmark button while in bookmarks tab. Needs styling to center
           <button
             className="button"
             style={{ padding: "5px", margin: "2px" }}
@@ -236,6 +241,7 @@ const BookmarksPage = ({ user }) => {
           >
             Bookmark
           </button>
+          */}
         </div>
         <div style={{ marginLeft: "4%" }}>
           <button

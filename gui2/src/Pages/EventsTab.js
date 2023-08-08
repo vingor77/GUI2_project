@@ -417,6 +417,7 @@ const EventsPage = ({ user }) => {
           </p>
         </div>
         <div style={{ marginLeft: "4%" }}>
+          {/*
           <button
             className="button"
             style={{ padding: "5px", margin: "2px" }}
@@ -424,6 +425,7 @@ const EventsPage = ({ user }) => {
           >
             Unbookmark
           </button>
+          */}
           <button
             className="button"
             style={{ padding: "5px", margin: "2px" }}
