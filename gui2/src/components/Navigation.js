@@ -7,6 +7,7 @@ import bookmarks from "../images/BookMarks Tab.svg";
 import profile from "../images/Profile Tab.svg";
 import Tab from "./Tab";
 import { useState } from "react";
+import "../style/Hover.css";
 const Navigation = ({ user }) => {
   const navigationMenuStyle = {
     position: "absolute",
@@ -84,4 +85,4 @@ const Navigation = ({ user }) => {
   );
 };
 
-export default Navigation;
+export default React.memo(Navigation);

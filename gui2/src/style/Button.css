@@ -1,5 +1,7 @@
 .button {
   transition: transform 0.1s ease-in-out;
+  width: 46%;
+  border-radius: 5px;
 }
 
 .button:active {

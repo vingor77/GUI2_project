@@ -117,7 +117,7 @@ const CreateAlertsTab = ({ user }) => {
     },
   };
   const inputStyle = {
-    marginTop: "10px",
+    marginTop: "5px",
   };
   const handleCreateAlert = async (e) => {
     //e.preventDefault(); // Prevent the form from reloading the page
@@ -260,7 +260,13 @@ const CreateAlertsTab = ({ user }) => {
 
       {/* Alert title */}
       <Form.Control
-        style={inputStyle}
+        style={{
+          positon: "relative",
+          margin: "auto",
+          width: "94%",
+          marginTop: "5px",
+          borderRadius: "5px",
+        }}
         size="lg" //I think this may be making it too big
         type="text"
         placeholder="Enter Title"
@@ -272,9 +278,10 @@ const CreateAlertsTab = ({ user }) => {
         <button
           style={{
             marginTop: "5px",
-            marginLeft: "5px",
+            marginLeft: "0px",
             marginTop: "5px",
             padding: "5px",
+            borderRadius: "5px",
           }}
           onClick={openModal}
         >
@@ -320,14 +327,19 @@ const CreateAlertsTab = ({ user }) => {
       </Form>
 
       {/* Image upload */}
-      <Form.Group controlId="formFile" className="mb-3">
-        <Form.Label>Upload Image</Form.Label>
+      <Form.Group
+        controlId="formFile"
+        className="mb-3 inputStyle"
+        style={{ position: "relative", top: "-10px" }}
+      >
+        <Form.Label className="inputStyle">Upload Image</Form.Label>
         <Form.Control type="file" onChange={handleFileChange} />
       </Form.Group>
 
       {/* Submit button */}
       <Button
         className="offset-lg-4 offset-5 col-lg-3 col-3"
+        style={{ position: "relative", top: "-10px" }}
         variant="dark"
         onClick={() => {
           handleCreateAlert();

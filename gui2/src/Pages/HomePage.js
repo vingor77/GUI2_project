@@ -25,13 +25,13 @@ const HomePage = ({ user }) => {
       .map((item, index) => ({
         lat: item.Location.latitude,
         lng: item.Location.longitude,
-        id: `marker${index}`,
+        id: index,
         type: item.AlertType,
         title: item.Title,
       })); //console.log(JSON.stringify(user))
-    console.log(
-      "hp: " + JSON.stringify(mapData) + " ... " + JSON.stringify(newMarkers)
-    );
+    //console.log(
+    // "hp: " + JSON.stringify(mapData) + " ... " + JSON.stringify(newMarkers)
+    //);
     if (JSON.stringify(mapData) !== JSON.stringify(newMarkers)) {
       setMapData(newMarkers);
     }

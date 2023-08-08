@@ -15,25 +15,35 @@ import { db } from "../index";
 import OuterTab from "../components/OuterTab";
 import ReactDOM from "react-dom";
 import "../style/Button.css";
+import "../style/Hover.css";
 const ReportsPage = ({ user }) => {
   const data = useContext(DataContext);
   const bookdata = useContext(BookmarkContext);
   const [filteredData, setFilteredData] = useState([]);
   const [imageURLs, setImageURLs] = useState({});
-  const [showDetails, setShowDetails] = useState(false);
-  const [details, setDetails] = useState(0);
+  // const [showDetails, setShowDetails] = useState(false);
+  // const [details, setDetails] = useState(0);
   // const [divClicked, setDivClicked] = useState(false);
   const [updateTrigger, setUpdateTrigger] = useState(0);
+  const [initialized, setInitialized] = useState(false);
   const {
     mapData,
     setMapData,
     setCenter,
     selectedLocation,
     setSelectedLocation,
+    isCloseClicked,
+    setIsCloseClicked,
+    details,
+    setDetails,
+    showDetails,
+    setShowDetails,
   } = useContext(MapContext);
   useEffect(() => {
     const type = data.filter((alert) => alert.AlertType === "Report");
     setFilteredData(type);
+    setInitialized(true);
+    setDetails(-1);
     const newMarkers = type
       .filter(
         (item) =>
@@ -47,15 +57,15 @@ const ReportsPage = ({ user }) => {
       .map((item, index) => ({
         lat: item.Location.latitude,
         lng: item.Location.longitude,
-        id: `marker${index}`,
+        id: index,
         type: item.ReportType,
         title: item.Title,
       }));
-    console.log("MD: " + JSON.stringify(mapData));
-    console.log("NM: " + JSON.stringify(newMarkers));
+    //console.log("MD: " + JSON.stringify(mapData));
+    //console.log("NM: " + JSON.stringify(newMarkers));
 
     if (JSON.stringify(mapData) !== JSON.stringify(newMarkers)) {
-      console.log("CC");
+      //console.log("CC");
       setMapData(newMarkers);
     }
 
@@ -73,6 +83,7 @@ const ReportsPage = ({ user }) => {
     };
 
     getImageURLs();
+    setSelectedLocation(null);
   }, [data, setMapData]);
   const handleCrazy = (item, index) => {
     // setCenter({
@@ -164,12 +175,23 @@ const ReportsPage = ({ user }) => {
 
   // };
 
-  if (showDetails) {
+  if (showDetails && initialized && details !== -1) {
     return (
-      <>
+      <div
+        style={{
+          width: "100%",
+          background: "#E4E3D9",
+          position: "relative",
+          height: "100%",
+          overflow: "scroll",
+          overflowX: "hidden",
+          borderBottomLeftRadius: "8px",
+          borderBottomRightRadius: "8px",
+        }}
+      >
         <button
           className="button"
-          style={{ padding: "5px", margin: "2px" }}
+          style={{ padding: "5px", marginTop: "10px", marginLeft: "4%" }}
           onClick={(event) => {
             setShowDetails(false);
           }}
@@ -211,47 +233,51 @@ const ReportsPage = ({ user }) => {
             />
           )}
 
-          <p>
+          <p className="paragraph">
             <strong>Issue Type:</strong> {filteredData[details].ReportType}
           </p>
-          <p>
+          <p className="paragraph">
             <strong>Location:</strong>{" "}
             {filteredData[details].Location.latitude.toFixed(3)}{" "}
             {filteredData[details].Location.longitude.toFixed(3)}
           </p>
-          <p>
+          <p className="paragraph">
             <strong>Description:</strong> {filteredData[details].Description}
           </p>
         </div>
-        <button
-          className="button"
-          style={{ padding: "5px", margin: "2px" }}
-          onClick={(event) => handleUnBookmark(event, filteredData[details])}
-        >
-          Unbookmark
-        </button>
-        <button
-          className="button"
-          style={{ padding: "5px", margin: "2px" }}
-          onClick={(event) => handleBookmark(event, filteredData[details])}
-        >
-          Bookmark
-        </button>
-        <button
-          className="button"
-          style={{ padding: "5px", margin: "2px" }}
-          onClick={(event) => handleResolve(event, filteredData[details])}
-        >
-          Mark as Resolved
-        </button>
-        <button
-          className="button"
-          style={{ padding: "5px", margin: "2px" }}
-          onClick={(event) => handleUnResolve(event, filteredData[details])}
-        >
-          Mark as Unresolved
-        </button>
-      </>
+        <div style={{ marginLeft: "4%" }}>
+          <button
+            className="button"
+            style={{ padding: "5px", margin: "2px" }}
+            onClick={(event) => handleUnBookmark(event, filteredData[details])}
+          >
+            Unbookmark
+          </button>
+          <button
+            className="button"
+            style={{ padding: "5px", margin: "2px" }}
+            onClick={(event) => handleBookmark(event, filteredData[details])}
+          >
+            Bookmark
+          </button>
+        </div>
+        <div style={{ marginLeft: "4%" }}>
+          <button
+            className="button"
+            style={{ padding: "5px", margin: "2px" }}
+            onClick={(event) => handleResolve(event, filteredData[details])}
+          >
+            Mark as Resolved
+          </button>
+          <button
+            className="button"
+            style={{ padding: "5px", margin: "2px" }}
+            onClick={(event) => handleUnResolve(event, filteredData[details])}
+          >
+            Mark as Unresolved
+          </button>
+        </div>
+      </div>
     );
   } else {
     return (
@@ -262,6 +288,7 @@ const ReportsPage = ({ user }) => {
           position: "relative",
           height: "100%",
           overflow: "scroll",
+          overflowX: "hidden",
           borderBottomLeftRadius: "8px",
           borderBottomRightRadius: "8px",
         }}
@@ -271,6 +298,7 @@ const ReportsPage = ({ user }) => {
           index /* something to note: when the width is about 420-999px, the tabs are wider than page*/
         ) => (
           <div
+            className="hoverDarken"
             key={index}
             style={{
               margin: "20px",
@@ -318,13 +346,13 @@ const ReportsPage = ({ user }) => {
               />
             )}
             <h2>{item.Title}</h2>
-            <p>
+            {/* <p className="paragraph">
               <strong>Alert Type:</strong> {item.AlertType}
-            </p>
-            <p>
+            </p> */}
+            <p className="paragraph">
               <strong>Issue Type:</strong> {item.ReportType}
             </p>
-            <p>
+            <p className="paragraph">
               <strong>City/Town:</strong>{" "}
               {item.Locality ? item.Locality : "None"}
             </p>

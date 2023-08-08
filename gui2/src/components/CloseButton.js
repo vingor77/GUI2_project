@@ -9,13 +9,14 @@ const CloseButton = ({ setTab }) => {
     width: "auto",
     marginLeft: "20px",
   };
-  const { setIsCloseClicked } = useContext(MapContext);
+  const { setIsCloseClicked, setSelectedLocation } = useContext(MapContext);
 
   return (
     <img
       onClick={() => {
         setTab(false);
         setIsCloseClicked(true);
+        setSelectedLocation(null);
       }}
       src={closeButton}
       style={buttonStyle}

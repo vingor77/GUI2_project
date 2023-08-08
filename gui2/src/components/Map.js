@@ -27,7 +27,16 @@ const Map = () => {
   console.log("MARKERS GOTTEN: ", mapData);
   console.log(Array.isArray(mapData));
   //const [selectedLocation, setSelectedLocation] = useState(null);
-  const { selectedLocation, setSelectedLocation } = useContext(MapContext);
+  const {
+    selectedLocation,
+    setSelectedLocation,
+    isCloseClicked,
+    setIsCloseClicked,
+    details,
+    setDetails,
+    showDetails,
+    setShowDetails,
+  } = useContext(MapContext);
 
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: "AIzaSyDE0Qmrx_Qn5Nx04wvENvJ_riRGll6-tx0",
@@ -73,6 +82,13 @@ const Map = () => {
                 position={{ lat: marker.lat, lng: marker.lng }}
                 onClick={() => {
                   setSelectedLocation(marker);
+                  console.log("Marker clicked:" + marker.id);
+
+                  //setIsCloseClicked(false);
+                  //if (!isCloseClicked) {
+                  setDetails(marker.id);
+                  setShowDetails(true);
+                  //}
                 }}
               />
             );
@@ -82,6 +98,8 @@ const Map = () => {
             position={{ lat: selectedLocation.lat, lng: selectedLocation.lng }}
             onCloseClick={() => {
               setSelectedLocation(null);
+              //setIsCloseClicked(true);
+              setShowDetails(false);
             }}
           >
             <div>

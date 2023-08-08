@@ -14,7 +14,7 @@ export default function DataProvider({ children, db }) {
         ...doc.data(),
       }));
       setData(fetchedData);
-      console.log("CALLING DATABASE" + fetchedData);
+      console.log("CALLING DATABASE");
     });
 
     return () => unsubscribe();

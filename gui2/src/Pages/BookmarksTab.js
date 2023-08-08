@@ -11,6 +11,7 @@ import {
   arrayRemove,
 } from "firebase/firestore";
 import { db } from "../index";
+import "../style/Hover.css";
 const BookmarksPage = ({ user }) => {
   const bookdata = useContext(BookmarkContext);
   const data = useContext(DataContext);
@@ -120,7 +121,18 @@ const BookmarksPage = ({ user }) => {
   };
   if (showDetails) {
     return (
-      <>
+      <div
+        style={{
+          width: "100%",
+          background: "#E4E3D9",
+          position: "relative",
+          height: "100%",
+          overflow: "scroll",
+          overflowX: "hidden",
+          borderBottomLeftRadius: "8px",
+          borderBottomRightRadius: "8px",
+        }}
+      >
         {/* <div style={{ maxHeight: "400px" }}>
           {bookdata &&
             bookdata.Bookmarks &&
@@ -143,7 +155,7 @@ const BookmarksPage = ({ user }) => {
         </div> */}
         <button
           className="button"
-          style={{ padding: "5px", margin: "2px" }}
+          style={{ padding: "5px", marginTop: "10px", marginLeft: "4%" }}
           onClick={(event) => {
             setShowDetails(false);
           }}
@@ -158,14 +170,19 @@ const BookmarksPage = ({ user }) => {
             padding: "10px",
             borderRadius: "5px",
             backgroundColor: booked[details].Archived
-              ? "rgba(0, 255, 0, 0.4)"
-              : "#FF7F7F",
+              ? "rgba(122, 122, 122, 0.4)"
+              : "white",
           }}
         >
           {" "}
-          {booked[details].Archived && (
+          {booked[details].Archived && booked[details].AlertType === "Report" && (
             <p>
               <strong>MARKED AS RESOLVED</strong>
+            </p>
+          )}
+          {booked[details].Archived && booked[details].AlertType === "Event" && (
+            <p>
+              <strong>EVENT HAS ENDED</strong>
             </p>
           )}
           {booked[details].Image && (
@@ -184,60 +201,86 @@ const BookmarksPage = ({ user }) => {
             />
           )}
           <h2>{booked[details].Title}</h2>
-          <p>
-            <strong>Issue Type:</strong> {booked[details].ReportType}
+          <p className="paragraph">
+            <strong>Alert Type:</strong>{" "}
+            {booked[details].AlertType === "Report" ? "Issue" : "Event"}
           </p>
-          <p>
+          {booked[details].ReportType === "Not specified" ? (
+            ""
+          ) : (
+            <p className="paragraph">
+              <strong>Issue Type: </strong>
+              {booked[details].ReportType}
+            </p>
+          )}
+          <p className="paragraph">
             <strong>City/Town:</strong> {booked[details].Locality}
           </p>
-          <p>
+          <p className="paragraph">
             <strong>Description:</strong> {booked[details].Description}
           </p>
           {/* TODO: <button onClick={(event) => handleUnBookmark(event, booked[details])}>Delete Bookmark</button> */}
         </div>
-        <button
-          className="button"
-          style={{ padding: "5px", margin: "2px" }}
-          onClick={(event) => handleUnBookmark(event, booked[details])}
-        >
-          Unbookmark
-        </button>
-        <button
-          className="button"
-          style={{ padding: "5px", margin: "2px" }}
-          onClick={(event) => handleBookmark(event, booked[details])}
-        >
-          Bookmark
-        </button>
-        <button
-          className="button"
-          style={{ padding: "5px", margin: "2px" }}
-          onClick={(event) => handleResolve(event, booked[details])}
-        >
-          Mark as Resolved
-        </button>
-        <button
-          className="button"
-          style={{ padding: "5px", margin: "2px" }}
-          onClick={(event) => handleUnResolve(event, booked[details])}
-        >
-          Mark as Unresolved
-        </button>
-      </>
+        <div style={{ marginLeft: "4%" }}>
+          <button
+            className="button"
+            style={{ padding: "5px", margin: "2px" }}
+            onClick={(event) => handleUnBookmark(event, booked[details])}
+          >
+            Unbookmark
+          </button>
+          <button
+            className="button"
+            style={{ padding: "5px", margin: "2px" }}
+            onClick={(event) => handleBookmark(event, booked[details])}
+          >
+            Bookmark
+          </button>
+        </div>
+        <div style={{ marginLeft: "4%" }}>
+          <button
+            className="button"
+            style={{ padding: "5px", margin: "2px" }}
+            onClick={(event) => handleResolve(event, booked[details])}
+          >
+            Mark as Resolved
+          </button>
+          <button
+            className="button"
+            style={{ padding: "5px", margin: "2px" }}
+            onClick={(event) => handleUnResolve(event, booked[details])}
+          >
+            Mark as Unresolved
+          </button>
+        </div>
+      </div>
     );
   } else {
     return (
-      <div style={{ maxHeight: "400px" }}>
+      <div
+        style={{
+          maxHeight: "400px",
+          width: "100%",
+          background: "#E4E3D9",
+          position: "relative",
+          height: "100%",
+          overflow: "scroll",
+          overflowX: "hidden",
+          borderBottomLeftRadius: "8px",
+          borderBottomRightRadius: "8px",
+        }}
+      >
         {bookdata &&
           bookdata.Bookmarks &&
           bookdata.Bookmarks.map((item, index) => (
             <p
+              className="hoverDarken"
               onClick={() => {
                 viewBookmark(item.id);
               }}
               style={{
                 margin: "20px",
-                border: "1px solid #ddd",
+                border: "2px solid #aaa",
                 padding: "10px",
                 borderRadius: "5px",
                 cursor: "pointer",

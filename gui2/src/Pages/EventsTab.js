@@ -15,26 +15,41 @@ import { db } from "../index";
 import OuterTab from "../components/OuterTab";
 import ReactDOM from "react-dom";
 import "../style/Button.css";
-
+import "../style/Hover.css";
 const EventsPage = ({ user }) => {
   const data = useContext(DataContext);
   const bookdata = useContext(BookmarkContext);
   const [filteredData, setFilteredData] = useState([]);
   const [imageURLs, setImageURLs] = useState({});
-  const [showDetails, setShowDetails] = useState(false);
-  const [details, setDetails] = useState(0);
+  //const [showDetails, setShowDetails] = useState(false);
+  //const [details, setDetails] = useState(0);
   const [updateTrigger, setUpdateTrigger] = useState(0);
   // const [divClicked, setDivClicked] = useState(false);
+  const [initialized, setInitialized] = useState(false);
   const {
     mapData,
     setMapData,
     setCenter,
     selectedLocation,
     setSelectedLocation,
+    isCloseClicked,
+    setIsCloseClicked,
+    details,
+    setDetails,
+    showDetails,
+    setShowDetails,
   } = useContext(MapContext);
+  // useEffect(() => {
+  //   setIsCloseClicked(false);
+  // }, []);
   useEffect(() => {
+    //setDetails(0);
+    //setShowDetails(false);
     const type = data.filter((alert) => alert.AlertType === "Event");
     setFilteredData(type);
+    setInitialized(true);
+    setDetails(-1);
+
     const newMarkers = type
       .filter(
         (item) =>
@@ -48,15 +63,15 @@ const EventsPage = ({ user }) => {
       .map((item, index) => ({
         lat: item.Location.latitude,
         lng: item.Location.longitude,
-        id: `marker${index}`,
+        id: index,
         type: item.AlertType,
         title: item.Title,
       }));
-    console.log("MD: " + JSON.stringify(mapData));
-    console.log("NM: " + JSON.stringify(newMarkers));
+    //console.log("MD: " + JSON.stringify(mapData));
+    //console.log("NM: " + JSON.stringify(newMarkers));
 
     if (JSON.stringify(mapData) !== JSON.stringify(newMarkers)) {
-      console.log("CC");
+      //console.log("CC");
       setMapData(newMarkers);
     }
 
@@ -74,6 +89,23 @@ const EventsPage = ({ user }) => {
     };
 
     getImageURLs();
+    // const bruh = selectedLocation;
+    // console.log("bruh" + bruh);
+    // setSelectedLocation(null); // *******
+    // setShowDetails(false);
+    // //setDetails(1);
+
+    // if (bruh) {
+    //   const matchedItem = data.find(
+    //     (item) =>
+    //       item.Title === bruh.title &&
+    //       item.Location.latitude === bruh.lat &&
+    //       item.Location.longitude === bruh.lng
+    //   );
+    //   console.log("Matched item:", matchedItem);
+    // }
+
+    setSelectedLocation(null);
   }, [data, setMapData]);
 
   const handleBookmark = async (event, item) => {
@@ -108,6 +140,8 @@ const EventsPage = ({ user }) => {
     // if (marker) {
     //   setSelectedLocation(marker);
     // }
+    //console.log("Clickedd index:", index);
+
     setUpdateTrigger(updateTrigger + 1);
     setDetails(index);
   };
@@ -144,12 +178,23 @@ const EventsPage = ({ user }) => {
     });
   };
 
-  if (showDetails) {
+  if (showDetails && initialized && details !== -1) {
     return (
-      <>
+      <div
+        style={{
+          width: "100%",
+          background: "#E4E3D9",
+          position: "relative",
+          height: "100%",
+          overflow: "scroll",
+          overflowX: "hidden",
+          borderBottomLeftRadius: "8px",
+          borderBottomRightRadius: "8px",
+        }}
+      >
         <button
           className="button"
-          style={{ padding: "5px", margin: "2px" }}
+          style={{ padding: "5px", marginTop: "10px", marginLeft: "4%" }}
           onClick={(event) => {
             setShowDetails(false);
           }}
@@ -157,6 +202,8 @@ const EventsPage = ({ user }) => {
           {" "}
           &larr; Return to list
         </button>
+
+        {/* {console.log("detai: " + details)} */}
         <div
           style={{
             margin: "20px",
@@ -164,13 +211,13 @@ const EventsPage = ({ user }) => {
             padding: "10px",
             borderRadius: "5px",
             backgroundColor: filteredData[details].Archived
-              ? "rgba(0, 255, 0, 0.4)"
-              : "#FF7F7F",
+              ? "rgba(122, 122, 122, 0.4)"
+              : "white",
           }}
         >
           {filteredData[details].Archived && (
             <p>
-              <strong>MARKED AS RESOLVED</strong>
+              <strong>EVENT HAS ENDED</strong>
             </p>
           )}
           <h2>{filteredData[details].Title}</h2>
@@ -193,44 +240,48 @@ const EventsPage = ({ user }) => {
           {/* <p>
           <strong>Report Type:</strong> {filteredData[details].ReportType}
         </p> */}
-          <p>
+          <p className="paragraph">
             <strong>Location:</strong>{" "}
             {filteredData[details].Location.latitude.toFixed(3)}{" "}
             {filteredData[details].Location.longitude.toFixed(3)}
           </p>
-          <p>
+          <p className="paragraph">
             <strong>Description:</strong> {filteredData[details].Description}
           </p>
         </div>
-        <button
-          className="button"
-          style={{ padding: "5px", margin: "2px" }}
-          onClick={(event) => handleUnBookmark(event, filteredData[details])}
-        >
-          Unbookmark
-        </button>
-        <button
-          className="button"
-          style={{ padding: "5px", margin: "2px" }}
-          onClick={(event) => handleBookmark(event, filteredData[details])}
-        >
-          Bookmark
-        </button>
-        <button
-          className="button"
-          style={{ padding: "5px", margin: "2px" }}
-          onClick={(event) => handleResolve(event, filteredData[details])}
-        >
-          Mark as Resolved
-        </button>
-        <button
-          className="button"
-          style={{ padding: "5px", margin: "2px" }}
-          onClick={(event) => handleUnResolve(event, filteredData[details])}
-        >
-          Mark as Unresolved
-        </button>
-      </>
+        <div style={{ marginLeft: "4%" }}>
+          <button
+            className="button"
+            style={{ padding: "5px", margin: "2px" }}
+            onClick={(event) => handleUnBookmark(event, filteredData[details])}
+          >
+            Unbookmark
+          </button>
+          <button
+            className="button"
+            style={{ padding: "5px", margin: "2px" }}
+            onClick={(event) => handleBookmark(event, filteredData[details])}
+          >
+            Bookmark
+          </button>
+        </div>
+        <div style={{ marginLeft: "4%" }}>
+          <button
+            className="button"
+            style={{ padding: "5px", margin: "2px" }}
+            onClick={(event) => handleResolve(event, filteredData[details])}
+          >
+            Mark as ended
+          </button>
+          <button
+            className="button"
+            style={{ padding: "5px", margin: "2px" }}
+            onClick={(event) => handleUnResolve(event, filteredData[details])}
+          >
+            Mark upcoming
+          </button>
+        </div>
+      </div>
     );
   } else {
     return (
@@ -242,6 +293,7 @@ const EventsPage = ({ user }) => {
           position: "relative",
           height: "100%",
           overflow: "scroll",
+          overflowX: "hidden",
           borderBottomLeftRadius: "8px",
           borderBottomRightRadius: "8px",
         }}
@@ -251,6 +303,7 @@ const EventsPage = ({ user }) => {
           index /* something to note: when the width is about 420-999px, the tabs are wider than page*/
         ) => (
           <div
+            className="hoverDarken"
             key={index}
             style={{
               margin: "20px",
@@ -258,8 +311,8 @@ const EventsPage = ({ user }) => {
               padding: "10px",
               borderRadius: "5px",
               backgroundColor: item.Archived
-                ? "rgba(0, 255, 0, 0.4)"
-                : "#FF7F7F",
+                ? "rgba(122, 122, 122, 0.4)"
+                : "white",
               cursor: "pointer",
             }}
             onClick={() => {
@@ -276,6 +329,7 @@ const EventsPage = ({ user }) => {
               if (marker) {
                 setSelectedLocation(marker);
               }
+              //console.log("Clickedd index:", index);
               handleCrazy(item, index);
               // setDetails(index);
               // setShowDetails(true);
@@ -283,7 +337,7 @@ const EventsPage = ({ user }) => {
           >
             {item.Archived && (
               <p>
-                <strong>MARKED AS RESOLVED</strong>
+                <strong>EVENT HAS ENDED</strong>
               </p>
             )}
             {item.Image && item.Image !== "No image" && (
@@ -298,13 +352,13 @@ const EventsPage = ({ user }) => {
               />
             )}
             <h2>{item.Title}</h2>
-            <p>
+            {/* <p className="paragraph">
               <strong>Alert Type:</strong> {item.AlertType}
-            </p>
+            </p> */}
             {/* <p>
               <strong>Report Type:</strong> {item.ReportType}
             </p> */}
-            <p>
+            <p className="paragraph">
               <strong>City/Town:</strong>{" "}
               {item.Locality ? item.Locality : "None"}
             </p>

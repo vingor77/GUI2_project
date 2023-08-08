@@ -1,0 +1,26 @@
+.hoverDarken {
+  position: relative;
+}
+
+.hoverDarken::before {
+  border-radius: 4px;
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: black;
+  opacity: 0;
+  transition: opacity 0.15s;
+  pointer-events: none; /* Important: this ensures clicks pass through */
+}
+
+.hoverDarken:hover::before {
+  border-radius: 4px;
+  opacity: 0.16;
+}
+.paragraph {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}

@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { SignOutButton } from "./SignOutButton";
 import MapContext from "../contexts/MapContext";
 import { GoogleMap, useJsApiLoader, Marker } from "@react-google-maps/api";
+import "../style/Hover.css";
 //import Tooltip from "./Tooltip";
 const TopMenu = ({ user }) => {
   const [geocoder, setGeocoder] = useState(null);
@@ -39,7 +40,7 @@ const TopMenu = ({ user }) => {
     background: "#CAFFB9",
     paddingTop: "10px",
     outline: "none",
-    fontSize: "1.2em",
+    fontSize: "1em",
   };
   const sliderMenuStyle = {
     background: "#CAFFB9",
@@ -138,7 +139,7 @@ const TopMenu = ({ user }) => {
           style={searchBoxStyle}
           className="col-7 col-md-7 col-lg-7 col-sm-7"
           type="text"
-          placeholder="Enter an area to view"
+          placeholder="View an area"
           title="ex: 'Boston, MA'"
           value={locationInput}
           onChange={(e) => setLocationInput(e.target.value)}
