@@ -200,7 +200,7 @@ const BookmarksPage = ({ user }) => {
               }} //TODO: UPDATE MAP MARKERS
             />
           )}
-          <h2>{booked[details].Title}</h2>
+          <h3>{booked[details].Title}</h3>
           <p className="paragraph">
             <strong>Alert Type:</strong>{" "}
             {booked[details].AlertType === "Report" ? "Issue" : "Event"}

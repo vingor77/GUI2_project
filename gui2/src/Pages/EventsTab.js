@@ -26,6 +26,11 @@ const EventsPage = ({ user }) => {
   const [updateTrigger, setUpdateTrigger] = useState(0);
   // const [divClicked, setDivClicked] = useState(false);
   const [initialized, setInitialized] = useState(false);
+  const [showFilter, setShowFilter] = useState(false);
+  const [filterTypeDate, setFilterTypeDate] = useState("");
+  const [filterTypeTime, setFilterTypeTime] = useState("");
+  const [filterTypeLocality, setFilterTypeLocality] = useState(""); // initial value
+  const [filterTypeTitle, setFilterTypeTitle] = useState("");
   const {
     mapData,
     setMapData,
@@ -42,10 +47,123 @@ const EventsPage = ({ user }) => {
   // useEffect(() => {
   //   setIsCloseClicked(false);
   // }, []);
+
+  // useEffect(() => {
+  //   let type = data.filter((alert) => alert.AlertType === "Event");
+  //   setTData(type);
+  // }, [data]);
+  // useEffect(() => {
+  //   if (tData === null) return;
+  //   let type = tData;
+  //   if (filterTypeLocality) {
+  //     alert("!!!");
+  //     type = tData.filter((item) => item.Locality === filterTypeLocality);
+  //   }
+
   useEffect(() => {
     //setDetails(0);
     //setShowDetails(false);
-    const type = data.filter((alert) => alert.AlertType === "Event");
+    let type = data.filter((alert) => alert.AlertType === "Event");
+
+    //
+
+    if (filterTypeLocality) {
+      // alert("!!!");
+      type = type.filter((item) => item.Locality === filterTypeLocality);
+    }
+    if (filterTypeTitle) {
+      //alert("!!!");
+      type = type.filter((item) =>
+        item.Title.toLowerCase().includes(filterTypeTitle.toLowerCase())
+      );
+    }
+    if (filterTypeTime) {
+      //const currentTime = new Date().getHours();
+      //const [hour, minute] = item.Time.split(":").map(Number);
+      //const when = hour * 60 + minute;
+      const mornin = 540;
+      const dayt = 960;
+      const evenin = 1440;
+      switch (filterTypeTime) {
+        case "mor":
+          type = type.filter((item) => {
+            const [hour, minute] = item.Time.split(":").map(Number);
+            const when = hour * 60 + minute;
+            return when <= mornin;
+          });
+          break;
+        case "day":
+          type = type.filter((item) => {
+            const [hour, minute] = item.Time.split(":").map(Number);
+            const when = hour * 60 + minute;
+            return when > mornin && when <= dayt;
+          });
+          break;
+        case "eve":
+          type = type.filter((item) => {
+            const [hour, minute] = item.Time.split(":").map(Number);
+            const when = hour * 60 + minute;
+            return when > dayt && when <= evenin;
+          });
+          break;
+        default:
+          break;
+      }
+    }
+    if (filterTypeDate) {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0); // to remove the time part
+
+      const startOfWeek = new Date(
+        today.getFullYear(),
+        today.getMonth(),
+        today.getDate() - today.getDay()
+      );
+
+      const endOfWeek = new Date(
+        startOfWeek.getFullYear(),
+        startOfWeek.getMonth(),
+        startOfWeek.getDate() + 6
+      );
+
+      switch (filterTypeDate) {
+        case "pas":
+          type = type.filter((item) => {
+            const [year, month, day] = item.Date.split("-").map(Number);
+            const itemDate = new Date(year, month - 1, day);
+            return itemDate < today;
+          });
+          break;
+        case "tod":
+          type = type.filter((item) => {
+            const [year, month, day] = item.Date.split("-").map(Number);
+            return (
+              year === today.getFullYear() &&
+              month === today.getMonth() + 1 && // Adjusted month comparison
+              day === today.getDate()
+            );
+          });
+          break;
+        case "thi":
+          type = type.filter((item) => {
+            const [year, month, day] = item.Date.split("-").map(Number);
+            const itemDate = new Date(year, month - 1, day);
+            return itemDate >= startOfWeek && itemDate <= endOfWeek;
+          });
+          break;
+        case "nex":
+          type = type.filter((item) => {
+            const [year, month, day] = item.Date.split("-").map(Number);
+            const itemDate = new Date(year, month - 1, day);
+            return itemDate > endOfWeek;
+          });
+          break;
+        default:
+          break;
+      }
+    }
+
+    //
     setFilteredData(type);
     setInitialized(true);
     setDetails(-1);
@@ -106,7 +224,14 @@ const EventsPage = ({ user }) => {
     // }
 
     setSelectedLocation(null);
-  }, [data, setMapData]);
+  }, [
+    data,
+    setMapData,
+    filterTypeLocality,
+    filterTypeTitle,
+    filterTypeDate,
+    filterTypeTime,
+  ]);
 
   const handleBookmark = async (event, item) => {
     event.stopPropagation();
@@ -220,7 +345,7 @@ const EventsPage = ({ user }) => {
               <strong>EVENT HAS ENDED</strong>
             </p>
           )}
-          <h2>{filteredData[details].Title}</h2>
+          <h3>{filteredData[details].Title}</h3>
           {filteredData[details].Image && (
             <img
               src={imageURLs[filteredData[details].Image]}
@@ -298,6 +423,81 @@ const EventsPage = ({ user }) => {
           borderBottomRightRadius: "8px",
         }}
       >
+        <button
+          className="button"
+          style={{ padding: "5px", marginTop: "10px", marginLeft: "3%" }}
+          onClick={() => setShowFilter(!showFilter)}
+        >
+          Filter Results
+        </button>
+        <button
+          className="button"
+          style={{ padding: "5px", marginTop: "10px", marginLeft: "2%" }}
+          onClick={() => {
+            setFilterTypeLocality("");
+            setFilterTypeTitle("");
+            setFilterTypeDate("");
+            setFilterTypeTime("");
+          }}
+        >
+          Clear Filters
+        </button>
+        {showFilter && (
+          <div
+            style={{
+              padding: "10px",
+              border: "1px solid #ddd",
+              margin: "10px 0",
+            }}
+          >
+            <label style={{ margin: "2px", padding: "2px" }}>
+              City/Town:{" "}
+              <input
+                style={{ width: "60%", padding: "2px" }}
+                type="text"
+                value={filterTypeLocality}
+                onChange={(e) => setFilterTypeLocality(e.target.value)}
+                placeholder="'Boston', 'Lowell', etc"
+              />
+            </label>
+            <label style={{ margin: "2px", padding: "2px" }}>
+              Title (keyword):{" "}
+              <input
+                style={{ width: "58%", padding: "2px" }}
+                type="text"
+                value={filterTypeTitle}
+                onChange={(e) => setFilterTypeTitle(e.target.value)}
+                placeholder="'Food Drive', 'Free', etc"
+              />
+            </label>
+            <label style={{ margin: "2px", padding: "2px" }}>
+              Date:{" "}
+              <select
+                value={filterTypeDate}
+                onChange={(e) => setFilterTypeDate(e.target.value)}
+              >
+                <option value="">All</option>
+                <option value="pas">Past</option>
+                <option value="tod">Today</option>
+                <option value="thi">This Week</option>
+                <option value="nex">After 1 week</option>
+              </select>
+            </label>
+            <label style={{ margin: "2px", padding: "2px" }}>
+              Time:{" "}
+              <select
+                value={filterTypeTime}
+                onChange={(e) => setFilterTypeTime(e.target.value)}
+              >
+                <option value="">All</option>
+
+                <option value="mor">Morning (12:00 - 9:00)</option>
+                <option value="day">Day (9:00 - 16:00)</option>
+                <option value="eve">Evening (16:00 - 23:59)</option>
+              </select>
+            </label>
+          </div>
+        )}
         {filteredData.map((
           item,
           index /* something to note: when the width is about 420-999px, the tabs are wider than page*/
@@ -351,7 +551,7 @@ const EventsPage = ({ user }) => {
                 }}
               />
             )}
-            <h2>{item.Title}</h2>
+            <h3>{item.Title}</h3>
             {/* <p className="paragraph">
               <strong>Alert Type:</strong> {item.AlertType}
             </p> */}

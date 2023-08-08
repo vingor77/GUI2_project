@@ -13,6 +13,8 @@ Modal.setAppElement("#root");
 const CreateAlertsTab = ({ user }) => {
   const [dropDownAlert, setDropDownAlert] = useState("Select Alert");
   const [dropDownReport, setDropDownReport] = useState("Not specified");
+  const [date, setDate] = useState("");
+  const [time, setTime] = useState("");
   const [title, setTitle] = useState("");
   //const [loc, setLoc] = useState("");
   const [latitude, setLatitude] = useState("");
@@ -20,6 +22,8 @@ const CreateAlertsTab = ({ user }) => {
   const [description, setDescription] = useState("");
   const [locality, setLocality] = useState(null);
   const [showMap, setShowMap] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+
   let loc = null;
   //const [loc, setLoc] = useState(null);
   // const [reportType, setReportType] = useState("");
@@ -138,6 +142,10 @@ const CreateAlertsTab = ({ user }) => {
       alert("Please select and save a location.");
       return;
     }
+    if (dropDownAlert === "Event" && (time === "" || date === "")) {
+      alert("Please specify a date and time.");
+      return;
+    }
     if (!description) {
       alert("Please fill out description.");
       return;
@@ -174,9 +182,24 @@ const CreateAlertsTab = ({ user }) => {
       Archived: tOrF,
       Image: file ? `images/${file.name}_${timestamp}` : "No image",
       //AuthorID: user.uid, // Assuming `user` contains the current user's data
-      Time: new Date(), // Current time
+      Posted: new Date(), // Current time
+      Date: date,
+      Time: time,
     });
-
+    setDropDownAlert("Select Alert");
+    setDropDownReport("Not specified");
+    setDate("");
+    setTime("");
+    setTitle("");
+    setDescription("");
+    setLocality(null);
+    setLatitude("");
+    setLongitude("");
+    setFile(null);
+    setSubmitted(true);
+    setTimeout(() => {
+      setSubmitted(false);
+    }, 2000);
     console.log("Document added successfully");
   };
   // const formatCoordinates = (lat, long) => {
@@ -224,10 +247,17 @@ const CreateAlertsTab = ({ user }) => {
       </Dropdown>
     </>
   );
-
+  let submissionMessage;
+  if (submitted) {
+    submissionMessage = (
+      <div style={{ color: "white", textAlign: "center", margin: "10px 0px" }}>
+        Submitted!
+      </div>
+    );
+  }
   const bodyStyle = {
     width: "100%",
-    background: "#E4E3D9",
+    background: submitted ? "rgba(0, 255, 0, 0.4)" : "#E4E3D9",
     position: "relative",
     height: "100%",
     overflow: "scroll",
@@ -238,8 +268,17 @@ const CreateAlertsTab = ({ user }) => {
     margin: 0,
   };
   return (
-    <div className="row" style={bodyStyle}>
+    <div
+      className="row"
+      style={bodyStyle}
+      onKeyDown={(e) => {
+        if (e.key === "Enter") {
+          handleCreateAlert();
+        }
+      }}
+    >
       {/* Alert type dropdown */}
+      {submissionMessage}
       <h6>Select Alert Type</h6>
       <Dropdown>
         <Dropdown.Toggle variant="primary" id="dropdown-basic">
@@ -267,7 +306,7 @@ const CreateAlertsTab = ({ user }) => {
           marginTop: "5px",
           borderRadius: "5px",
         }}
-        size="lg" //I think this may be making it too big
+        size="md" //I think this may be making it too big
         type="text"
         placeholder="Enter Title"
         value={title}
@@ -287,6 +326,7 @@ const CreateAlertsTab = ({ user }) => {
         >
           Select Location
         </button>
+
         <Modal
           isOpen={modalIsOpen}
           onRequestClose={closeModal}
@@ -299,7 +339,28 @@ const CreateAlertsTab = ({ user }) => {
       </div>
       {/* { loc && loc.latitude && loc.longitude && loc.latitude > 0 && loc.longitude > 0 ? <div>Location: {formatCoordinates(loc.latitude, loc.longitude)}</div> : null } */}
       {locality ? <div>City/Town: {locality}</div> : null}
-
+      {dropDownAlert === "Event" ? (
+        <div>
+          <label style={{ margin: "2px" }}>
+            Date:{" "}
+            <input
+              style={{ margin: "2px" }}
+              type="date"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+            />
+          </label>
+          <label style={{ margin: "2px" }}>
+            Start Time:{" "}
+            <input
+              style={{ margin: "2px" }}
+              type="time"
+              value={time}
+              onChange={(e) => setTime(e.target.value)}
+            />
+          </label>
+        </div>
+      ) : null}
       {/* <Form.Control   //TODO: Make this a non-input that shows location
         style={inputStyle}
         type="text"
@@ -337,6 +398,7 @@ const CreateAlertsTab = ({ user }) => {
       </Form.Group>
 
       {/* Submit button */}
+      {submissionMessage}
       <Button
         className="offset-lg-4 offset-5 col-lg-3 col-3"
         style={{ position: "relative", top: "-10px" }}

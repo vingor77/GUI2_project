@@ -26,6 +26,11 @@ const ReportsPage = ({ user }) => {
   // const [divClicked, setDivClicked] = useState(false);
   const [updateTrigger, setUpdateTrigger] = useState(0);
   const [initialized, setInitialized] = useState(false);
+  const [showFilter, setShowFilter] = useState(false);
+  //const [filterTypeDate, setFilterTypeDate] = useState("");
+  const [filterTypeTitle, setFilterTypeTitle] = useState("");
+  const [filterTypeLocality, setFilterTypeLocality] = useState(""); // initial value
+  const [filterTypeType, setFilterTypeType] = useState("");
   const {
     mapData,
     setMapData,
@@ -40,7 +45,26 @@ const ReportsPage = ({ user }) => {
     setShowDetails,
   } = useContext(MapContext);
   useEffect(() => {
-    const type = data.filter((alert) => alert.AlertType === "Report");
+    let type = data.filter((alert) => alert.AlertType === "Report");
+
+    //
+
+    if (filterTypeLocality) {
+      // alert("!!!");
+      type = type.filter((item) => item.Locality === filterTypeLocality);
+    }
+    if (filterTypeTitle) {
+      //alert("!!!");
+      type = type.filter((item) =>
+        item.Title.toLowerCase().includes(filterTypeType.toLowerCase())
+      );
+    }
+    if (filterTypeType) {
+      //alert("!!!");
+      type = type.filter((item) => item.Title === filterTypeType);
+    }
+
+    //
     setFilteredData(type);
     setInitialized(true);
     setDetails(-1);
@@ -84,7 +108,7 @@ const ReportsPage = ({ user }) => {
 
     getImageURLs();
     setSelectedLocation(null);
-  }, [data, setMapData]);
+  }, [data, setMapData, filterTypeLocality, filterTypeType, filterTypeTitle]);
   const handleCrazy = (item, index) => {
     // setCenter({
     //   lat: item.Location.latitude,
@@ -293,6 +317,96 @@ const ReportsPage = ({ user }) => {
           borderBottomRightRadius: "8px",
         }}
       >
+        <button
+          className="button"
+          style={{ padding: "5px", marginTop: "10px", marginLeft: "3%" }}
+          onClick={() => setShowFilter(!showFilter)}
+        >
+          Filter Results
+        </button>
+        <button
+          className="button"
+          style={{ padding: "5px", marginTop: "10px", marginLeft: "2%" }}
+          onClick={() => {
+            setFilterTypeLocality("");
+            setFilterTypeType("");
+            setFilterTypeTitle("");
+          }}
+        >
+          Clear Filters
+        </button>
+
+        {showFilter && (
+          <div
+            style={{
+              padding: "10px",
+              border: "1px solid #ddd",
+              margin: "10px 0",
+            }}
+          >
+            <label style={{ margin: "2px", padding: "2px" }}>
+              City/Town:{" "}
+              <input
+                style={{ width: "60%", padding: "2px" }}
+                type="text"
+                value={filterTypeLocality}
+                onChange={(e) => setFilterTypeLocality(e.target.value)}
+                placeholder="'Boston', 'Lowell', etc"
+              />
+            </label>
+            <label style={{ margin: "2px", padding: "2px" }}>
+              Type:{" "}
+              <select
+                value={filterTypeType}
+                onChange={(e) => setFilterTypeType(e.target.value)}
+              >
+                <option value="">All</option>
+                <option value="Potholes">Potholes</option>
+                <option value="Oil Spills">"Oil Spills</option>
+                <option value="Roadkill">Roadkill</option>
+                <option value="Illegal Parking">Illegal Parking</option>
+                <option value="Others">Others</option>
+              </select>
+            </label>
+            <label style={{ margin: "2px", padding: "2px" }}>
+              Title (keyword):{" "}
+              <input
+                style={{ width: "58%", padding: "2px" }}
+                type="text"
+                value={filterTypeTitle}
+                onChange={(e) => setFilterTypeTitle(e.target.value)}
+                placeholder="'Dangerous', 'Huge pothole', etc"
+              />
+            </label>
+            {/* <label style={{ margin: "2px", padding: "2px" }}>
+              Date:{" "}
+              <select
+                value={filterTypeDate}
+                onChange={(e) => setFilterTypeDate(e.target.value)}
+              >
+                <option value="">All</option>
+                <option value="pas">Past</option>
+                <option value="tod">Today</option>
+                <option value="thi">This Week</option>
+                <option value="nex">After 1 week</option>
+              </select>
+            </label>
+            <label style={{ margin: "2px", padding: "2px" }}>
+              Time:{" "}
+              <select
+                value={filterTypeTime}
+                onChange={(e) => setFilterTypeTime(e.target.value)}
+              >
+                <option value="">All</option>
+
+                <option value="mor">Morning (12:00 - 9:00)</option>
+                <option value="day">Day (9:00 - 16:00)</option>
+                <option value="eve">Evening (16:00 - 23:59)</option>
+              </select>
+          </label>*/}
+          </div>
+        )}
+
         {filteredData.map((
           item,
           index /* something to note: when the width is about 420-999px, the tabs are wider than page*/
