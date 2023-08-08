@@ -14,6 +14,7 @@ const Navigation = ({ user }) => {
     borderStyle: "solid",
     zIndex: "1",
     background: "#CAFFB9",
+    borderRadius: "10px",
   };
 
   const [showTab, setShowTab] = useState(false);
@@ -45,7 +46,7 @@ const Navigation = ({ user }) => {
         />
 
         <img
-          onClick={() => onClick("View Reports")}
+          onClick={() => onClick("View Issues")}
           src={viewReports}
           className=" col-2 col-lg-2"
           alt="View Reports Button"

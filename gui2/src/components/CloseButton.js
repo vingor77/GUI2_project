@@ -5,7 +5,7 @@ import DataContext from "../contexts/DataContext";
 import MapContext from "../contexts/MapContext";
 const CloseButton = ({ setTab }) => {
   const buttonStyle = {
-    paddingTop: "5px",
+    marginBottom: "10px",
     width: "auto",
     marginLeft: "20px",
   };

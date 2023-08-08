@@ -12,7 +12,7 @@ const TabBody = ({ tabTitle, user }) => {
     switch (tabTitle) {
       case "View Events":
         return <EventsTab user={user} />;
-      case "View Reports":
+      case "View Issues":
         return <ReportsTab user={user} />;
       case "Create Alert":
         return <CreateAlertsTab user={user} />;
@@ -32,6 +32,11 @@ const TabBody = ({ tabTitle, user }) => {
         height: "400px",
         overflow: "scroll",
         maxHeight: "400px",
+        padding: 0,
+        margin: 0,
+        background: "#E4E3D9",
+        borderBottomLeftRadius: "8px",
+        borderBottomRightRadius: "8px",
       }}
     >
       <Display tabTitle={tabTitle} />

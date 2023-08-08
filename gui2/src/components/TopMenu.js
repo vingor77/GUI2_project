@@ -12,25 +12,37 @@ const TopMenu = ({ user }) => {
   const [locationFound, setLocationFound] = useState(true);
   const topMenuStyle = {
     borderStyle: "solid",
-    marginLeft: "0px",
+    marginLeft: "0",
     marginTop: "10px",
     paddingBottom: "10px",
-    background: "#D0F5FF",
+    background: "#CAFFB9",
     zIndex: "1",
+    borderRadius: "10px",
+  };
+
+  const showTopMenuStyle = {
+    borderStyle: "solid",
+    marginLeft: "10px",
+    marginTop: "10px",
+    paddingBottom: "10px",
+    background: "#CAFFB9",
+    zIndex: "1",
+    borderRadius: "10px",
   };
   const searchIconStyle = {
     paddingTop: "10px",
-    background: "#D0F5FF",
+    background: "#CAFFB9",
+    cursor: "pointer",
   };
   const searchBoxStyle = {
     borderStyle: "none",
-    background: "#D0F5FF",
+    background: "#CAFFB9",
     paddingTop: "10px",
     outline: "none",
     fontSize: "1.2em",
   };
   const sliderMenuStyle = {
-    background: "#D0F5FF",
+    background: "#CAFFB9",
     borderStyle: "solid",
     marginTop: "10px",
     padding: "10px",
@@ -39,7 +51,7 @@ const TopMenu = ({ user }) => {
   };
   const optionStyle = {
     paddingTop: "20px",
-    background: "#D0F5FF",
+    background: "#CAFFB9",
     textAlign: "center",
     color: "#3F4A3C",
     textDecoration: "none",
@@ -76,7 +88,10 @@ const TopMenu = ({ user }) => {
   };
   const onClick = () => setShowOptions(!showOptions);
   const Option = () => (
-    <div className="row col-lg-3 col-7" style={topMenuStyle}>
+    <div
+      className="row col-lg-3 col-8 col-md-5 col-sm-5 "
+      style={showTopMenuStyle}
+    >
       <Link
         style={optionStyle}
         to="about"
@@ -96,7 +111,10 @@ const TopMenu = ({ user }) => {
 
   return (
     <div className="row" style={{ marginLeft: "5px" }}>
-      <div style={topMenuStyle} className="row col-lg-3 col-md-3 col-6">
+      <div
+        style={topMenuStyle}
+        className="row col-lg-3 col-md-5 col-7 col-sm-5 "
+      >
         {/* <select
           value={searchType}
           onChange={(e) => {
@@ -109,7 +127,7 @@ const TopMenu = ({ user }) => {
         {/* Search icon */}
         <img
           style={searchIconStyle}
-          className=" col-4 col-md-2 col-lg-2 col-sm-3"
+          className=" col-2 col-md-2 col-lg-2 col-sm-2"
           src={searchIcon}
           alt="search icon"
           onClick={moveMap}
@@ -118,7 +136,7 @@ const TopMenu = ({ user }) => {
         {/* Temp searchbox, might be using javascript api */}
         <input
           style={searchBoxStyle}
-          className="col-4 col-md-5 col-lg-7 "
+          className="col-7 col-md-7 col-lg-7 col-sm-7"
           type="text"
           placeholder="Enter an area to view"
           title="ex: 'Boston, MA'"
@@ -134,7 +152,7 @@ const TopMenu = ({ user }) => {
         {/* Slider menu */}
         <img
           onClick={onClick}
-          className="col-4 col-md- col-lg-2 col-sm-3"
+          className="offset-1 col-2 offset-md-1 col-md-2 offset-lg-1 col-lg-2 offset-sm-1 col-sm-2"
           style={sliderMenuStyle}
           src={sliderMenu}
           alt="drop down menu"

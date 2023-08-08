@@ -185,7 +185,7 @@ const ReportsPage = ({ user }) => {
             borderRadius: "5px",
             backgroundColor: filteredData[details].Archived
               ? "rgba(0, 255, 0, 0.4)"
-              : "white",
+              : "#FF7F7F",
           }}
         >
           {filteredData[details].Archived && (
@@ -255,73 +255,82 @@ const ReportsPage = ({ user }) => {
     );
   } else {
     return (
-      <>
-        <div style={{ maxHeight: "400px" }}>
-          {filteredData.map((
-            item,
-            index /* something to note: when the width is about 420-999px, the tabs are wider than page*/
-          ) => (
-            <div
-              key={index}
-              style={{
-                margin: "20px",
-                border: "1px solid #ddd",
-                padding: "10px",
-                borderRadius: "5px",
-                backgroundColor: item.Archived
-                  ? "rgba(0, 255, 0, 0.4)"
-                  : "white",
-              }}
-              onClick={() => {
-                setCenter({
-                  lat: item.Location.latitude,
-                  lng: item.Location.longitude,
-                });
-                const marker = mapData.find(
-                  (m) =>
-                    m.title === item.Title &&
-                    m.lat === item.Location.latitude &&
-                    m.lng === item.Location.longitude
-                );
-                if (marker) {
-                  setSelectedLocation(marker);
-                }
-                handleCrazy(item, index);
-                // setDetails(index);
-                // setShowDetails(true);
-              }}
-            >
-              {item.Archived && (
-                <p>
-                  <strong>MARKED AS RESOLVED</strong>
-                </p>
-              )}
-              {item.Image && item.Image !== "No image" && (
-                <img
-                  src={imageURLs[item.Image]}
-                  alt={item.Image === "No image" ? item.Image : item.Title}
-                  style={{
-                    width: "100%",
-                    height: "200px",
-                    objectFit: "cover",
-                  }}
-                />
-              )}
-              <h2>{item.Title}</h2>
+      <div
+        style={{
+          width: "100%",
+          background: "#E4E3D9",
+          position: "relative",
+          height: "100%",
+          overflow: "scroll",
+          borderBottomLeftRadius: "8px",
+          borderBottomRightRadius: "8px",
+        }}
+      >
+        {filteredData.map((
+          item,
+          index /* something to note: when the width is about 420-999px, the tabs are wider than page*/
+        ) => (
+          <div
+            key={index}
+            style={{
+              margin: "20px",
+              border: "1px solid #ddd",
+              padding: "10px",
+              borderRadius: "5px",
+              backgroundColor: item.Archived
+                ? "rgba(0, 255, 0, 0.4)"
+                : "#FF7F7F",
+              cursor: "pointer",
+            }}
+            onClick={() => {
+              setCenter({
+                lat: item.Location.latitude,
+                lng: item.Location.longitude,
+              });
+              const marker = mapData.find(
+                (m) =>
+                  m.title === item.Title &&
+                  m.lat === item.Location.latitude &&
+                  m.lng === item.Location.longitude
+              );
+              if (marker) {
+                setSelectedLocation(marker);
+              }
+              handleCrazy(item, index);
+              // setDetails(index);
+              // setShowDetails(true);
+            }}
+          >
+            {item.Archived && (
               <p>
-                <strong>Alert Type:</strong> {item.AlertType}
+                <strong>MARKED AS RESOLVED</strong>
               </p>
-              <p>
-                <strong>Issue Type:</strong> {item.ReportType}
-              </p>
-              <p>
-                <strong>City/Town:</strong>{" "}
-                {item.Locality ? item.Locality : "None"}
-              </p>
-            </div>
-          ))}
-        </div>
-      </>
+            )}
+            {item.Image && item.Image !== "No image" && (
+              <img
+                src={imageURLs[item.Image]}
+                alt={item.Image === "No image" ? item.Image : item.Title}
+                style={{
+                  width: "100%",
+                  height: "200px",
+                  objectFit: "cover",
+                }}
+              />
+            )}
+            <h2>{item.Title}</h2>
+            <p>
+              <strong>Alert Type:</strong> {item.AlertType}
+            </p>
+            <p>
+              <strong>Issue Type:</strong> {item.ReportType}
+            </p>
+            <p>
+              <strong>City/Town:</strong>{" "}
+              {item.Locality ? item.Locality : "None"}
+            </p>
+          </div>
+        ))}
+      </div>
     );
   }
 };

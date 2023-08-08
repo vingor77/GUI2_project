@@ -226,10 +226,16 @@ const CreateAlertsTab = ({ user }) => {
   );
 
   const bodyStyle = {
+    width: "100%",
+    background: "#E4E3D9",
     position: "relative",
-    // height: "400px",
-    // maxHeight: "400px",
-    // overflow: "scroll",
+    height: "100%",
+    overflow: "scroll",
+    overflowX: "hidden",
+    borderBottomLeftRadius: "8px",
+    borderBottomRightRadius: "8px",
+    padding: 0,
+    margin: 0,
   };
   return (
     <div className="row" style={bodyStyle}>

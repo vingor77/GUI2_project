@@ -159,7 +159,7 @@ const BookmarksPage = ({ user }) => {
             borderRadius: "5px",
             backgroundColor: booked[details].Archived
               ? "rgba(0, 255, 0, 0.4)"
-              : "white",
+              : "#FF7F7F",
           }}
         >
           {" "}
@@ -240,6 +240,7 @@ const BookmarksPage = ({ user }) => {
                 border: "1px solid #ddd",
                 padding: "10px",
                 borderRadius: "5px",
+                cursor: "pointer",
               }}
               key={index}
             >
