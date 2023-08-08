@@ -69,7 +69,9 @@ const EventsPage = ({ user }) => {
 
     if (filterTypeLocality) {
       // alert("!!!");
-      type = type.filter((item) => item.Locality === filterTypeLocality);
+      type = type.filter((item) => 
+        item.Locality.toLowerCase().includes(filterTypeLocality.toLowerCase())
+      );
     }
     if (filterTypeTitle) {
       //alert("!!!");

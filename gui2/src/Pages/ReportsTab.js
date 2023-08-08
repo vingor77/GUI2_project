@@ -51,17 +51,20 @@ const ReportsPage = ({ user }) => {
 
     if (filterTypeLocality) {
       // alert("!!!");
-      type = type.filter((item) => item.Locality === filterTypeLocality);
+      type = type.filter((item) => 
+        item.Locality.toLowerCase().includes(filterTypeLocality.toLowerCase())
+      );
     }
     if (filterTypeTitle) {
       //alert("!!!");
       type = type.filter((item) =>
-        item.Title.toLowerCase().includes(filterTypeType.toLowerCase())
+        item.Title.toLowerCase().includes(filterTypeTitle.toLowerCase())
       );
     }
     if (filterTypeType) {
-      //alert("!!!");
-      type = type.filter((item) => item.Title === filterTypeType);
+      type = type.filter((item) => 
+        item.ReportType === filterTypeType
+      );
     }
 
     //
@@ -364,7 +367,7 @@ const ReportsPage = ({ user }) => {
               >
                 <option value="">All</option>
                 <option value="Potholes">Potholes</option>
-                <option value="Oil Spills">"Oil Spills</option>
+                <option value="Oil Spills">Oil Spills</option>
                 <option value="Roadkill">Roadkill</option>
                 <option value="Illegal Parking">Illegal Parking</option>
                 <option value="Others">Others</option>
