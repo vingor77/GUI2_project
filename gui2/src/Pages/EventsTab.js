@@ -302,6 +302,42 @@ const EventsPage = ({ user }) => {
       Archived: false,
     });
   };
+  const GetTime = () => {
+    const tempTime = timeStringToFloat(filteredData[details].Time);
+    console.log(tempTime);
+    const hours = tempTime.toFixed(2).split(".");
+    const minutes = tempTime.toFixed(2).split(".");
+    const mins = ((minutes[1] / 100) * 60).toFixed(0);
+    let hour = hours[0];
+    if(hours[0] > 12) {
+      hour = hours[0] - 12;
+    }
+
+    if(tempTime < 12.00) {
+      return hours[0] + ":" + mins + " AM";
+    }
+    else {
+      return hour + ":" + mins + " PM";
+    }
+  }
+
+  function timeStringToFloat(time) {
+    var hoursMinutes = time.split(/[.:]/);
+    var hours = parseInt(hoursMinutes[0], 10);
+    var minutes = hoursMinutes[1] ? parseInt(hoursMinutes[1], 10) : 0;
+    return hours + minutes / 60;
+  }
+
+  const GetDate = () => {
+    const dates = filteredData[details].Date.split("-");
+    
+    //Year month day
+    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    const month = months[parseInt(dates[1]) - 1];
+    
+    return month + " " + parseInt(dates[2]) + ", " + dates[0];
+  }
+  
 
   if (showDetails && initialized && details !== -1) {
     return (
@@ -372,6 +408,12 @@ const EventsPage = ({ user }) => {
           </p>
           <p className="paragraph">
             <strong>Description:</strong> {filteredData[details].Description}
+          </p>
+          <p className="paragraph">
+            <strong>Time:</strong> <GetTime />
+          </p>
+          <p className="paragraph">
+            <strong>Date:</strong> <GetDate />
           </p>
         </div>
         <div style={{ marginLeft: "4%" }}>
