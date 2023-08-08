@@ -25,9 +25,9 @@ const TabBody = ({ tabTitle, user }) => {
       style={{
         borderTop: "solid",
         position: "relative",
-        height: "400px",
+        height: "550px",
         //overflow: "scroll",
-        maxHeight: "400px",
+        maxHeight: "550px",
         padding: 0,
         margin: 0,
         background: "#E4E3D9",

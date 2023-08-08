@@ -44,6 +44,7 @@ const EventsPage = ({ user }) => {
     showDetails,
     setShowDetails,
   } = useContext(MapContext);
+  const [geocodedAddress, setGeocodedAddress] = useState("");
   // useEffect(() => {
   //   setIsCloseClicked(false);
   // }, []);
@@ -339,6 +340,16 @@ const EventsPage = ({ user }) => {
     
     return month + " " + parseInt(dates[2]) + ", " + dates[0];
   }
+
+  const GeocodeAddress = () => {
+    fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${filteredData[details].Location.latitude.toFixed(3)},${filteredData[details].Location.longitude.toFixed(3)}&key=AIzaSyDE0Qmrx_Qn5Nx04wvENvJ_riRGll6-tx0`)
+    .then(response => response.json())
+    .then(data => {
+      setGeocodedAddress(data.results[0].formatted_address);
+    })
+
+    return geocodedAddress;
+  }
   
 
   if (showDetails && initialized && details !== -1) {
@@ -404,8 +415,11 @@ const EventsPage = ({ user }) => {
           <strong>Report Type:</strong> {filteredData[details].ReportType}
         </p> */}
           <p className="paragraph">
-            <strong>Location:</strong>{" "}
-            {filteredData[details].Location.latitude.toFixed(3)}{" "}
+            <strong>Address:</strong>{" "} <GeocodeAddress />
+          </p>
+          <p className="paragraph">
+            <strong>Latitude/Longitude: </strong>
+            {filteredData[details].Location.latitude.toFixed(3)}{", "}
             {filteredData[details].Location.longitude.toFixed(3)}
           </p>
           <p className="paragraph">
