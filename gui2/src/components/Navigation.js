@@ -30,18 +30,14 @@ const Navigation = ({ user }) => {
 
   return (
     <>
-      <div style={navigationMenuStyle} className=" col-12 offset-lg-3 col-lg-6">
-        <img
-          onClick={() => onClick("Filter")}
-          src={filterImg}
-          className="filterImg col-2 col-lg-2"
-          alt="Filter Button"
-          style={{ cursor: "pointer" }}
-        />
+      <div
+        style={navigationMenuStyle}
+        className=" col-12 offset-xl-4 col-xl-4 offset-lg-3 col-lg-6 offset-md-3 col-md-6 offset-sm-2 col-sm-8"
+      >
         <img
           onClick={() => onClick("View Events")}
           src={viewEvents}
-          className="viewEvents col-2 col-lg-2"
+          className="viewEvents col-3 col-lg-3 col-md-3"
           alt="View Events Button"
           style={{ cursor: "pointer" }}
         />
@@ -49,7 +45,7 @@ const Navigation = ({ user }) => {
         <img
           onClick={() => onClick("View Issues")}
           src={viewReports}
-          className=" col-2 col-lg-2"
+          className=" col-3 col-lg-3 col-md-3"
           alt="View Reports Button"
           style={{ cursor: "pointer" }}
         />
@@ -57,7 +53,7 @@ const Navigation = ({ user }) => {
         <img
           onClick={() => onClick("Create Alert")}
           src={createAlerts}
-          className="col-2 col-lg-2"
+          className="col-3 col-lg-3 col-md-3"
           alt="CreateAlerts Button"
           style={{ cursor: "pointer" }}
         />
@@ -65,16 +61,8 @@ const Navigation = ({ user }) => {
         <img
           onClick={() => onClick("Bookmarks")}
           src={bookmarks}
-          className="bookmarks col-2 col-lg-2"
+          className="bookmarks col-3 col-lg-3 col-md-3"
           alt="Bookmarks Button"
-          style={{ cursor: "pointer" }}
-        />
-
-        <img
-          onClick={() => onClick("Profile")}
-          src={profile}
-          className="profile col-2 col-lg-2"
-          alt="Profile Button"
           style={{ cursor: "pointer" }}
         />
       </div>
