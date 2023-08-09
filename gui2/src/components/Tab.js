@@ -8,9 +8,7 @@ const Tab = ({ tabTitle, set, user }) => {
     marginTop: "0.5px",
     background: "white",
     marginLeft: "6px",
-    // width: "100%",
     zIndex: "2",
-    // borderTop: "none",
     borderRadius: "10px",
   };
 
@@ -21,12 +19,10 @@ const Tab = ({ tabTitle, set, user }) => {
   };
 
   return (
-    // <div style={{ position: "relative" }}>
     <div className="row col-lg-3 col-11" style={tabStyle}>
       <div
         style={{
           background: "#A3AF9E",
-          // borderRadius: "5px",
           borderTopLeftRadius: "8px",
           borderTopRightRadius: "8px",
         }}
@@ -38,7 +34,6 @@ const Tab = ({ tabTitle, set, user }) => {
       </div>
       <TabBody tabTitle={tabTitle} user={user} />
     </div>
-    // </div>
   );
 };
 

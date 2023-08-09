@@ -5,9 +5,7 @@ import { useState, useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { SignOutButton } from "./SignOutButton";
 import MapContext from "../contexts/MapContext";
-import { GoogleMap, useJsApiLoader, Marker } from "@react-google-maps/api";
 import "../style/Hover.css";
-//import Tooltip from "./Tooltip";
 const TopMenu = ({ user }) => {
   const [geocoder, setGeocoder] = useState(null);
   const [locationFound, setLocationFound] = useState(true);
@@ -63,10 +61,7 @@ const TopMenu = ({ user }) => {
   const [showOptions, setShowOptions] = useState(false);
   const [locationInput, setLocationInput] = useState("");
   const { mapData, setMapData, center, setCenter } = useContext(MapContext);
-
-  //const [searchType, setSearchType] = useState("Map Area");
   const moveMap = () => {
-    //alert(locationInput);
     if (locationInput) {
       fetch(
         `https://maps.googleapis.com/maps/api/geocode/json?address=${locationInput}&key=AIzaSyDE0Qmrx_Qn5Nx04wvENvJ_riRGll6-tx0`
@@ -116,15 +111,6 @@ const TopMenu = ({ user }) => {
         style={topMenuStyle}
         className="row col-lg-3 col-md-5 col-7 col-sm-5 "
       >
-        {/* <select
-          value={searchType}
-          onChange={(e) => {
-            setSearchType(e.target.value);
-          }}
-        >
-          <option value="Map Area">Search Map Area</option>
-          <option value="List Items">Search List Items</option>
-        </select> */}
         {/* Search icon */}
         <img
           style={searchIconStyle}
@@ -174,7 +160,6 @@ const TopMenu = ({ user }) => {
         </div>
       )}
       {showOptions ? <Option /> : null}
-      {/* <div className="offset-lg-5 col-lg-1"> */}
       <SignOutButton user={user} />
       {/* </div> */}
     </div>

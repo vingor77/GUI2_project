@@ -10,7 +10,6 @@ const AboutUs = () => {
         height: "100vh",
         postion: "relative",
       }}
-      // className="container py-5"
     >
       {/* Button to go back to the homepage */}
       <Link to="/">

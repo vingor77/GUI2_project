@@ -1,10 +1,8 @@
 import React from "react";
-import filterImg from "../images/Filter Tab.svg";
 import viewEvents from "../images/Community Tab.svg";
 import viewReports from "../images/View Reports.svg";
 import createAlerts from "../images/Create Alert Tab.svg";
 import bookmarks from "../images/BookMarks Tab.svg";
-import profile from "../images/Profile Tab.svg";
 import Tab from "./Tab";
 import { useState } from "react";
 import "../style/Hover.css";
@@ -66,7 +64,6 @@ const Navigation = ({ user }) => {
           style={{ cursor: "pointer" }}
         />
       </div>
-
       {/* Display tab if the state is true */}
       {showTab ? <Display displayName={name} setShowTab={setShowTab} /> : null}
     </>

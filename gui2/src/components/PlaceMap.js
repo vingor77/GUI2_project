@@ -51,8 +51,6 @@ const PlaceMap = ({ onClose }) => {
     });
     let firstLocation = results[0].geometry.location;
 
-    console.log(firstLocation);
-
     let lat = firstLocation.lat();
     let lng = firstLocation.lng();
 

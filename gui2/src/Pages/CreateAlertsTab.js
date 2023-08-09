@@ -16,7 +16,6 @@ const CreateAlertsTab = ({ user }) => {
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [title, setTitle] = useState("");
-  //const [loc, setLoc] = useState("");
   const [latitude, setLatitude] = useState("");
   const [longitude, setLongitude] = useState("");
   const [description, setDescription] = useState("");
@@ -25,10 +24,6 @@ const CreateAlertsTab = ({ user }) => {
   const [submitted, setSubmitted] = useState(false);
 
   let loc = null;
-  //const [loc, setLoc] = useState(null);
-  // const [reportType, setReportType] = useState("");
-  // const [alertType, setAlertType] = useState("");
-  // const [image, setImage] = useState(null);
   const [file, setFile] = useState(null);
   // Change dropdown's name to the one selected
   const handleSelectAlertType = (type) => {
@@ -84,15 +79,9 @@ const CreateAlertsTab = ({ user }) => {
     }
   };
 
-  //let loc;
-  //useEffect(() => {
-  //console.log(data);
-  //console.log(latitude);
-
   loc = new GeoPoint(latitude, longitude);
   console.log("loc: " + loc.latitude);
 
-  //}, [latitude, longitude]);
   const customStyles = {
     content: {
       top: "50%",
@@ -101,8 +90,8 @@ const CreateAlertsTab = ({ user }) => {
       bottom: "auto",
       marginRight: "-50%",
       transform: "translate(-50%, -50%)",
-      width: "60%", // Set here the width you want
-      height: "80%", // And here the height
+      width: "60%",
+      height: "80%",
     },
     closeButton: {
       position: "absolute",
@@ -116,7 +105,6 @@ const CreateAlertsTab = ({ user }) => {
   };
   const stylesModal = {
     overlay: {
-      // height: "90%",
       zIndex: 5,
     },
   };
@@ -124,8 +112,6 @@ const CreateAlertsTab = ({ user }) => {
     marginTop: "5px",
   };
   const handleCreateAlert = async (e) => {
-    //e.preventDefault(); // Prevent the form from reloading the page
-
     if (dropDownAlert === "Select Alert") {
       alert("Please select an Alert type.");
       return;
@@ -150,8 +136,6 @@ const CreateAlertsTab = ({ user }) => {
       alert("Please fill out description.");
       return;
     }
-
-    // Then, add the report data to Firestore
     const timestamp = Date.now();
 
     try {
@@ -160,17 +144,9 @@ const CreateAlertsTab = ({ user }) => {
       console.log("Uploaded a blob or file!");
     } catch (error) {
       //console.error("Error uploading file: ", error);
-      // Handle any additional error response here, if needed
     }
     const docRef = doc(collection(db, "Alerts"));
-    //const processLocation = (locationString) => {
-    //if locstring is address, convert to address,
-
-    //return loc;
-    //};
-
     // Call the function and store the result
-    //const processedLocation = processLocation(location);
     let tOrF = false;
     await setDoc(docRef, {
       Title: title,
@@ -181,7 +157,6 @@ const CreateAlertsTab = ({ user }) => {
       AlertType: dropDownAlert,
       Archived: tOrF,
       Image: file ? `images/${file.name}_${timestamp}` : "No image",
-      //AuthorID: user.uid, // Assuming `user` contains the current user's data
       Posted: new Date(), // Current time
       Date: date,
       Time: time,
@@ -202,24 +177,7 @@ const CreateAlertsTab = ({ user }) => {
     }, 2000);
     console.log("Document added successfully");
   };
-  // const formatCoordinates = (lat, long) => {
-  //   let latitude = lat;
-  //   let longitude = long;
-  //   let latSuffix = 'N';
-  //   let longSuffix = 'E';
 
-  //   if (lat < 0) {
-  //     latitude = -lat;
-  //     latSuffix = 'S';
-  //   }
-
-  //   if (long < 0) {
-  //     longitude = -long;
-  //     longSuffix = 'W';
-  //   }
-
-  //   return `${latitude}${latSuffix} ${longitude}${longSuffix}`;
-  //};
   const ReportOption = () => (
     <>
       <h6>Select Issue Type</h6>
@@ -334,10 +292,8 @@ const CreateAlertsTab = ({ user }) => {
           style={{ ...customStyles, ...stylesModal }}
         >
           <PlaceMap onClose={handleMapData} />
-          {/* <button style={customStyles.closeButton} onClick={closeModal}>Close</button> */}
         </Modal>
       </div>
-      {/* { loc && loc.latitude && loc.longitude && loc.latitude > 0 && loc.longitude > 0 ? <div>Location: {formatCoordinates(loc.latitude, loc.longitude)}</div> : null } */}
       {locality ? <div>City/Town: {locality}</div> : null}
       {dropDownAlert === "Event" ? (
         <div>
@@ -361,14 +317,6 @@ const CreateAlertsTab = ({ user }) => {
           </label>
         </div>
       ) : null}
-      {/* <Form.Control   //TODO: Make this a non-input that shows location
-        style={inputStyle}
-        type="text"
-        placeholder="Enter Location"
-        value={location}
-        onChange={e => setLocation(e.target.value)}
-      /> */}
-
       {/* Description */}
       <Form>
         <Form.Group

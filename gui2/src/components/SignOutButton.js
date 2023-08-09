@@ -4,10 +4,6 @@ import { useState } from "react";
 import signOutIcon from "../images/signOut.svg";
 export const SignOutButton = ({ user }) => {
   const SignOutButtonStyle = {
-    // position: "absolute",
-    // right: "0",
-    // top: "60px",
-    // zIndex: "1",
     background: "#D0F5FF",
     position: "relative",
     left: "8px",
@@ -48,14 +44,8 @@ export const SignOutButton = ({ user }) => {
     updateProfile(userInfo, {
       photoURL: "/anony.jpg",
     })
-      .then(() => {
-        // Profile updated!
-        // ...
-      })
-      .catch((error) => {
-        // An error occurred
-        // ...
-      });
+      .then(() => {})
+      .catch((error) => {});
   }
   const [signOut, setSignOut] = useState(false);
   const onClick = () => setSignOut(!signOut);
@@ -87,13 +77,6 @@ export const SignOutButton = ({ user }) => {
       />
 
       {/* Sign out */}
-      {/* <button
-        style={SignOutButtonStyle}
-        className="sign-out"
-        onClick={() => user.auth.signOut()}
-      >
-        Sign Out
-      </button> */}
       {signOut ? <SignOutButton /> : null}
     </div>
   );

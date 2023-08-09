@@ -12,8 +12,6 @@ export default function BookmarkProvider({ children, db, auth }) {
     onAuthStateChanged(auth, (user) => {
       setUserId(user ? user.uid : null);
     });
-
-    //return unsubscribe;
   }, [auth]);
 
   useEffect(() => {
@@ -25,9 +23,7 @@ export default function BookmarkProvider({ children, db, auth }) {
         setData(fetchedData);
         console.log("CALLING BOOKMARK DATABASE" + fetchedData);
       },
-      (error) => {
-        // ...
-      }
+      (error) => {}
     );
 
     return () => unsubscribe();

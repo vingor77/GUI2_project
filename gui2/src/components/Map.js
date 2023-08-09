@@ -1,5 +1,4 @@
 // Map.js
-
 import React, { useEffect, useState, useContext, useRef, useMemo } from "react";
 import {
   GoogleMap,
@@ -12,21 +11,8 @@ import MapContext from "../contexts/MapContext";
 const Map = () => {
   const { mapData, setMapData, center, setCenter } = useContext(MapContext);
 
-  //const center = useMemo(() => ({ lat: 42.6334, lng: -71.3162 }), []);
-  //const { mapData, center } = useContext(MapContext);
-
-  // let markers = props.markers;
-  // if (!markers) {
-  //   markers = [
-  //     { lat: 48.8584, lng: 2.2945, id: 'marker1', type: "Pothole" },
-  //     { lat: 48.8500, lng: 2.3000, id: 'marker2' },
-
-  //   ];
-  // }
-  //const { mapData } = getContext(MapDataContext);
   console.log("MARKERS GOTTEN: ", mapData);
   console.log(Array.isArray(mapData));
-  //const [selectedLocation, setSelectedLocation] = useState(null);
   const {
     selectedLocation,
     setSelectedLocation,
@@ -73,9 +59,6 @@ const Map = () => {
       >
         {Array.isArray(mapData) &&
           mapData.map((marker) => {
-            // console.log("Marker ID: ", marker.id); // This is the console log for marker id
-            //console.log("Marker lat: ", marker.lat);
-            //console.log(marker.title);
             return (
               <Marker
                 key={marker.id}
@@ -83,12 +66,8 @@ const Map = () => {
                 onClick={() => {
                   setSelectedLocation(marker);
                   console.log("Marker clicked:" + marker.id);
-
-                  //setIsCloseClicked(false);
-                  //if (!isCloseClicked) {
                   setDetails(marker.id);
                   setShowDetails(true);
-                  //}
                 }}
               />
             );
@@ -98,7 +77,6 @@ const Map = () => {
             position={{ lat: selectedLocation.lat, lng: selectedLocation.lng }}
             onCloseClick={() => {
               setSelectedLocation(null);
-              //setIsCloseClicked(true);
               setShowDetails(false);
             }}
           >

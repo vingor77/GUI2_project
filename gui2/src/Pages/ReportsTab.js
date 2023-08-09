@@ -1,35 +1,21 @@
 import React, { useEffect, useState, useContext } from "react";
 import DataContext from "../contexts/DataContext";
-import BookmarkContext from "../contexts/BookmarkContext";
 import MapContext from "../contexts/MapContext";
 import { getDownloadURL, ref } from "firebase/storage";
 import { storage } from "../index";
-import {
-  updateDoc,
-  setDoc,
-  doc,
-  arrayUnion,
-  arrayRemove,
-} from "firebase/firestore";
+import { updateDoc, setDoc, doc, arrayUnion } from "firebase/firestore";
 import { db } from "../index";
-import OuterTab from "../components/OuterTab";
-import ReactDOM from "react-dom";
 import "../style/Button.css";
 import "../style/Hover.css";
 const ReportsPage = ({ user }) => {
   const data = useContext(DataContext);
-  const bookdata = useContext(BookmarkContext);
   const [filteredData, setFilteredData] = useState([]);
   const [imageURLs, setImageURLs] = useState({});
-  // const [showDetails, setShowDetails] = useState(false);
-  // const [details, setDetails] = useState(0);
-  // const [divClicked, setDivClicked] = useState(false);
   const [updateTrigger, setUpdateTrigger] = useState(0);
   const [initialized, setInitialized] = useState(false);
   const [showFilter, setShowFilter] = useState(false);
-  //const [filterTypeDate, setFilterTypeDate] = useState("");
   const [filterTypeTitle, setFilterTypeTitle] = useState("");
-  const [filterTypeLocality, setFilterTypeLocality] = useState(""); // initial value
+  const [filterTypeLocality, setFilterTypeLocality] = useState("");
   const [filterTypeType, setFilterTypeType] = useState("");
   const {
     mapData,
@@ -37,41 +23,34 @@ const ReportsPage = ({ user }) => {
     setCenter,
     selectedLocation,
     setSelectedLocation,
-    isCloseClicked,
-    setIsCloseClicked,
     details,
     setDetails,
     showDetails,
     setShowDetails,
   } = useContext(MapContext);
   const [geocodedAddress, setGeocodedAddress] = useState("");
+
   useEffect(() => {
     let type = data.filter((alert) => alert.AlertType === "Report");
 
-    //
-
     if (filterTypeLocality) {
-      // alert("!!!");
-      type = type.filter((item) => 
+      type = type.filter((item) =>
         item.Locality.toLowerCase().includes(filterTypeLocality.toLowerCase())
       );
     }
     if (filterTypeTitle) {
-      //alert("!!!");
       type = type.filter((item) =>
         item.Title.toLowerCase().includes(filterTypeTitle.toLowerCase())
       );
     }
     if (filterTypeType) {
-      type = type.filter((item) => 
-        item.ReportType === filterTypeType
-      );
+      type = type.filter((item) => item.ReportType === filterTypeType);
     }
 
-    //
     setFilteredData(type);
     setInitialized(true);
     setDetails(-1);
+
     const newMarkers = type
       .filter(
         (item) =>
@@ -89,17 +68,13 @@ const ReportsPage = ({ user }) => {
         type: item.ReportType,
         title: item.Title,
       }));
-    //console.log("MD: " + JSON.stringify(mapData));
-    //console.log("NM: " + JSON.stringify(newMarkers));
 
     if (JSON.stringify(mapData) !== JSON.stringify(newMarkers)) {
-      //console.log("CC");
       setMapData(newMarkers);
     }
 
     const getImageURLs = async () => {
       const urls = {};
-
       for (let item of type) {
         if (item.Image && item.Image !== "No image") {
           const url = await getDownloadURL(ref(storage, item.Image));
@@ -114,19 +89,6 @@ const ReportsPage = ({ user }) => {
     setSelectedLocation(null);
   }, [data, setMapData, filterTypeLocality, filterTypeType, filterTypeTitle]);
   const handleCrazy = (item, index) => {
-    // setCenter({
-    //   lat: item.Location.latitude,
-    //   lng: item.Location.longitude,
-    // });
-    // const marker = mapData.find(
-    //   (m) =>
-    //     m.title === item.Title &&
-    //     m.lat === item.Location.latitude &&
-    //     m.lng === item.Location.longitude
-    // );
-    // if (marker) {
-    //   setSelectedLocation(marker);
-    // }
     setUpdateTrigger(updateTrigger + 1);
     setDetails(index);
   };
@@ -141,7 +103,7 @@ const ReportsPage = ({ user }) => {
     if (user && user.auth && user.auth.currentUser) {
       userId = user.auth.currentUser.uid;
     } else {
-      console.log(JSON.stringify(user));
+      //console.log(JSON.stringify(user));
     }
     const docRef = doc(db, "Bookmarks", `${userId}`);
     await setDoc(
@@ -152,19 +114,7 @@ const ReportsPage = ({ user }) => {
       { merge: true }
     );
   };
-  const handleUnBookmark = async (event, item) => {
-    event.stopPropagation();
-    let userId = "ERROR";
-    if (user && user.auth && user.auth.currentUser) {
-      userId = user.auth.currentUser.uid;
-    } else {
-      console.log(JSON.stringify(user));
-    }
-    const docRef = doc(db, "Bookmarks", `${userId}`);
-    await updateDoc(docRef, {
-      Bookmarks: arrayRemove({ id: item.id, Title: item.Title }),
-    });
-  };
+
   const handleResolve = async (event, item) => {
     const docRef = doc(db, "Alerts", `${item.id}`);
     await updateDoc(docRef, {
@@ -177,40 +127,24 @@ const ReportsPage = ({ user }) => {
       Archived: false,
     });
   };
-  //   const returnAddressOrCoords = async (geo) => {
-  //     if(!geo || !geo.latitude || !geo.longitude) {
-  //       return "Secret location";
-  //     }
-  //     try {
-  //       const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${geo.latitude},${geo.longitude}&key=AIzaSyDE0Qmrx_Qn5Nx04wvENvJ_riRGll6-tx0`);
-  //       const data = await response.json();
 
-  //       // check if full address is available
-  //       let fullAddress = null;
-  //       if (data.results && data.results[0] && data.results[0].formatted_address) {
-  //         fullAddress = data.results[0].formatted_address;
-  //       }
-  //       if (fullAddress) {
-  //         return fullAddress;
-  //       } else {
-  //           // if no locality, default to coordinates
-  //           return `Lat: ${geo.latitude}, Lng: ${geo.longitude}`;
-  //       }
-  //     } catch (error) {
-  //       return "Secret location";
-  //     }
-  // };
-
-  // };
   const GeocodeAddress = () => {
-    fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${filteredData[details].Location.latitude.toFixed(3)},${filteredData[details].Location.longitude.toFixed(3)}&key=AIzaSyDE0Qmrx_Qn5Nx04wvENvJ_riRGll6-tx0`)
-    .then(response => response.json())
-    .then(data => {
-      setGeocodedAddress(data.results[0].formatted_address);
-    })
+    fetch(
+      `https://maps.googleapis.com/maps/api/geocode/json?latlng=${filteredData[
+        details
+      ].Location.latitude.toFixed(3)},${filteredData[
+        details
+      ].Location.longitude.toFixed(
+        3
+      )}&key=AIzaSyDE0Qmrx_Qn5Nx04wvENvJ_riRGll6-tx0`
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        setGeocodedAddress(data.results[0].formatted_address);
+      });
 
     return geocodedAddress;
-  }
+  };
 
   if (showDetails && initialized && details !== -1) {
     return (
@@ -274,11 +208,12 @@ const ReportsPage = ({ user }) => {
             <strong>Issue Type:</strong> {filteredData[details].ReportType}
           </p>
           <p className="paragraph">
-            <strong>Address:</strong>{" "} <GeocodeAddress />
+            <strong>Address:</strong> <GeocodeAddress />
           </p>
           <p className="paragraph">
             <strong>Latitude/Longitude: </strong>
-            {filteredData[details].Location.latitude.toFixed(3)}{", "}
+            {filteredData[details].Location.latitude.toFixed(3)}
+            {", "}
             {filteredData[details].Location.longitude.toFixed(3)}
           </p>
           <p className="paragraph">
@@ -286,15 +221,6 @@ const ReportsPage = ({ user }) => {
           </p>
         </div>
         <div style={{ marginLeft: "4%" }}>
-          {/*
-          <button
-            className="button"
-            style={{ padding: "5px", margin: "2px" }}
-            onClick={(event) => handleUnBookmark(event, filteredData[details])}
-          >
-            Unbookmark
-          </button>
-          */}
           <button
             className="button"
             style={{ padding: "5px", margin: "2px" }}
@@ -396,100 +322,71 @@ const ReportsPage = ({ user }) => {
                 placeholder="'Dangerous', 'Huge pothole', etc"
               />
             </label>
-            {/* <label style={{ margin: "2px", padding: "2px" }}>
-              Date:{" "}
-              <select
-                value={filterTypeDate}
-                onChange={(e) => setFilterTypeDate(e.target.value)}
-              >
-                <option value="">All</option>
-                <option value="pas">Past</option>
-                <option value="tod">Today</option>
-                <option value="thi">This Week</option>
-                <option value="nex">After 1 week</option>
-              </select>
-            </label>
-            <label style={{ margin: "2px", padding: "2px" }}>
-              Time:{" "}
-              <select
-                value={filterTypeTime}
-                onChange={(e) => setFilterTypeTime(e.target.value)}
-              >
-                <option value="">All</option>
-
-                <option value="mor">Morning (12:00 - 9:00)</option>
-                <option value="day">Day (9:00 - 16:00)</option>
-                <option value="eve">Evening (16:00 - 23:59)</option>
-              </select>
-          </label>*/}
           </div>
         )}
 
-        {filteredData.map((
-          item,
-          index /* something to note: when the width is about 420-999px, the tabs are wider than page*/
-        ) => (
-          <div
-            className="hoverDarken"
-            key={index}
-            style={{
-              margin: "20px",
-              border: "1px solid #ddd",
-              padding: "10px",
-              borderRadius: "5px",
-              backgroundColor: item.Archived
-                ? "rgba(0, 255, 0, 0.4)"
-                : "#FF7F7F",
-              cursor: "pointer",
-            }}
-            onClick={() => {
-              setCenter({
-                lat: item.Location.latitude,
-                lng: item.Location.longitude,
-              });
-              const marker = mapData.find(
-                (m) =>
-                  m.title === item.Title &&
-                  m.lat === item.Location.latitude &&
-                  m.lng === item.Location.longitude
-              );
-              if (marker) {
-                setSelectedLocation(marker);
-              }
-              handleCrazy(item, index);
-              // setDetails(index);
-              // setShowDetails(true);
-            }}
-          >
-            {item.Archived && (
-              <p>
-                <strong>MARKED AS RESOLVED</strong>
+        {filteredData.map(
+          (
+            item,
+            index /* something to note: when the width is about 420-999px, the tabs are wider than page*/
+          ) => (
+            <div
+              className="hoverDarken"
+              key={index}
+              style={{
+                margin: "20px",
+                border: "1px solid #ddd",
+                padding: "10px",
+                borderRadius: "5px",
+                backgroundColor: item.Archived
+                  ? "rgba(0, 255, 0, 0.4)"
+                  : "#FF7F7F",
+                cursor: "pointer",
+              }}
+              onClick={() => {
+                setCenter({
+                  lat: item.Location.latitude,
+                  lng: item.Location.longitude,
+                });
+                const marker = mapData.find(
+                  (m) =>
+                    m.title === item.Title &&
+                    m.lat === item.Location.latitude &&
+                    m.lng === item.Location.longitude
+                );
+                if (marker) {
+                  setSelectedLocation(marker);
+                }
+                handleCrazy(item, index);
+              }}
+            >
+              {item.Archived && (
+                <p>
+                  <strong>MARKED AS RESOLVED</strong>
+                </p>
+              )}
+              {item.Image && item.Image !== "No image" && (
+                <img
+                  src={imageURLs[item.Image]}
+                  alt={item.Image === "No image" ? item.Image : item.Title}
+                  style={{
+                    width: "100%",
+                    height: "200px",
+                    objectFit: "cover",
+                  }}
+                />
+              )}
+              <h2>{item.Title}</h2>
+              <p className="paragraph">
+                <strong>Issue Type:</strong> {item.ReportType}
               </p>
-            )}
-            {item.Image && item.Image !== "No image" && (
-              <img
-                src={imageURLs[item.Image]}
-                alt={item.Image === "No image" ? item.Image : item.Title}
-                style={{
-                  width: "100%",
-                  height: "200px",
-                  objectFit: "cover",
-                }}
-              />
-            )}
-            <h2>{item.Title}</h2>
-            {/* <p className="paragraph">
-              <strong>Alert Type:</strong> {item.AlertType}
-            </p> */}
-            <p className="paragraph">
-              <strong>Issue Type:</strong> {item.ReportType}
-            </p>
-            <p className="paragraph">
-              <strong>City/Town:</strong>{" "}
-              {item.Locality ? item.Locality : "None"}
-            </p>
-          </div>
-        ))}
+              <p className="paragraph">
+                <strong>City/Town:</strong>{" "}
+                {item.Locality ? item.Locality : "None"}
+              </p>
+            </div>
+          )
+        )}
       </div>
     );
   }

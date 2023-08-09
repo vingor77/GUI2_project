@@ -8,11 +8,9 @@ import TopMenu from "../components/TopMenu";
 import MapContext from "../contexts/MapContext";
 
 const HomePage = ({ user }) => {
-  //alert();
   const data = useContext(DataContext);
-  const { mapData, setMapData, isCloseClicked, setIsCloseClicked } = useContext(
-    MapContext
-  );
+  const { mapData, setMapData, isCloseClicked, setIsCloseClicked } =
+    useContext(MapContext);
   useEffect(() => {
     const newMarkers = data
       .filter(
@@ -28,10 +26,7 @@ const HomePage = ({ user }) => {
         id: index,
         type: item.AlertType,
         title: item.Title,
-      })); //console.log(JSON.stringify(user))
-    //console.log(
-    // "hp: " + JSON.stringify(mapData) + " ... " + JSON.stringify(newMarkers)
-    //);
+      }));
     if (JSON.stringify(mapData) !== JSON.stringify(newMarkers)) {
       setMapData(newMarkers);
     }

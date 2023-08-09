@@ -1,9 +1,7 @@
 import React from "react";
 import CreateAlertsTab from "../Pages/CreateAlertsTab";
-import FilterTab from "../Pages/FilterTab";
 import EventsTab from "../Pages/EventsTab";
 import ReportsTab from "../Pages/ReportsTab";
-import ProfileTab from "../Pages/ProfileTab";
 import BookmarksTab from "../Pages/BookmarksTab";
 
 const TabBody = ({ tabTitle, user }) => {
@@ -26,7 +24,6 @@ const TabBody = ({ tabTitle, user }) => {
         borderTop: "solid",
         position: "relative",
         height: "400px",
-        //overflow: "scroll",
         maxHeight: "400px",
         padding: 0,
         margin: 0,

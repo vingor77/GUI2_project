@@ -8,7 +8,6 @@ const OuterTab = ({ tabTitle, set, user }) => {
     background: "white",
     marginTop: "-500px",
     marginLeft: "500px",
-    // width: "100%",
     zIndex: "9999999",
   };
   return (

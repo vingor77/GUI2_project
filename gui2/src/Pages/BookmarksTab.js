@@ -1,15 +1,9 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useState, useContext } from "react";
 import BookmarkContext from "../contexts/BookmarkContext";
 import { storage } from "../index";
 import DataContext from "../contexts/DataContext";
 import { getDownloadURL, ref } from "firebase/storage";
-import {
-  updateDoc,
-  setDoc,
-  doc,
-  arrayUnion,
-  arrayRemove,
-} from "firebase/firestore";
+import { updateDoc, doc, arrayRemove } from "firebase/firestore";
 import { db } from "../index";
 import "../style/Hover.css";
 const BookmarksPage = ({ user }) => {
@@ -19,14 +13,11 @@ const BookmarksPage = ({ user }) => {
   const [booked, setBooked] = useState([]);
   const [imageURLs, setImageURLs] = useState({});
   const [showDetails, setShowDetails] = useState(false);
-  //const [showDetails, setShowDetails] = useState(false);
   const [details, setDetails] = useState(0);
   if (!bookdata || !bookdata.Bookmarks | !bookdata.Bookmarks.length) {
     return <div>No bookmarks *yet*</div>;
   }
   const viewBookmark = (id) => {
-    //console.log(id);
-    //alert("You selected to view the document with id " + id);
     setShowDetails(true);
     const booked = data.filter((alert) => alert.id === id);
     setBooked(booked);
@@ -40,62 +31,11 @@ const BookmarksPage = ({ user }) => {
           urls[item.Image] = url;
         }
       }
-
       setImageURLs(urls);
     };
 
     getImageURLs();
   };
-
-  // const handleUnBookmark = async (event, item) => {
-  //   // event.stopPropagation();
-  //   // let userId = "ERROR";
-  //   //   if (user && user.auth && user.auth.currentUser) {
-  //   //     userId = user.auth.currentUser.uid;
-  //   // } else {
-  //   //   console.log(JSON.stringify(user));
-  //   // }
-  //   // const docRef = doc(db, "Bookmarks", `${userId}`);
-  //   //   await setDoc(docRef, {
-  //   //     Bookmarks: arrayUnion({ id: item.id, Title: item.Title }),
-  //   //   }, { merge: true });
-  // };
-
-  // const showReportDetails = (index) => {
-  //   if(index === details) {
-  //     if(showDetails) {
-  //       setShowDetails(false);
-  //     }
-  //     else {
-  //       setShowDetails(true);
-  //     }
-  //   }
-  //   else if(!showDetails && index !== details) {
-  //     setShowDetails(true);
-  //   }
-  //   setDetails(index);
-  // }
-
-  /*
-  const handleBookmark = async (event, item) => {
-    event.stopPropagation();
-    let userId = "ERROR";
-    if (user && user.auth && user.auth.currentUser) {
-      userId = user.auth.currentUser.uid;
-    } else {
-      console.log(JSON.stringify(user));
-    }
-
-    const docRef = doc(db, "Bookmarks", `${userId}`);
-    await setDoc(
-      docRef,
-      {
-        Bookmarks: arrayUnion({ id: item.id, Title: item.Title }),
-      },
-      { merge: true }
-    );
-  };
-  */
 
   const handleUnBookmark = async (event, item) => {
     event.stopPropagation();
@@ -137,26 +77,6 @@ const BookmarksPage = ({ user }) => {
           borderBottomRightRadius: "8px",
         }}
       >
-        {/* <div style={{ maxHeight: "400px" }}>
-          {bookdata &&
-            bookdata.Bookmarks &&
-            bookdata.Bookmarks.map((item, index) => (
-              <p
-                onClick={() => {
-                  viewBookmark(item.id);
-                }}
-                style={{
-                  margin: "20px",
-                  border: "1px solid #ddd",
-                  padding: "10px",
-                  borderRadius: "5px",
-                }}
-                key={index}
-              >
-                {item.Title}
-              </p>
-            ))}
-        </div> */}
         <button
           className="button"
           style={{ padding: "5px", marginTop: "10px", marginLeft: "4%" }}
@@ -179,16 +99,18 @@ const BookmarksPage = ({ user }) => {
           }}
         >
           {" "}
-          {booked[details].Archived && booked[details].AlertType === "Report" && (
-            <p>
-              <strong>MARKED AS RESOLVED</strong>
-            </p>
-          )}
-          {booked[details].Archived && booked[details].AlertType === "Event" && (
-            <p>
-              <strong>EVENT HAS ENDED</strong>
-            </p>
-          )}
+          {booked[details].Archived &&
+            booked[details].AlertType === "Report" && (
+              <p>
+                <strong>MARKED AS RESOLVED</strong>
+              </p>
+            )}
+          {booked[details].Archived &&
+            booked[details].AlertType === "Event" && (
+              <p>
+                <strong>EVENT HAS ENDED</strong>
+              </p>
+            )}
           {booked[details].Image && (
             <img
               src={imageURLs[booked[details].Image]}
@@ -223,7 +145,6 @@ const BookmarksPage = ({ user }) => {
           <p className="paragraph">
             <strong>Description:</strong> {booked[details].Description}
           </p>
-          {/* TODO: <button onClick={(event) => handleUnBookmark(event, booked[details])}>Delete Bookmark</button> */}
         </div>
         <div style={{ marginLeft: "4%" }}>
           <button
